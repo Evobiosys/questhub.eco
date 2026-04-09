@@ -1,0 +1,20 @@
+title: QuestHub — The Garden of Quests
+description: >-
+  Where side-projects and life quests are held with care — seeds planted across
+  technology, society, finance, knowledge, tools, and culture. Part of the
+  EvoBioSys network.
+url: "https://questhub.eco"
+baseurl: ""
+
+markdown: kramdown
+theme: null
+plugins:
+  - jekyll-seo-tag
+
+# Bidirectional link — parent site
+evobiosys_url: "https://evobiosys.org"
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

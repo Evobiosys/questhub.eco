@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title | default: site.title }}</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  {% seo %}
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bidirectional link to parent network -->
+  <link rel="me" href="https://evobiosys.org">
+
+  <!-- IndieWeb -->
+  <link rel="webmention" href="https://webmention.io/questhub.eco/webmention">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="qh-nav" id="nav">
+    <a href="/" class="qh-nav-logo">Quest<span>Hub</span></a>
+    <div class="qh-nav-right">
+      <a href="/#share" class="qh-nav-link">Share a Quest</a>
+      <a href="https://evobiosys.org" class="qh-nav-parent" target="_blank" rel="noopener">
+        Part of EvoBioSys ↗
+      </a>
+    </div>
+  </nav>
+
+  {{ content }}
+
+  <footer class="qh-footer">
+    <div class="qh-footer-inner">
+      <div class="qh-footer-brand">
+        <span class="qh-footer-logo">QuestHub</span>
+        <span class="qh-footer-tagline">The Garden of Quests</span>
+      </div>
+      <div class="qh-footer-links">
+        <a href="https://evobiosys.org" target="_blank" rel="noopener">EvoBioSys</a>
+        <a href="https://evobiosys.org/holons/" target="_blank" rel="noopener">Holons</a>
+        <a href="https://evobiosys.org/holons/soaro/" target="_blank" rel="noopener">Soaro</a>
+        <a href="https://kidur.org" target="_blank" rel="noopener">Kidur</a>
+        <a href="mailto:connect@evobiosys.org">Contact</a>
+      </div>
+      <p class="qh-footer-copy">
+        &copy; 2026 EvoBioSys &middot; Built on <a href="https://kidur.org" target="_blank" rel="noopener">Kidur</a>
+        &middot; <a href="https://evobiosys.org/holons/questhub/" target="_blank" rel="noopener">Also on EvoBioSys</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+</body>
+</html>

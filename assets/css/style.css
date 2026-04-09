@@ -1,0 +1,194 @@
+/* ===================================================
+   QuestHub — Global Styles
+   questhub.eco — Part of the EvoBioSys network
+   =================================================== */
+
+:root {
+  /* QuestHub palette */
+  --qh-gold: #b8860b;
+  --qh-gold-light: #daa520;
+  --qh-gold-glow: #f5deb3;
+  --qh-green: #4a7c59;
+  --qh-green-light: #6da67a;
+  --qh-green-pale: #e8f3ec;
+  --qh-soil: #3d2b1f;
+  --qh-soil-muted: #7a6455;
+  --qh-parchment: #fdf8f0;
+  --qh-cream: #faf5e8;
+  --qh-sand: #efe6d5;
+  --qh-border: #e2d8c8;
+
+  /* Base (inherited from evobiosys.org palette for consistency) */
+  --color-bg: #fdf8f0;
+  --color-text: #3d2b1f;
+  --color-text-muted: #7a6455;
+  --color-white: #ffffff;
+  --color-accent: #4a7c59;
+  --color-accent-light: #6da67a;
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-main);
+  color: var(--color-text);
+  background: var(--qh-parchment);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--qh-green);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover { color: var(--qh-green-light); }
+
+/* ---- Navigation ---- */
+.qh-nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  background: rgba(253, 248, 240, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+.qh-nav.scrolled { border-bottom-color: var(--qh-border); }
+
+.qh-nav-logo {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--qh-soil);
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+.qh-nav-logo span { color: var(--qh-gold); }
+
+.qh-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.qh-nav-link {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--qh-soil);
+  padding: 0.4rem 1rem;
+  background: var(--qh-cream);
+  border: 1px solid var(--qh-border);
+  border-radius: 100px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.qh-nav-link:hover {
+  background: var(--qh-sand);
+  color: var(--qh-soil);
+  border-color: var(--qh-gold-light);
+}
+
+.qh-nav-parent {
+  font-size: 0.82rem;
+  color: var(--qh-soil-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.qh-nav-parent:hover { color: var(--qh-green); }
+
+/* ---- Shared utility ---- */
+.btn {
+  display: inline-block;
+  padding: 0.65rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  border: none;
+  font-family: var(--font-main);
+}
+.btn:hover { transform: translateY(-1px); }
+.btn-primary {
+  background: var(--qh-gold);
+  color: var(--color-white);
+}
+.btn-primary:hover { background: var(--qh-gold-light); color: var(--color-white); }
+
+.status {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.status-active {
+  background: var(--qh-green-pale);
+  color: var(--qh-green);
+}
+
+/* ---- Footer ---- */
+.qh-footer {
+  background: var(--qh-soil);
+  color: rgba(255,255,255,0.7);
+  padding: 3rem 2rem;
+}
+.qh-footer-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+.qh-footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.qh-footer-logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--qh-gold-light);
+  letter-spacing: -0.02em;
+}
+.qh-footer-tagline {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.qh-footer-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.qh-footer-links a {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.qh-footer-links a:hover { color: var(--qh-gold-light); }
+.qh-footer-copy {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+}
+.qh-footer-copy a { color: rgba(255,255,255,0.5); }
+.qh-footer-copy a:hover { color: var(--qh-gold-light); }
+
+@media (max-width: 600px) {
+  .qh-nav-parent { display: none; }
+  .qh-footer-links { gap: 1rem; }
+}

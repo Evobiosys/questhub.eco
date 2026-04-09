@@ -1,0 +1,668 @@
+---
+layout: default
+title: "QuestHub — The Garden of Quests"
+description: >-
+  Seeds planted across technology, society, finance, knowledge, tools, and culture.
+  Where quests are held with care until their season arrives. Part of the EvoBioSys network.
+---
+
+<style>
+  /* === QuestHub — Quest Garden Palette === */
+  .qh-page {
+    --qh-gold: #b8860b;
+    --qh-gold-light: #daa520;
+    --qh-gold-glow: #f5deb3;
+    --qh-green: #4a7c59;
+    --qh-green-light: #6da67a;
+    --qh-green-pale: #e8f3ec;
+    --qh-soil: #3d2b1f;
+    --qh-soil-muted: #7a6455;
+    --qh-parchment: #fdf8f0;
+    --qh-cream: #faf5e8;
+    --qh-sand: #efe6d5;
+    --qh-border: #e2d8c8;
+  }
+
+  .qh-page { background: var(--qh-parchment); }
+
+  /* ---- Header ---- */
+  .qh-header {
+    padding: 8rem 2rem 4rem;
+    text-align: center;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(74, 124, 89, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(184, 134, 11, 0.08) 0%, transparent 50%),
+      linear-gradient(175deg, var(--qh-cream) 0%, var(--qh-parchment) 60%, var(--color-bg, #fdf8f0) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .qh-header::before, .qh-header::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.10;
+    pointer-events: none;
+  }
+  .qh-header::before {
+    top: 5rem; right: 10%; width: 160px; height: 160px;
+    border: 2px dashed var(--qh-gold-light);
+    animation: qh-drift 12s ease-in-out infinite;
+  }
+  .qh-header::after {
+    bottom: 3rem; left: 8%; width: 100px; height: 100px;
+    border: 2px dashed var(--qh-green-light);
+    animation: qh-drift 12s ease-in-out infinite 6s;
+  }
+  @keyframes qh-drift {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.10; }
+    50%       { transform: translateY(-12px) rotate(8deg); opacity: 0.18; }
+  }
+
+  .qh-header h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--qh-soil);
+    position: relative; z-index: 1; margin-bottom: 0.25rem;
+  }
+  .qh-header h1 .accent { color: var(--qh-gold); }
+
+  .qh-tagline {
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    background: rgba(74, 124, 89, 0.08);
+    color: var(--qh-green);
+    border-radius: 100px;
+    font-size: 0.78rem; font-weight: 500;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    margin-bottom: 1.5rem; position: relative; z-index: 1;
+  }
+
+  .qh-lead {
+    font-size: 1.1rem; color: var(--qh-soil-muted);
+    max-width: 640px; margin: 0 auto; line-height: 1.8;
+    position: relative; z-index: 1;
+  }
+
+  .qh-meta {
+    display: flex; justify-content: center; gap: 2rem;
+    margin-top: 2.5rem; flex-wrap: wrap; position: relative; z-index: 1;
+  }
+  .qh-meta .meta-item { text-align: center; }
+  .qh-meta .meta-item dt {
+    font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--qh-gold); margin-bottom: 0.25rem;
+  }
+  .qh-meta .meta-item dd { font-size: 0.85rem; color: var(--qh-soil); margin: 0; }
+
+  /* ---- What is QuestHub ---- */
+  .qh-intro {
+    padding: 5rem 2rem;
+    background: var(--color-white, #ffffff);
+    border-top: 1px solid var(--qh-sand);
+    border-bottom: 1px solid var(--qh-sand);
+  }
+  .qh-intro-inner {
+    max-width: 800px; margin: 0 auto;
+    display: grid; grid-template-columns: 200px 1fr; gap: 3rem; align-items: start;
+  }
+  .qh-garden-visual {
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding-top: 0.5rem;
+  }
+  .qh-seed {
+    width: 48px; height: 48px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg); position: relative;
+  }
+  .qh-seed-sprouting {
+    background: linear-gradient(135deg, var(--qh-gold), var(--qh-gold-light));
+    box-shadow: 0 4px 16px rgba(184, 134, 11, 0.2);
+  }
+  .qh-seed-growing {
+    background: linear-gradient(135deg, var(--qh-green), var(--qh-green-light));
+    box-shadow: 0 4px 16px rgba(74, 124, 89, 0.2);
+    width: 56px; height: 56px;
+  }
+  .qh-seed-dormant {
+    background: linear-gradient(135deg, var(--qh-sand), var(--qh-border));
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    width: 36px; height: 36px;
+  }
+  .qh-seed-label {
+    font-size: 0.65rem; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--qh-soil-muted);
+  }
+  .qh-intro-text h2 {
+    font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em;
+    color: var(--qh-soil); margin-bottom: 1rem;
+  }
+  .qh-intro-text p {
+    font-size: 0.95rem; color: var(--color-text-muted, #7a6455); line-height: 1.8; margin-bottom: 1rem;
+  }
+  .qh-overlap-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(74, 124, 89, 0.06);
+    border: 1px solid rgba(74, 124, 89, 0.15);
+    border-radius: 8px; font-size: 0.85rem; color: var(--qh-green); font-weight: 500; margin-top: 0.5rem;
+  }
+  .qh-overlap-badge a { color: var(--qh-green); text-decoration: underline; text-underline-offset: 2px; }
+
+  /* ---- Category Sections ---- */
+  .qh-category { padding: 4rem 2rem; position: relative; }
+  .qh-category:nth-child(even) { background: var(--qh-cream); }
+  .qh-category:nth-child(odd) { background: var(--color-white, #ffffff); }
+  .qh-category + .qh-category { border-top: 1px solid var(--qh-sand); }
+
+  .qh-cat-header {
+    max-width: 960px; margin: 0 auto 2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .qh-cat-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .qh-cat-icon.tech     { background: rgba(184, 134, 11, 0.10); }
+  .qh-cat-icon.society  { background: rgba(74, 124, 89, 0.10); }
+  .qh-cat-icon.finance  { background: rgba(184, 134, 11, 0.10); }
+  .qh-cat-icon.knowledge{ background: rgba(74, 124, 89, 0.10); }
+  .qh-cat-icon.tools    { background: rgba(184, 134, 11, 0.10); }
+  .qh-cat-icon.culture  { background: rgba(74, 124, 89, 0.10); }
+
+  .qh-cat-title { font-size: 1.3rem; font-weight: 600; color: var(--qh-soil); letter-spacing: -0.02em; margin: 0; }
+  .qh-cat-count {
+    font-size: 0.72rem; font-weight: 500; color: var(--qh-soil-muted);
+    background: var(--qh-sand); padding: 0.2rem 0.6rem; border-radius: 100px; margin-left: auto;
+  }
+
+  .qh-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1rem; max-width: 960px; margin: 0 auto;
+  }
+  .qh-card {
+    padding: 1.35rem 1.5rem; border-radius: 10px;
+    background: var(--color-white, #ffffff); border: 1px solid var(--qh-border);
+    position: relative; overflow: hidden; transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  }
+  .qh-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--qh-gold), var(--qh-green)); opacity: 0; transition: opacity 0.25s;
+  }
+  .qh-card:hover { border-color: var(--qh-gold-light); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(184, 134, 11, 0.08); }
+  .qh-card:hover::before { opacity: 1; }
+  .qh-card-top { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem; }
+  .qh-card-seed { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .qh-card-seed.gold    { background: var(--qh-gold-light); }
+  .qh-card-seed.green   { background: var(--qh-green-light); }
+  .qh-card-seed.dormant { background: var(--qh-sand); border: 1px solid var(--qh-border); }
+  .qh-card h3 { font-size: 0.92rem; font-weight: 600; color: var(--qh-soil); margin: 0; line-height: 1.3; }
+  .qh-card-parent { font-size: 0.68rem; font-weight: 500; color: var(--qh-gold); text-transform: uppercase; letter-spacing: 0.06em; }
+  .qh-card p { font-size: 0.82rem; color: var(--qh-soil-muted); line-height: 1.65; margin: 0; }
+
+  /* ---- Plant a Seed Section ---- */
+  .qh-plant {
+    padding: 5rem 2rem;
+    background: radial-gradient(ellipse at 50% 100%, rgba(74, 124, 89, 0.05) 0%, transparent 60%), var(--qh-parchment);
+    text-align: center; border-top: 1px solid var(--qh-sand);
+  }
+  .qh-plant-inner { max-width: 640px; margin: 0 auto; }
+  .qh-plant-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--qh-green-pale), var(--qh-gold-glow));
+    border: 2px solid var(--qh-green-light); margin: 0 auto 1.5rem;
+    display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+    animation: qh-breathe 6s ease-in-out infinite;
+  }
+  @keyframes qh-breathe {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(74, 124, 89, 0.1); }
+    50%       { transform: scale(1.06); box-shadow: 0 0 24px 8px rgba(74, 124, 89, 0.08); }
+  }
+  .qh-plant h2 { font-size: 1.5rem; font-weight: 600; color: var(--qh-soil); letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .qh-plant p { font-size: 0.95rem; color: var(--qh-soil-muted); line-height: 1.8; margin-bottom: 1rem; }
+
+  .qh-lifecycle { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2rem; flex-wrap: wrap; }
+  .qh-lifecycle-step {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 1rem; background: var(--color-white, #ffffff);
+    border: 1px solid var(--qh-border); border-radius: 8px;
+    font-size: 0.8rem; color: var(--qh-soil); font-weight: 500; white-space: nowrap;
+  }
+  .qh-lifecycle-step .step-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .qh-lifecycle-step .step-dot.identified { background: var(--qh-sand); border: 1px solid var(--qh-border); }
+  .qh-lifecycle-step .step-dot.sprouting  { background: var(--qh-gold-light); }
+  .qh-lifecycle-step .step-dot.growing    { background: var(--qh-green-light); }
+  .qh-lifecycle-step .step-dot.holon      { background: var(--qh-green); }
+  .qh-lifecycle-step .step-dot.gifted     { background: var(--qh-gold); }
+  .qh-lifecycle-arrow { color: var(--qh-border); font-size: 0.9rem; display: flex; align-items: center; }
+
+  /* ---- Governance Note ---- */
+  .qh-governance { padding: 3rem 2rem; background: var(--color-white, #ffffff); border-top: 1px solid var(--qh-sand); text-align: center; }
+  .qh-governance-note {
+    max-width: 620px; margin: 0 auto; padding: 2rem;
+    border: 1px dashed var(--qh-gold-light); border-radius: 12px; background: rgba(184, 134, 11, 0.02);
+  }
+  .qh-governance-note h3 { font-size: 0.95rem; font-weight: 600; color: var(--qh-soil); margin-bottom: 0.75rem; }
+  .qh-governance-note p { font-size: 0.9rem; color: var(--qh-soil-muted); line-height: 1.75; font-style: italic; margin: 0; }
+  .qh-governance-note strong { color: var(--qh-soil); }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 768px) {
+    .qh-intro-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .qh-garden-visual { flex-direction: row; justify-content: center; }
+    .qh-grid { grid-template-columns: 1fr; }
+    .qh-cat-header { flex-wrap: wrap; }
+    .qh-lifecycle { flex-direction: column; align-items: center; }
+    .qh-lifecycle-arrow { transform: rotate(90deg); }
+  }
+</style>
+
+<div class="qh-page" id="top">
+
+  <!-- Header -->
+  <header class="qh-header">
+    <div class="qh-tagline">The Garden of Quests</div>
+    <h1>Quest<span class="accent">Hub</span></h1>
+    <p class="qh-lead">
+      Where side-projects and life quests are held with care &mdash; seeds planted across
+      technology, society, finance, knowledge, tools, and culture. Some will grow
+      into full holons. Some will be gifted to others to steward. Some will remain
+      dormant until their season arrives.
+    </p>
+    <dl class="qh-meta">
+      <div class="meta-item">
+        <dt>Status</dt>
+        <dd><span class="status status-active">Active Garden</span></dd>
+      </div>
+      <div class="meta-item">
+        <dt>Supertag</dt>
+        <dd>#identified-interest</dd>
+      </div>
+      <div class="meta-item">
+        <dt>Seeds Planted</dt>
+        <dd>50+</dd>
+      </div>
+      <div class="meta-item">
+        <dt>Network</dt>
+        <dd><a href="https://evobiosys.org" style="color: var(--qh-gold);">EvoBioSys</a></dd>
+      </div>
+    </dl>
+  </header>
+
+  <!-- What is QuestHub -->
+  <section class="qh-intro">
+    <div class="qh-intro-inner">
+      <div class="qh-garden-visual">
+        <div class="qh-seed qh-seed-dormant"></div>
+        <span class="qh-seed-label">Dormant</span>
+        <div class="qh-seed qh-seed-sprouting"></div>
+        <span class="qh-seed-label">Sprouting</span>
+        <div class="qh-seed qh-seed-growing"></div>
+        <span class="qh-seed-label">Growing</span>
+      </div>
+      <div class="qh-intro-text">
+        <h2>What is QuestHub?</h2>
+        <p>
+          Every large vision generates a trail of adjacent ideas &mdash; things noticed
+          along the way, problems that deserve a solution, tools that should exist,
+          communities that could form. QuestHub is where EvoBioSys keeps these alive
+          without pretending they are all ready for full commitment.
+        </p>
+        <p>
+          The garden metaphor is deliberate. A gardener does not force every seed to
+          sprout simultaneously. Some need more sun, some need different soil, some
+          need a different season entirely. QuestHub holds them all with care and
+          returns to them when the conditions are right.
+        </p>
+        <p>
+          Each quest is tagged as an <strong>#identified-interest</strong> in Tana
+          and tracked with enough context to pick up where it left off. When a quest
+          matures, it graduates into a full holon. When it finds a better steward,
+          it is gifted. Nothing is wasted.
+        </p>
+        <div class="qh-overlap-badge">
+          Overlaps with <a href="https://evobiosys.org/holons/soaro/" target="_blank" rel="noopener">Soaro</a> &mdash; stewardship meets exploration
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology & Infrastructure -->
+  <section class="qh-category">
+    <div class="qh-cat-header">
+      <div class="qh-cat-icon tech">&#x2699;</div>
+      <h2 class="qh-cat-title">Technology &amp; Infrastructure</h2>
+      <span class="qh-cat-count">10 seeds</span>
+    </div>
+    <div class="qh-grid">
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Signal Orbit / Signal Hub</h3></div>
+        <span class="qh-card-parent">under idea2.life</span>
+        <p>General communications asset management workflow &mdash; unified signal routing across sovereign infrastructure.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>Trustworthy Servers</h3></div>
+        <p>Trusted hosting infrastructure where sovereignty is the default, not the exception. EU-first, open-source, auditable.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Orgwide OpenClaw</h3></div>
+        <p>Organization-wide AI assistant &mdash; a shared intelligence layer that respects boundaries and amplifies collective capability.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>EU Tech Stack</h3></div>
+        <p>Sovereign European technology &mdash; mapping, curating, and building a complete stack free from non-EU jurisdictional risk.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>EU-based Netlify Alternative</h3></div>
+        <p>Self-hosted deployment platform &mdash; because where your code ships from matters as much as the code itself.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>The Integrated LLM System</h3></div>
+        <p>A personal AI that knows your context, respects your data, and grows with you &mdash; not against you.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Talk to the App to Change the App</h3></div>
+        <p>Meta-programming through conversation &mdash; software that reshapes itself when you describe what you need.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>LLM Chat with Open Threads</h3></div>
+        <p>A chat experience where conversations branch, reconnect, and persist &mdash; threads that stay alive across sessions.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Fork Excalidraw</h3></div>
+        <p>A sovereign whiteboard tool &mdash; visual thinking infrastructure that lives on your terms.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Obsidian Plugin</h3></div>
+        <p>Bridging personal knowledge management with the broader EvoBioSys ecosystem through plugin development.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Society & Politics -->
+  <section class="qh-category">
+    <div class="qh-cat-header">
+      <div class="qh-cat-icon society">&#x2696;</div>
+      <h2 class="qh-cat-title">Society &amp; Politics</h2>
+      <span class="qh-cat-count">6 seeds</span>
+    </div>
+    <div class="qh-grid">
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>Bridging Worldviews in Politics</h3></div>
+        <p>Finding synergy and omni-win solutions across political divides &mdash; because the best answer usually lives between the camps.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Political Options Mapped, Autoupdated</h3></div>
+        <p>Political intelligence that stays current &mdash; a living map of positions, proposals, and possibilities across the spectrum.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Geopolitical Game-Theoretic Machine</h3></div>
+        <p>Strategy simulation for geopolitics &mdash; modeling interdependencies, incentives, and outcomes at the systems level.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>Regenerate Ukraine</h3></div>
+        <p>Regenerative reconstruction &mdash; rebuilding that goes beyond restoration to create something stronger and more resilient.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Enabling Refugees as Valued Residents</h3></div>
+        <p>Pathways that recognize refugees as contributors from day one &mdash; not burdens to be managed but potential to be unlocked.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Mirror EU Politicians to Mastodon/Bluesky</h3></div>
+        <p>Freeing political communication from Twitter &mdash; mirroring EU politicians onto open, decentralized platforms.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Finance & Economics -->
+  <section class="qh-category">
+    <div class="qh-cat-header">
+      <div class="qh-cat-icon finance">&#x2728;</div>
+      <h2 class="qh-cat-title">Finance &amp; Economics</h2>
+      <span class="qh-cat-count">4 seeds</span>
+    </div>
+    <div class="qh-grid">
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>Personal Regenerative Endowment</h3></div>
+        <p>Sovereign wealth for individuals &mdash; a personal endowment model that compounds purpose alongside capital.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Funding Flow</h3></div>
+        <p>Capital flow management &mdash; making money move with intention, transparency, and alignment to regenerative outcomes.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>flexGmbH</h3></div>
+        <p>A flexible company structure &mdash; reimagining the GmbH for fluid, purpose-driven ventures that evolve over time.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Fractal Seed Investment Fund</h3></div>
+        <span class="qh-card-parent">under SoFin</span>
+        <p>Investment at every scale &mdash; fractal funding that flows from micro-grants to major capital through one coherent model.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Knowledge & Learning -->
+  <section class="qh-category">
+    <div class="qh-cat-header">
+      <div class="qh-cat-icon knowledge">&#x1F4D6;</div>
+      <h2 class="qh-cat-title">Knowledge &amp; Learning</h2>
+      <span class="qh-cat-count">5 seeds</span>
+    </div>
+    <div class="qh-grid">
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Cognition-Amplification through LLMs</h3></div>
+        <p>Using language models not as replacements for thinking but as amplifiers &mdash; extending cognitive reach without losing depth.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Historical Library</h3></div>
+        <p>A curated collection that bridges past and present &mdash; historical knowledge made accessible and searchable.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Magic to Learn Cognitive Complexity</h3></div>
+        <p>Using the structure and surprise of magic to teach systems thinking and cognitive flexibility.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Playbook of Creation</h3></div>
+        <p>Patterns, recipes, and principles for bringing ideas into existence &mdash; a living playbook for makers and builders.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>Up-to-Date Books</h3></div>
+        <p>Books that evolve &mdash; living publications that update as knowledge grows, rather than freezing at the moment of printing.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tools & Products -->
+  <section class="qh-category">
+    <div class="qh-cat-header">
+      <div class="qh-cat-icon tools">&#x2692;</div>
+      <h2 class="qh-cat-title">Tools &amp; Products</h2>
+      <span class="qh-cat-count">8 seeds</span>
+    </div>
+    <div class="qh-grid">
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>Purpose Pilot</h3></div>
+        <p>A purpose discovery tool &mdash; helping people find and articulate what they are here to do, with structure and honesty.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Co-ordinat.ing</h3></div>
+        <p>A coordination platform &mdash; making it possible for groups to move together without a central command-and-control layer.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Paper Notes to Transcription</h3></div>
+        <p>Bridging analog and digital &mdash; turning handwritten notes into structured, searchable, connected text.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Affirmation Engine</h3></div>
+        <p>Intentional self-reinforcement &mdash; a tool that delivers the right affirmation at the right moment, not random positivity.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>SenseMeet</h3></div>
+        <span class="qh-card-parent">under In-Flow</span>
+        <p>A meeting tool built for sense-making &mdash; where meetings produce shared understanding, not just action items.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Distributed Substack</h3></div>
+        <p>Decentralized publishing &mdash; the newsletter model without the platform dependency. Your audience, your infrastructure.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Trust Network Tool Sharing</h3></div>
+        <p>Sharing tools and resources within trusted networks &mdash; collaborative access without the overhead of formal institutions.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>Green AI Service</h3></div>
+        <p>AI infrastructure that accounts for its environmental cost &mdash; compute that is powerful and responsible.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Culture & Life -->
+  <section class="qh-category">
+    <div class="qh-cat-header">
+      <div class="qh-cat-icon culture">&#x2740;</div>
+      <h2 class="qh-cat-title">Culture &amp; Life</h2>
+      <span class="qh-cat-count">4 seeds</span>
+    </div>
+    <div class="qh-grid">
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Authentic-Flirting</h3></div>
+        <p>The art and practice of genuine human connection &mdash; playful, honest, embodied presence without performance.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Second-hand Buchhandlung</h3></div>
+        <p>A second-hand bookshop as cultural infrastructure &mdash; where books find new readers and readers find community.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Overnight Ships Between Cities</h3></div>
+        <p>Coastal and river-city connections via overnight ships &mdash; slow travel as infrastructure, not just nostalgia.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>Respectful Living in Old Buildings</h3></div>
+        <p>Inhabiting historic structures with care &mdash; practices that honor what was built while adapting it for living now.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Plant a Seed -->
+  <section class="qh-plant">
+    <div class="qh-plant-inner">
+      <div class="qh-plant-icon">&#x1F331;</div>
+      <h2>Plant a Seed</h2>
+      <p>
+        New quests emerge organically. A conversation sparks an idea. A problem
+        is encountered that no one seems to be solving. A pattern is noticed
+        across multiple contexts. The seed gets tagged as an
+        <strong>#identified-interest</strong> in Tana, given enough context to
+        be picked up later, and planted in QuestHub.
+      </p>
+      <p>
+        Not every seed needs to be watered immediately. The garden thrives on
+        patience as much as action. Some seeds wait years. The point is that
+        they are held &mdash; named, described, and ready for the moment when
+        conditions align and a quest begins in earnest.
+      </p>
+      <div class="qh-lifecycle">
+        <div class="qh-lifecycle-step"><span class="step-dot identified"></span>Identified</div>
+        <span class="qh-lifecycle-arrow">&rarr;</span>
+        <div class="qh-lifecycle-step"><span class="step-dot sprouting"></span>Sprouting</div>
+        <span class="qh-lifecycle-arrow">&rarr;</span>
+        <div class="qh-lifecycle-step"><span class="step-dot growing"></span>Growing</div>
+        <span class="qh-lifecycle-arrow">&rarr;</span>
+        <div class="qh-lifecycle-step"><span class="step-dot holon"></span>Full Holon</div>
+        <span class="qh-lifecycle-arrow">or</span>
+        <div class="qh-lifecycle-step"><span class="step-dot gifted"></span>Gifted</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Share Your Quest -->
+  <section id="share" class="qh-category" style="border-top: 2px solid var(--qh-gold); padding-top: 3rem;">
+    <div style="max-width: 650px; margin: 0 auto; text-align: center;">
+      <div class="qh-cat-icon" style="background: var(--qh-gold); color: white; margin: 0 auto 1.5rem;">&#x2728;</div>
+      <h2 class="qh-cat-title" style="text-align: center;">Share Your Quest</h2>
+      <p style="color: var(--qh-soil-muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 2rem;">
+        QuestHub is not just one gardener&rsquo;s plot &mdash; it&rsquo;s an open field. If you carry
+        a quest that resonates with the EvoBioSys vision, we want to hear about it.
+        Your seed might find its soil here.
+      </p>
+
+      <form id="quest-form" action="https://formspree.io/f/placeholder" method="POST"
+            style="text-align: left; background: var(--color-white); border: 1px solid var(--qh-border); border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem;">
+        <input type="hidden" name="_subject" value="New Quest Submission — QuestHub">
+        <input type="hidden" name="_next" value="https://questhub.eco/?submitted=true">
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Your name</label>
+          <input type="text" name="name" required style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream);">
+        </div>
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Quest name</label>
+          <input type="text" name="quest" required placeholder="e.g. Regenerative urban farming network" style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream);">
+        </div>
+        <div style="margin-bottom: 1.25rem;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Category</label>
+          <select name="category" style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream);">
+            <option value="tech">Technology &amp; Infrastructure</option>
+            <option value="society">Society &amp; Politics</option>
+            <option value="finance">Finance &amp; Economics</option>
+            <option value="knowledge">Knowledge &amp; Learning</option>
+            <option value="tools">Tools &amp; Products</option>
+            <option value="culture">Culture &amp; Life</option>
+          </select>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Describe your quest</label>
+          <textarea name="description" rows="4" required placeholder="What problem does it solve? What does the world look like if this quest succeeds?" style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream); resize: vertical;"></textarea>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Your email (optional)</label>
+          <input type="email" name="email" placeholder="you@example.com" style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream);">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Plant this seed &#x1F331;</button>
+      </form>
+      <p style="font-size: 0.78rem; color: var(--qh-soil-muted);">
+        Submitted quests are reviewed by the EvoBioSys stewards. If there&rsquo;s resonance, we&rsquo;ll reach out.
+      </p>
+    </div>
+  </section>
+
+  <!-- Governance Note -->
+  <section class="qh-governance">
+    <div class="qh-governance-note">
+      <h3>Governance Consideration</h3>
+      <p>
+        QuestHub connects to broader governance questions within EvoBioSys &mdash;
+        how resources are allocated to nascent ideas, when a quest earns dedicated
+        attention, and how stewardship is transferred when a seed finds its best
+        gardener elsewhere. These decisions are made with care, not urgency.
+      </p>
+    </div>
+  </section>
+
+  <script>
+    // Toggle category grids
+    document.querySelectorAll('.qh-cat-header').forEach(header => {
+      header.style.cursor = 'pointer';
+      const grid = header.nextElementSibling;
+      const icon = document.createElement('span');
+      icon.textContent = '▾';
+      icon.style.cssText = 'margin-left: auto; font-size: 1.2rem; color: var(--qh-soil-muted); transition: transform 0.2s;';
+      header.style.display = 'flex';
+      header.style.alignItems = 'center';
+      header.appendChild(icon);
+      header.addEventListener('click', () => {
+        const collapsed = grid.style.display === 'none';
+        grid.style.display = collapsed ? '' : 'none';
+        icon.textContent = collapsed ? '▾' : '▸';
+      });
+    });
+
+    // Submitted confirmation
+    if (new URLSearchParams(window.location.search).get('submitted') === 'true') {
+      const form = document.getElementById('quest-form');
+      if (form) form.innerHTML = '<div style="text-align:center;padding:2rem;"><p style="font-size:1.1rem;color:var(--qh-green);font-weight:600;">Seed planted! &#x1F331;</p><p style="color:var(--qh-soil-muted);margin-top:0.5rem;">We\'ll review your quest and reach out if there\'s resonance.</p></div>';
+    }
+  </script>
+
+</div>
