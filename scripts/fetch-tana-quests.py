@@ -46,7 +46,7 @@ TANA_GET_NODE_URL = "https://europe-west1-tagr-prod.cloudfunctions.net/getNodeV2
 # Confirmed IDs from live workspace inspection (2026-04)
 QUEST_TAG_ID      = "72brQ5Y21b10"   # #quest supertag
 LATER_TAG_ID      = "UE79SmADSuIJ"   # #later / someday supertag
-STEALTH_FIELD_ID  = "22lyE0BRVSCj"   # stealth checkbox field
+STEALTH_FIELD_ID  = "fRdlEqC4XbrX"   # stealth checkbox field (verified via get_tag_schema 2026-04)
 ORG_FIELD_ID      = "lJ7wvELgQE8U"   # "within which org" instance field
 EXISTING_FIELD_ID = "sFR2EOWFLPmY"   # "existing" checkbox field
 SUBQUESTS_FIELD_ID = "-tQAadJN0VZv"  # "sub-quests" instance field

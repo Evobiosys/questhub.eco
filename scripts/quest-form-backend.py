@@ -37,7 +37,7 @@ REDIRECT_SUCCESS = os.environ.get(
     "https://questhub.eco/?submitted=true",
 )
 
-ALLOWED_CATEGORIES = {"tech", "society", "finance", "knowledge", "tools", "culture"}
+CURATED_CATEGORIES = {"tech", "society", "finance", "knowledge", "tools", "culture"}
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
@@ -48,20 +48,28 @@ async def quest_submit(
     quest: str = Form(..., max_length=500),
     description: str = Form(..., max_length=2000),
     category: str = Form(default=""),
-    email: str = Form(default=""),
+    category_custom: str = Form(default=""),
+    contact: str = Form(default=""),
 ):
-    # Sanitise category to known values only
-    safe_category = category.strip().lower()
-    if safe_category not in ALLOWED_CATEGORIES:
-        safe_category = ""
+    raw_cat = category.strip().lower()
+    if raw_cat in CURATED_CATEGORIES:
+        final_category = raw_cat
+        category_type = "curated"
+    elif raw_cat == "other" and category_custom.strip():
+        final_category = category_custom.strip()[:80]
+        category_type = "community"
+    else:
+        final_category = raw_cat
+        category_type = "curated" if raw_cat in CURATED_CATEGORIES else "community"
 
     submission = {
         "ts": datetime.now(timezone.utc).isoformat(),
         "name": name.strip()[:200],
         "quest": quest.strip()[:500],
-        "category": safe_category,
+        "category": final_category,
+        "category_type": category_type,
         "description": description.strip()[:2000],
-        "email": email.strip()[:200],
+        "contact": contact.strip()[:300],
     }
 
     # Ensure directory exists

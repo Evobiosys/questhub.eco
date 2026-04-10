@@ -591,31 +591,34 @@ description: >-
       <form id="quest-form" action="https://evobiosys.org/quest-submit" method="POST"
             style="text-align: left; background: var(--color-white); border: 1px solid var(--qh-border); border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem;">
         <div style="margin-bottom: 1.25rem;">
-          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Your name</label>
+          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Name <span style="font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--qh-soil-muted);">(pseudonym accepted &mdash; listed lower)</span></label>
           <input type="text" name="name" required style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream);">
         </div>
         <div style="margin-bottom: 1.25rem;">
-          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Quest name</label>
+          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Quest</label>
           <input type="text" name="quest" required placeholder="e.g. Regenerative urban farming network" style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream);">
         </div>
         <div style="margin-bottom: 1.25rem;">
           <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Category</label>
-          <select name="category" style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream);">
+          <select name="category" id="qh-category-select" style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream);">
             <option value="tech">Technology &amp; Infrastructure</option>
             <option value="society">Society &amp; Politics</option>
             <option value="finance">Finance &amp; Economics</option>
             <option value="knowledge">Knowledge &amp; Learning</option>
             <option value="tools">Tools &amp; Products</option>
             <option value="culture">Culture &amp; Life</option>
+            <option value="other">Other &mdash; propose new category</option>
           </select>
+          <input type="text" name="category_custom" id="qh-category-custom" placeholder="Name the new category" maxlength="80"
+                 style="display:none; margin-top: 0.5rem; width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream);">
         </div>
         <div style="margin-bottom: 1.5rem;">
-          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Describe your quest</label>
+          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Description</label>
           <textarea name="description" rows="4" required placeholder="What problem does it solve? What does the world look like if this quest succeeds?" style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream); resize: vertical;"></textarea>
         </div>
         <div style="margin-bottom: 1.5rem;">
-          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">Your email (optional)</label>
-          <input type="email" name="email" placeholder="you@example.com" style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream);">
+          <label style="display: block; font-size: 0.82rem; font-weight: 500; color: var(--qh-soil); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.04em;">How to reach you <span style="font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--qh-soil-muted);">(optional &mdash; email, site, or handle)</span></label>
+          <input type="text" name="contact" placeholder="email, website, or social handle" style="width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--qh-border); border-radius: 8px; font-family: inherit; font-size: 0.9rem; background: var(--qh-cream);">
         </div>
         <button type="submit" class="btn btn-primary" style="width: 100%;">Plant this seed &#x1F331;</button>
       </form>
@@ -655,6 +658,16 @@ description: >-
         icon.textContent = collapsed ? '▾' : '▸';
       });
     });
+
+    // Custom category toggle
+    const catSelect = document.getElementById('qh-category-select');
+    const catCustom = document.getElementById('qh-category-custom');
+    if (catSelect && catCustom) {
+      catSelect.addEventListener('change', function() {
+        catCustom.style.display = this.value === 'other' ? 'block' : 'none';
+        catCustom.required = this.value === 'other';
+      });
+    }
 
     // Submitted confirmation
     if (new URLSearchParams(window.location.search).get('submitted') === 'true') {
