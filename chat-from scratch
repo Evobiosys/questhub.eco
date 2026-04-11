@@ -1,0 +1,776 @@
+import { useState, useEffect, useRef, useCallback } from "react";
+
+// from https://claude.ai/chat/825baa5b-c9da-4961-aa79-efce6eb8a88b
+
+// Fonts
+const FONTS = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap";
+if (!document.querySelector('link[href*="Cormorant"]')) {
+  const l = document.createElement("link"); l.rel = "stylesheet"; l.href = FONTS; document.head.appendChild(l);
+}
+
+const C = {
+  bg: "#0a0f0d", bgL: "#111916", bgC: "#151d19", bgD: "#0d1210",
+  acc: "#7dcba4", accD: "#4a8a6e", accG: "rgba(125,203,164,0.12)",
+  txt: "#e8efe9", txtD: "#8fa898", txtM: "#5a7365",
+  brd: "#1e2b24", brdL: "#2a3d32",
+  warm: "#d4a96a", warmD: "#8a7044",
+  evo: "#b8a0d4", bio: "#7dcba4", sys: "#6ab0d4",
+  sol: "#9945FF", celo: "#35D07F", eth: "#627EEA",
+  spring: "#7dcba4", summer: "#d4a96a", autumn: "#c97842", winter: "#6ab0d4",
+  red: "#c9524a",
+};
+const sf = { fontFamily: "'Cormorant Garamond', serif" };
+const sn = { fontFamily: "'DM Sans', sans-serif" };
+const mn = { fontFamily: "'JetBrains Mono', monospace" };
+
+function useFade() {
+  const r = useRef(null);
+  useEffect(() => {
+    const el = r.current; if (!el) return;
+    Object.assign(el.style, { opacity: "0", transform: "translateY(18px)", transition: "opacity 0.6s ease, transform 0.6s ease" });
+    const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.style.opacity = "1"; el.style.transform = "translateY(0)"; o.disconnect(); } }, { threshold: 0.08 });
+    o.observe(el); return () => o.disconnect();
+  }, []); return r;
+}
+function F({ children, style }) { const r = useFade(); return <div ref={r} style={style}>{children}</div>; }
+function Btn({ children, active, onClick, small, color }) {
+  return <button onClick={onClick} style={{ ...sn, background: active ? (color || C.accG) : "transparent", border: `1px solid ${active ? C.accD : C.brd}`, color: active ? C.acc : C.txtM, padding: small ? "4px 10px" : "7px 14px", fontSize: small ? 10 : 11, borderRadius: 2, cursor: "pointer", transition: "all 0.2s" }}>{children}</button>;
+}
+function Card({ children, style }) { return <div style={{ background: C.bgC, border: `1px solid ${C.brd}`, borderRadius: 4, padding: "20px 18px", ...style }}>{children}</div>; }
+function Label({ children }) { return <div style={{ fontSize: 9, color: C.txtM, letterSpacing: 2, textTransform: "uppercase", marginBottom: 8 }}>{children}</div>; }
+
+// ═══════════════════════════════════════
+// NAV
+// ═══════════════════════════════════════
+const PAGES = [
+  { id: "home", l: "Home" }, { id: "quest", l: "Quest" }, { id: "spaces", l: "Spaces" },
+  { id: "map", l: "Map" }, { id: "graph", l: "Graph" }, { id: "seasonal", l: "Seasons" },
+  { id: "pledge", l: "Pledge" }, { id: "nudge", l: "Nudges" }, { id: "civic", l: "Civic AI" },
+  { id: "build", l: "Build" }, { id: "ideology", l: "Why" },
+];
+
+function Nav({ cur, go }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 200, background: "rgba(10,15,13,0.9)", backdropFilter: "blur(14px)", borderBottom: `1px solid ${C.brd}` }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 16px", maxWidth: 1100, margin: "0 auto" }}>
+        <span style={{ ...sf, fontSize: 16, color: C.acc, cursor: "pointer" }} onClick={() => go("home")}>QuestHub</span>
+        <button onClick={() => setOpen(!open)} style={{ ...sn, background: "none", border: "none", color: C.txtD, fontSize: 11, cursor: "pointer" }}>{open ? "✕ Close" : "☰ Menu"}</button>
+      </div>
+      {open && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 4, padding: "4px 16px 10px", maxWidth: 1100, margin: "0 auto" }}>
+          {PAGES.map(p => <Btn key={p.id} active={cur === p.id} onClick={() => { go(p.id); setOpen(false); }} small>{p.l}</Btn>)}
+        </div>
+      )}
+    </nav>
+  );
+}
+
+// ═══════════════════════════════════════
+// HERO
+// ═══════════════════════════════════════
+function Hero({ go }) {
+  return (
+    <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "80px 20px 60px", position: "relative" }}>
+      <div style={{ position: "absolute", inset: 0, background: `radial-gradient(ellipse 50% 35% at 50% 42%, ${C.accG}, transparent)`, pointerEvents: "none" }} />
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 660 }}>
+        <div style={{ fontSize: 9, letterSpacing: 5, textTransform: "uppercase", color: C.accD, marginBottom: 22 }}>EvoBioSys · Kidur-Native · Federated · AGPL-3.0</div>
+        <h1 style={{ ...sf, fontSize: "clamp(2.2rem, 6vw, 4.4rem)", fontWeight: 300, lineHeight: 1.08, margin: "0 0 22px" }}>What do you want<br/>to see in the world?</h1>
+        <p style={{ fontSize: 15, color: C.txtD, maxWidth: 460, margin: "0 auto 36px", lineHeight: 1.8 }}>
+          A registry of human aspiration. Dreams that connect, resources that flow, communities that steward — on sovereign infrastructure.
+        </p>
+        <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+          <button onClick={() => go("quest")} style={{ ...sn, background: C.acc, border: "none", color: C.bg, padding: "12px 28px", fontSize: 12, fontWeight: 500, borderRadius: 2, cursor: "pointer" }}>Share Your Quest</button>
+          <button onClick={() => go("graph")} style={{ ...sn, background: "transparent", border: `1px solid ${C.brd}`, color: C.txtD, padding: "12px 28px", fontSize: 12, borderRadius: 2, cursor: "pointer" }}>Explore the Graph →</button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════
+// SEASONAL CLOCK
+// ═══════════════════════════════════════
+function SeasonalClock() {
+  const seasons = [
+    { name: "Spring", icon: "🌱", color: C.spring, action: "Emerge", desc: "New quests sprout. Dormant ones reawaken. Equinox gathering.", months: "Mar – May", angle: 0 },
+    { name: "Summer", icon: "☀️", color: C.summer, action: "Build", desc: "Active construction. Resource mobilization. Peak energy.", months: "Jun – Aug", angle: 90 },
+    { name: "Autumn", icon: "🍂", color: C.autumn, action: "Harvest", desc: "Reflect. Document. Share learnings. Gratitude.", months: "Sep – Nov", angle: 180 },
+    { name: "Winter", icon: "❄️", color: C.winter, action: "Rest", desc: "Integration. Pruning stale quests. Deep work. Solstice pause.", months: "Dec – Feb", angle: 270 },
+  ];
+  const now = new Date();
+  const month = now.getMonth();
+  const currentSeason = month >= 2 && month <= 4 ? 0 : month >= 5 && month <= 7 ? 1 : month >= 8 && month <= 10 ? 2 : 3;
+
+  return (
+    <section style={{ padding: "80px 20px", maxWidth: 800, margin: "0 auto" }}>
+      <F>
+        <div style={{ ...sf, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 300, textAlign: "center", marginBottom: 6 }}>Seasonal rhythm</div>
+        <p style={{ textAlign: "center", color: C.txtD, fontSize: 12, maxWidth: 480, margin: "0 auto 36px", lineHeight: 1.8 }}>Quests follow the seasons. Not arbitrary deadlines — natural cycles of emergence, building, harvesting, and rest.</p>
+      </F>
+      {/* Clock SVG */}
+      <F>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 28 }}>
+          <svg viewBox="0 0 300 300" style={{ width: 240, height: 240 }}>
+            {seasons.map((s, i) => {
+              const a1 = (s.angle - 45) * Math.PI / 180;
+              const a2 = (s.angle + 45) * Math.PI / 180;
+              const cx = 150, cy = 150, r = 110;
+              const x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+              const x2 = cx + r * Math.cos(a2), y2 = cy + r * Math.sin(a2);
+              const mx = cx + (r + 20) * Math.cos(s.angle * Math.PI / 180);
+              const my = cy + (r + 20) * Math.sin(s.angle * Math.PI / 180);
+              const isCurrent = i === currentSeason;
+              return (
+                <g key={i}>
+                  <path d={`M${cx},${cy} L${x1},${y1} A${r},${r} 0 0,1 ${x2},${y2} Z`}
+                    fill={isCurrent ? `${s.color}30` : `${s.color}10`} stroke={s.color} strokeWidth={isCurrent ? 2 : 0.5} />
+                  <text x={cx + 72 * Math.cos(s.angle * Math.PI / 180)} y={cy + 72 * Math.sin(s.angle * Math.PI / 180)}
+                    textAnchor="middle" dominantBaseline="middle" fontSize="20">{s.icon}</text>
+                  <text x={cx + 48 * Math.cos(s.angle * Math.PI / 180)} y={cy + 48 * Math.sin(s.angle * Math.PI / 180) + 14}
+                    textAnchor="middle" fontSize="8" fill={s.color} fontFamily="DM Sans">{s.action}</text>
+                </g>
+              );
+            })}
+            <circle cx={150} cy={150} r={18} fill={C.bgC} stroke={C.brd} />
+            <text x={150} y={150} textAnchor="middle" dominantBaseline="middle" fontSize="7" fill={C.txtM} fontFamily="DM Sans">NOW</text>
+            {/* Current season indicator */}
+            <circle cx={150 + 30 * Math.cos(seasons[currentSeason].angle * Math.PI / 180)}
+              cy={150 + 30 * Math.sin(seasons[currentSeason].angle * Math.PI / 180)} r={4} fill={seasons[currentSeason].color} />
+          </svg>
+        </div>
+      </F>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 10 }}>
+        {seasons.map((s, i) => (
+          <F key={i} style={{ borderTop: `3px solid ${s.color}`, background: i === currentSeason ? C.bgC : C.bgL, padding: "14px 14px", borderRadius: "0 0 4px 4px" }}>
+            <div style={{ fontSize: 11, fontWeight: 500, color: s.color, marginBottom: 4 }}>{s.icon} {s.name}</div>
+            <div style={{ fontSize: 10, color: C.txtD, lineHeight: 1.6, marginBottom: 4 }}>{s.desc}</div>
+            <div style={{ fontSize: 9, color: C.txtM }}>{s.months}</div>
+          </F>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════
+// QUEST LIFECYCLE
+// ═══════════════════════════════════════
+function QuestLifecycle() {
+  const stages = [
+    { name: "Dreaming", icon: "💭", color: C.evo, desc: "Pre-quest. Something stirs. The aspiration hasn't found words yet.", nudge: "\"What matters to you?\"" },
+    { name: "Articulating", icon: "✍️", color: C.acc, desc: "Quest submitted. Structure without constraint. The dream gets a name.", nudge: "\"What scale does this live at?\"" },
+    { name: "Connecting", icon: "🔗", color: C.sys, desc: "Resonance found. Other quests match. People signal interest.", nudge: "\"3 others share your vision\"" },
+    { name: "Planning", icon: "📐", color: C.warm, desc: "Ready to build. idea2.life scaffolding. Resources begin flowing.", nudge: "\"Here's a minimal viable path\"" },
+    { name: "Building", icon: "🔨", color: C.summer, desc: "In progress. Pledges release. Alliances form. Work happens.", nudge: "\"Your pledge is ready to release\"" },
+    { name: "Sustaining", icon: "🌳", color: C.spring, desc: "Active and maintained. Evolution continues. Impact visible.", nudge: "\"How has your quest changed?\"" },
+    { name: "Resting", icon: "🌙", color: C.winter, desc: "Complete, paused, or retired. Graceful closure. Learnings preserved.", nudge: "\"Rest this quest. It served.\"" },
+  ];
+  const [active, setActive] = useState(1);
+
+  return (
+    <section style={{ padding: "80px 20px", maxWidth: 860, margin: "0 auto" }}>
+      <F>
+        <div style={{ ...sf, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 300, textAlign: "center", marginBottom: 6 }}>Quest lifecycle</div>
+        <p style={{ textAlign: "center", color: C.txtD, fontSize: 12, maxWidth: 480, margin: "0 auto 28px" }}>Every stage is sovereign. No gate-keeping, no forced progression. The platform meets you where you are.</p>
+      </F>
+      {/* Horizontal pipeline */}
+      <F>
+        <div style={{ display: "flex", gap: 2, marginBottom: 20, overflowX: "auto", padding: "4px 0" }}>
+          {stages.map((s, i) => (
+            <button key={i} onClick={() => setActive(i)} style={{
+              ...sn, flex: "1 0 auto", minWidth: 80, background: active === i ? `${s.color}18` : C.bgL,
+              border: `1px solid ${active === i ? s.color : C.brd}`, borderRadius: 3, padding: "10px 8px",
+              cursor: "pointer", textAlign: "center", transition: "all 0.2s",
+            }}>
+              <div style={{ fontSize: 18, marginBottom: 4 }}>{s.icon}</div>
+              <div style={{ fontSize: 9, color: active === i ? s.color : C.txtM, fontWeight: 500 }}>{s.name}</div>
+            </button>
+          ))}
+        </div>
+        <Card>
+          <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+            <span style={{ fontSize: 28 }}>{stages[active].icon}</span>
+            <div>
+              <h3 style={{ fontSize: 15, fontWeight: 500, color: stages[active].color, marginBottom: 6 }}>{stages[active].name}</h3>
+              <p style={{ fontSize: 12, color: C.txtD, lineHeight: 1.7, marginBottom: 8 }}>{stages[active].desc}</p>
+              <div style={{ ...mn, fontSize: 10, color: C.txtM, background: C.bgL, padding: "6px 10px", borderRadius: 2, display: "inline-block" }}>
+                Nudge: {stages[active].nudge}
+              </div>
+            </div>
+          </div>
+        </Card>
+      </F>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════
+// QUEST GRAPH VISUALIZATION
+// ═══════════════════════════════════════
+function QuestGraph() {
+  const canvasRef = useRef(null);
+  const [hovered, setHovered] = useState(null);
+
+  // Sample quest nodes
+  const nodes = [
+    { id: 0, x: 300, y: 150, r: 20, label: "Community Garden Wien", stage: "building", color: C.summer },
+    { id: 1, x: 180, y: 100, r: 14, label: "Seed Library Graz", stage: "connecting", color: C.sys },
+    { id: 2, x: 420, y: 120, r: 12, label: "Food Coop Linz", stage: "planning", color: C.warm },
+    { id: 3, x: 260, y: 240, r: 16, label: "Soil Regeneration AT", stage: "articulating", color: C.acc },
+    { id: 4, x: 150, y: 200, r: 10, label: "Composting Feldbach", stage: "dreaming", color: C.evo },
+    { id: 5, x: 440, y: 220, r: 11, label: "Urban Farm München", stage: "sustaining", color: C.spring },
+    { id: 6, x: 360, y: 270, r: 9, label: "Permakultur Zürich", stage: "connecting", color: C.sys },
+    { id: 7, x: 100, y: 150, r: 8, label: "Water Rights Tirol", stage: "articulating", color: C.acc },
+  ];
+  const edges = [[0,1],[0,2],[0,3],[1,4],[3,4],[2,5],[3,6],[1,7],[5,6]];
+
+  useEffect(() => {
+    const cv = canvasRef.current; if (!cv) return;
+    const ctx = cv.getContext("2d");
+    const w = cv.width = cv.offsetWidth * 2; const h = cv.height = cv.offsetHeight * 2;
+    const sx = w / 540, sy = h / 320;
+    ctx.clearRect(0, 0, w, h);
+
+    // Edges
+    edges.forEach(([a, b]) => {
+      const na = nodes[a], nb = nodes[b];
+      ctx.beginPath(); ctx.moveTo(na.x * sx, na.y * sy); ctx.lineTo(nb.x * sx, nb.y * sy);
+      ctx.strokeStyle = `${C.acc}25`; ctx.lineWidth = 1.5; ctx.stroke();
+    });
+
+    // Nodes
+    nodes.forEach(n => {
+      const x = n.x * sx, y = n.y * sy, r = n.r * (sx + sy) / 2 * 0.5;
+      // Glow
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r * 3);
+      g.addColorStop(0, `${n.color}25`); g.addColorStop(1, "transparent");
+      ctx.fillStyle = g; ctx.fillRect(x - r * 3, y - r * 3, r * 6, r * 6);
+      // Circle
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = `${n.color}90`; ctx.fill();
+      ctx.strokeStyle = n.color; ctx.lineWidth = 1; ctx.stroke();
+      // Label
+      ctx.fillStyle = `${C.txt}cc`; ctx.font = `${Math.max(14, r * 0.9)}px DM Sans`;
+      ctx.textAlign = "center"; ctx.fillText(n.label, x, y - r - 6);
+    });
+  }, []);
+
+  return (
+    <section style={{ padding: "80px 20px", maxWidth: 860, margin: "0 auto" }}>
+      <F>
+        <div style={{ ...sf, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 300, textAlign: "center", marginBottom: 6 }}>The quest graph</div>
+        <p style={{ textAlign: "center", color: C.txtD, fontSize: 12, maxWidth: 500, margin: "0 auto 28px" }}>
+          Quests connect through resonance, complementary resources, shared bioregions, and vertical alliances. Every node is sovereign; every edge is consensual.
+        </p>
+      </F>
+      <F>
+        <Card style={{ padding: 0, overflow: "hidden" }}>
+          <canvas ref={canvasRef} style={{ width: "100%", height: 280, display: "block" }} />
+          <div style={{ padding: "14px 18px", borderTop: `1px solid ${C.brd}`, display: "flex", gap: 12, flexWrap: "wrap" }}>
+            {[["💭", "Dreaming", C.evo], ["✍️", "Articulating", C.acc], ["🔗", "Connecting", C.sys], ["📐", "Planning", C.warm], ["🔨", "Building", C.summer], ["🌳", "Sustaining", C.spring]].map(([i, l, c], idx) => (
+              <span key={idx} style={{ fontSize: 9, color: c, display: "flex", alignItems: "center", gap: 3 }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: c, display: "inline-block" }} /> {l}
+              </span>
+            ))}
+          </div>
+        </Card>
+      </F>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════
+// VERSION HISTORY + FORKING
+// ═══════════════════════════════════════
+function VersionHistory() {
+  const versions = [
+    { v: 5, date: "2026-04-05", author: "Jakob", change: "Added alliance with Seed Library Graz", type: "alliance" },
+    { v: 4, date: "2026-03-21", author: "Maria", change: "Forked from 'Urban Farming Wien' → specialized to community garden", type: "fork" },
+    { v: 3, date: "2026-03-14", author: "Jakob", change: "Added Soaro Five tags, budget range updated to €5k-50k", type: "edit" },
+    { v: 2, date: "2026-03-08", author: "Jakob", change: "Description expanded, location pinned to 1020 Wien", type: "edit" },
+    { v: 1, date: "2026-03-01", author: "Jakob", change: "Quest created: Community Garden Wien", type: "create" },
+  ];
+  const icons = { create: "🌱", edit: "✏️", fork: "🔀", alliance: "🤝", merge: "🔄", pledge: "💶" };
+
+  return (
+    <section style={{ padding: "40px 20px", maxWidth: 600, margin: "0 auto" }}>
+      <F>
+        <Label>Version History — Community Garden Wien</Label>
+        <Card>
+          {versions.map((v, i) => (
+            <div key={i} style={{ display: "flex", gap: 12, padding: "10px 0", borderBottom: i < versions.length - 1 ? `1px solid ${C.brd}` : "none", alignItems: "flex-start" }}>
+              <span style={{ fontSize: 16 }}>{icons[v.type]}</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 12, color: C.txt }}>{v.change}</div>
+                <div style={{ fontSize: 10, color: C.txtM, marginTop: 2 }}>v{v.v} · {v.author} · {v.date}</div>
+              </div>
+              <span style={{ ...mn, fontSize: 9, color: C.accD }}>v{v.v}</span>
+            </div>
+          ))}
+        </Card>
+      </F>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════
+// NUDGE MARKETPLACE
+// ═══════════════════════════════════════
+function NudgeMarketplace() {
+  const nudges = [
+    { name: "Ally Finder", author: "EvoBioSys", price: "Free", type: "Contextual prompt", trigger: "status=dream, scale=community", desc: "Suggests identifying first 10 allies for your quest.", framework: "—", installs: 342 },
+    { name: "Soaro Five Lens", author: "Soaro / Linden", price: "€2/mo", type: "Framework lens", trigger: "soaro_five=enabled", desc: "Overlays the five shared-outcome pillars on your quest view.", framework: "Soaro Five", installs: 89 },
+    { name: "SDG Alignment", author: "Community", price: "Free", type: "Tag suggestion", trigger: "any quest", desc: "Auto-suggests UN SDG tags based on quest description.", framework: "UN SDGs", installs: 567 },
+    { name: "Kegan Stage Prompt", author: "EvoPaideia", price: "Free", type: "Developmental nudge", trigger: "stage transition detected", desc: "Offers stage-appropriate questions when a quest evolves.", framework: "Kegan / Cook-Greuter", installs: 124 },
+    { name: "Bioregional Context", author: "Community", price: "Free", type: "Map overlay", trigger: "location=set", desc: "Shows watershed, cultural, and infrastructure context for location-based quests.", framework: "Bioregionalism", installs: 231 },
+    { name: "Seasonal Check-in", author: "EvoBioSys", price: "Free", type: "Periodic nudge", trigger: "equinox/solstice", desc: "Gentle 'still active?' ping aligned to seasonal rhythm.", framework: "Seasonal design", installs: 445 },
+    { name: "Alliance Suggester", author: "Community", price: "€1/mo", type: "Matching engine", trigger: "2+ quests with vertical complementarity", desc: "Identifies potential quest alliances for co-funding proposals.", framework: "Soaro coordination", installs: 67 },
+    { name: "Historical Mirror", author: "Civic AI", price: "Free", type: "AI analysis", trigger: "new quest submitted", desc: "Searches web-scraped archives for similar past attempts and learnings.", framework: "Civic AI compute", installs: 198 },
+  ];
+
+  return (
+    <section style={{ padding: "80px 20px", maxWidth: 860, margin: "0 auto" }}>
+      <F>
+        <div style={{ ...sf, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 300, textAlign: "center", marginBottom: 6 }}>Nudge marketplace</div>
+        <p style={{ textAlign: "center", color: C.txtD, fontSize: 12, maxWidth: 520, margin: "0 auto 28px", lineHeight: 1.8 }}>
+          Contextual prompts, framework lenses, and extensions — built by the community, transparent by default. Every nudge is opt-in, visible, and overridable.
+        </p>
+      </F>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 10 }}>
+        {nudges.map((n, i) => (
+          <F key={i}>
+            <Card style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <h3 style={{ fontSize: 13, fontWeight: 500, color: C.txt }}>{n.name}</h3>
+                <span style={{ fontSize: 10, color: n.price === "Free" ? C.acc : C.warm, fontWeight: 500 }}>{n.price}</span>
+              </div>
+              <p style={{ fontSize: 11, color: C.txtD, lineHeight: 1.6, flex: 1, marginBottom: 8 }}>{n.desc}</p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 9, color: C.txtM, borderTop: `1px solid ${C.brd}`, paddingTop: 8 }}>
+                <span>{n.author} · {n.type}</span>
+                <span>{n.installs} installs</span>
+              </div>
+              <div style={{ ...mn, fontSize: 8, color: C.txtM, marginTop: 4 }}>trigger: {n.trigger}</div>
+            </Card>
+          </F>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════
+// CIVIC AI COMPUTE
+// ═══════════════════════════════════════
+function CivicAI() {
+  const prompts = [
+    { name: "NGO Quest Extraction", desc: "Analyze 10,000 NPO descriptions and extract quest-like aspirations", compute: "~4 GPU-hours", status: "active", donated: "23.4 hrs" },
+    { name: "Historical Quest Mining", desc: "Search archived civic proposals (2010-2024) for patterns and learnings", compute: "~8 GPU-hours", status: "active", donated: "12.1 hrs" },
+    { name: "Cross-Lingual Matching", desc: "Translate and match quests across DE/EN/FR/IT to find cross-border resonance", compute: "~2 GPU-hours", status: "queued", donated: "0 hrs" },
+    { name: "Trend Analysis", desc: "Analyze quest submission patterns against urbanization, climate, and policy data", compute: "~6 GPU-hours", status: "queued", donated: "0 hrs" },
+  ];
+
+  return (
+    <section style={{ padding: "80px 20px", maxWidth: 800, margin: "0 auto" }}>
+      <F>
+        <div style={{ ...sf, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 300, textAlign: "center", marginBottom: 6 }}>Civic AI: Donate unused compute</div>
+        <p style={{ textAlign: "center", color: C.txtD, fontSize: 12, maxWidth: 520, margin: "0 auto 28px", lineHeight: 1.8 }}>
+          Like BOINC for purpose-aligned AI. Community-vetted prompts. Priority: renewable-energy data centers where excess capacity would otherwise be wasted. Verified profiles only.
+        </p>
+      </F>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {prompts.map((p, i) => (
+          <F key={i}>
+            <Card style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+              <div style={{ width: 40, height: 40, borderRadius: 4, background: p.status === "active" ? `${C.acc}20` : `${C.brd}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>
+                {p.status === "active" ? "⚡" : "⏳"}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                  <h3 style={{ fontSize: 13, fontWeight: 500, color: C.txt }}>{p.name}</h3>
+                  <span style={{ fontSize: 9, color: p.status === "active" ? C.acc : C.txtM, textTransform: "uppercase", letterSpacing: 1 }}>{p.status}</span>
+                </div>
+                <p style={{ fontSize: 11, color: C.txtD, lineHeight: 1.6, marginBottom: 6 }}>{p.desc}</p>
+                <div style={{ display: "flex", gap: 16, fontSize: 10, color: C.txtM }}>
+                  <span>Needs: {p.compute}</span>
+                  <span>Donated: {p.donated}</span>
+                </div>
+                {p.status === "active" && (
+                  <div style={{ marginTop: 6, height: 4, background: C.brd, borderRadius: 2, overflow: "hidden" }}>
+                    <div style={{ height: "100%", width: `${(parseFloat(p.donated) / parseFloat(p.compute)) * 100}%`, background: C.acc, borderRadius: 2 }} />
+                  </div>
+                )}
+              </div>
+            </Card>
+          </F>
+        ))}
+      </div>
+      <F style={{ marginTop: 20 }}>
+        <Card style={{ textAlign: "center" }}>
+          <p style={{ fontSize: 12, color: C.txtD, marginBottom: 12 }}>Have unused AI credits or local LLM capacity?</p>
+          <button style={{ ...sn, background: C.acc, border: "none", color: C.bg, padding: "10px 24px", fontSize: 12, fontWeight: 500, borderRadius: 2, cursor: "pointer" }}>Donate Compute</button>
+          <p style={{ fontSize: 9, color: C.txtM, marginTop: 8 }}>Requires verified profile. All prompts are open-source and community-reviewed.</p>
+        </Card>
+      </F>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════
+// IDEOLOGY PAGE
+// ═══════════════════════════════════════
+function IdeologyPage() {
+  const pillars = [
+    { name: "Mutuality", icon: "⇄", color: C.bio, desc: "Every relationship is bidirectional. Quest-holders receive resources; pledgers receive meaning. Soaro advises QuestHub; QuestHub feeds Soaro. Structural reciprocity, not charity.", pitfall: "Can collapse into obligation or enforced reciprocity. Mitigation: all giving is voluntary, all receiving is non-coercive." },
+    { name: "Whole-Arc", icon: "◠", color: C.evo, desc: "Development happens in stages. A vague dream is as valid as a funded initiative. The platform meets people where they are — Kegan, Laske, Cook-Greuter. No stage-skipping.", pitfall: "Developmental elitism — implying some stages are 'better.' Mitigation: never gate quests by stage. Tag stages, don't rank them." },
+    { name: "Archic Sovereignty", icon: "♆", color: C.sys, desc: "Every node retains sovereignty over its data, governance, and trajectory. Autonomy at each level is the condition for healthy coordination at every other level. Koestler's holarchy.", pitfall: "Sovereignty theater — claiming 'you own your data' while controlling the graph. Mitigation: open-source everything. Users can fork, self-host, federate." },
+  ];
+
+  const pitfalls = [
+    { name: "Developmental elitism", desc: "\"Your quest isn't mature enough.\" Implicit hierarchy.", fix: "Never gate by stage. Tag, don't rank." },
+    { name: "Nudge paternalism", desc: "\"We know what's good for you.\" Hidden steering.", fix: "Every default visible, labeled, overridable." },
+    { name: "Sovereignty theater", desc: "\"You own your data\" but we control the graph.", fix: "AGPL-3.0. Fork, self-host, federate." },
+    { name: "Integral gatekeeping", desc: "Only people who \"get\" integral feel welcome.", fix: "Plain language. Never require framework literacy." },
+    { name: "Metamodern irony collapse", desc: "So self-aware about framing that nothing ships.", fix: "Ship the smallest thing. Iterate publicly." },
+    { name: "Holarchy as hierarchy", desc: "\"We're all equal holons\" while power concentrates.", fix: "Publish governance. Distribute moderation." },
+  ];
+
+  return (
+    <section style={{ padding: "80px 20px", maxWidth: 860, margin: "0 auto" }}>
+      <F>
+        <div style={{ ...sf, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 300, textAlign: "center", marginBottom: 6 }}>Why this, why now, why this way</div>
+        <p style={{ textAlign: "center", color: C.txtD, fontSize: 12, maxWidth: 540, margin: "0 auto 32px", lineHeight: 1.8 }}>
+          QuestHub's design is ideological — deliberately, transparently. Here are the cornerstones, the pitfalls we see, and the mitigations we commit to. This page is itself accountable.
+        </p>
+      </F>
+
+      {/* Three pillars */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12, marginBottom: 32 }}>
+        {pillars.map((p, i) => (
+          <F key={i}>
+            <Card style={{ borderTop: `3px solid ${p.color}` }}>
+              <div style={{ fontSize: 22, marginBottom: 8, color: p.color }}>{p.icon}</div>
+              <h3 style={{ fontSize: 15, fontWeight: 500, color: C.txt, marginBottom: 8 }}>{p.name}</h3>
+              <p style={{ fontSize: 11, color: C.txtD, lineHeight: 1.7, marginBottom: 10 }}>{p.desc}</p>
+              <div style={{ fontSize: 10, color: C.warm, lineHeight: 1.6, borderTop: `1px solid ${C.brd}`, paddingTop: 8 }}>
+                ⚠️ {p.pitfall}
+              </div>
+            </Card>
+          </F>
+        ))}
+      </div>
+
+      {/* All pitfalls */}
+      <F>
+        <Card>
+          <h3 style={{ fontSize: 13, fontWeight: 500, color: C.txt, marginBottom: 14 }}>Known pitfalls & mitigations</h3>
+          {pitfalls.map((p, i) => (
+            <div key={i} style={{ display: "grid", gridTemplateColumns: "140px 1fr 1fr", gap: 10, padding: "8px 0", borderBottom: i < pitfalls.length - 1 ? `1px solid ${C.brd}` : "none", alignItems: "flex-start" }}>
+              <span style={{ fontSize: 11, color: C.warm, fontWeight: 500 }}>{p.name}</span>
+              <span style={{ fontSize: 10, color: C.txtM }}>{p.desc}</span>
+              <span style={{ fontSize: 10, color: C.acc }}>{p.fix}</span>
+            </div>
+          ))}
+        </Card>
+      </F>
+
+      {/* Envy transformation */}
+      <F style={{ marginTop: 20 }}>
+        <div style={{ background: `linear-gradient(135deg, rgba(184,160,212,0.06), rgba(125,203,164,0.06))`, border: `1px solid ${C.brd}`, borderRadius: 4, padding: "20px 20px" }}>
+          <h3 style={{ ...sf, fontSize: 18, fontWeight: 400, color: C.evo, marginBottom: 8 }}>Transforming envy into aspiration</h3>
+          <p style={{ fontSize: 11, color: C.txtD, lineHeight: 1.8 }}>
+            Envy signals something we value but believe inaccessible. QuestHub reframes: instead of "I want what they have," the prompt becomes "what would I love to see in the world?" This shift — from mimetic desire to generative aspiration — transforms contraction into expansion. The quest form facilitates exactly this alchemical turn.
+          </p>
+        </div>
+      </F>
+
+      {/* Theoretical sources */}
+      <F style={{ marginTop: 20 }}>
+        <Card>
+          <h3 style={{ fontSize: 13, fontWeight: 500, color: C.txt, marginBottom: 12 }}>Theoretical sources (transparent)</h3>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {["Koestler — Holarchy", "Kegan — Subject-Object", "Laske — CDF", "Cook-Greuter — Ego Development",
+              "Wilber — AQAL/Integral", "Vermeulen & van den Akker — Metamodernism", "Fisher & Ury — Getting to Yes",
+              "Complexity Science — Emergence", "Biomimicry — Mycelial networks", "EvoBioSys — Field Awareness"
+            ].map((s, i) => (
+              <span key={i} style={{ fontSize: 9, color: C.txtD, background: C.bgL, padding: "4px 8px", borderRadius: 2, border: `1px solid ${C.brd}` }}>{s}</span>
+            ))}
+          </div>
+        </Card>
+      </F>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════
+// MEMBERSHIP TIERS
+// ═══════════════════════════════════════
+function Membership() {
+  const tiers = [
+    { name: "Free", price: "€0", color: C.txtD, features: ["Submit quests (max 5/day)", "Browse public quests", "Join communities", "Basic export (Markdown)", "Seasonal check-ins"] },
+    { name: "Supporter", price: "€5/mo", color: C.acc, features: ["Verified profile", "Unlimited quests", "AI integration (MCP access)", "Premium nudges", "POSSE auto-publishing", "All export formats", "Priority matching"] },
+    { name: "Steward", price: "€20/mo", color: C.warm, features: ["Create communities", "Advanced analytics", "Venture studio access", "Custom composable UI", "Moderation tools", "Civic AI prompt creation", "Alliance management"] },
+  ];
+
+  return (
+    <section style={{ padding: "40px 20px", maxWidth: 740, margin: "0 auto" }}>
+      <F>
+        <Label>Membership</Label>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
+          {tiers.map((t, i) => (
+            <Card key={i} style={{ borderTop: `3px solid ${t.color}` }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
+                <h3 style={{ fontSize: 15, fontWeight: 500, color: t.color }}>{t.name}</h3>
+                <span style={{ ...sf, fontSize: 20, color: t.color }}>{t.price}</span>
+              </div>
+              {t.features.map((f, j) => (
+                <div key={j} style={{ display: "flex", gap: 6, marginBottom: 5 }}>
+                  <span style={{ color: t.color, fontSize: 10 }}>✓</span>
+                  <span style={{ fontSize: 10, color: C.txtD }}>{f}</span>
+                </div>
+              ))}
+            </Card>
+          ))}
+        </div>
+      </F>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════
+// MODERATION ARCHITECTURE
+// ═══════════════════════════════════════
+function ModerationSection() {
+  return (
+    <section style={{ padding: "40px 20px", maxWidth: 680, margin: "0 auto" }}>
+      <F>
+        <Label>Developmental Moderation</Label>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {[
+            { tier: "Tier 1", name: "AI Chatbot", icon: "🤖", color: C.sys, desc: "First response. Flags content, engages constructively. Never takes down — only flags. Developmental in tone.", action: "Conversation, not censorship" },
+            { tier: "Tier 2", name: "Human Volunteers", icon: "🫂", color: C.acc, desc: "Trained in developmental approach. Some with psychotherapy internship backgrounds. Resonance calls for nuanced situations.", action: "Graceful, non-punitive communication" },
+            { tier: "Tier 3", name: "Conflict Resolution", icon: "🕊️", color: C.warm, desc: "One-on-one: WarmSpace.io partnership. Community-level: Victoria (dedicated steward). Transparent, documented.", action: "Relational repair, not punishment" },
+          ].map((t, i) => (
+            <Card key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start", borderLeft: `3px solid ${t.color}` }}>
+              <span style={{ fontSize: 24 }}>{t.icon}</span>
+              <div>
+                <div style={{ display: "flex", gap: 8, alignItems: "baseline", marginBottom: 4 }}>
+                  <span style={{ fontSize: 9, color: t.color, fontWeight: 500, letterSpacing: 1 }}>{t.tier}</span>
+                  <h3 style={{ fontSize: 13, fontWeight: 500, color: C.txt }}>{t.name}</h3>
+                </div>
+                <p style={{ fontSize: 11, color: C.txtD, lineHeight: 1.6, marginBottom: 4 }}>{t.desc}</p>
+                <span style={{ fontSize: 9, color: t.color }}>{t.action}</span>
+              </div>
+            </Card>
+          ))}
+        </div>
+        <div style={{ fontSize: 10, color: C.txtM, marginTop: 12, textAlign: "center", lineHeight: 1.6 }}>
+          Spam prevention: unverified profiles max 5 quests/day · Verified profiles required for AI access · Community-specific moderation principles
+        </div>
+      </F>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════
+// QUEST FORM (compact, from v3)
+// ═══════════════════════════════════════
+function QuestForm({ onBack }) {
+  const [step, setStep] = useState(0);
+  const [q, setQ] = useState({ title: "", desc: "", scale: "community", vis: "private", id: "named", email: "", domains: [], budget: "", chain: "none", community: "general", soaro: false });
+  const [done, setDone] = useState(false);
+  const N = 4;
+
+  if (done) return (
+    <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "80px 20px", textAlign: "center" }}>
+      <div style={{ fontSize: 40, marginBottom: 18 }}>🌿</div>
+      <h2 style={{ ...sf, fontSize: 26, fontWeight: 300, marginBottom: 14 }}>Your quest is held.</h2>
+      <p style={{ fontSize: 12, color: C.txtD, maxWidth: 400, marginBottom: 10, lineHeight: 1.8 }}>Visible only to you and stewards. We'll reach out when conditions align.</p>
+      <p style={{ fontSize: 10, color: C.txtM, marginBottom: 28 }}>Export: Markdown · Tana Paste · JSON-LD · Fediverse Card</p>
+      <button onClick={onBack} style={{ ...sn, background: "transparent", border: `1px solid ${C.brd}`, color: C.txtD, padding: "8px 20px", fontSize: 11, borderRadius: 2, cursor: "pointer" }}>← Home</button>
+    </section>
+  );
+
+  const steps = [
+    <div key={0} style={{ maxWidth: 500, width: "100%" }}>
+      <Label>What do you want to see in the world?</Label>
+      <input value={q.title} onChange={e => setQ({...q, title: e.target.value})} placeholder="Name your quest..." style={{ width: "100%", background: "transparent", border: "none", borderBottom: `1px solid ${C.brdL}`, color: C.txt, fontSize: 18, ...sf, fontWeight: 300, padding: "10px 0", outline: "none", marginBottom: 24, boxSizing: "border-box" }} />
+      <Label>Describe</Label>
+      <textarea value={q.desc} onChange={e => setQ({...q, desc: e.target.value})} placeholder="Take your time..." rows={4} style={{ width: "100%", background: "transparent", border: `1px solid ${C.brd}`, color: C.txt, fontSize: 12, ...sn, padding: 14, outline: "none", resize: "vertical", lineHeight: 1.8, borderRadius: 2, boxSizing: "border-box" }} />
+    </div>,
+    <div key={1} style={{ maxWidth: 440, width: "100%" }}>
+      <Label>Scale</Label>
+      <div style={{ display: "flex", gap: 4, marginBottom: 20, flexWrap: "wrap" }}>{["self","community","regional","civilizational"].map(s => <Btn key={s} active={q.scale===s} onClick={() => setQ({...q, scale: s})} small>{s}</Btn>)}</div>
+      <Label>Visibility</Label>
+      {[{v:"private",l:"Private",d:"Only you & stewards"},{v:"discoverable",l:"Discoverable",d:"Matched algorithmically"},{v:"public",l:"Public",d:"Visible to all"}].map(o => (
+        <button key={o.v} onClick={() => setQ({...q, vis: o.v})} style={{ display: "block", width: "100%", background: q.vis===o.v ? C.bgC : "transparent", border: `1px solid ${q.vis===o.v ? C.accD : C.brd}`, padding: "10px 14px", textAlign: "left", borderRadius: 2, cursor: "pointer", marginBottom: 5 }}>
+          <div style={{ fontSize: 11, fontWeight: 500, color: q.vis===o.v ? C.acc : C.txt }}>{o.l}</div>
+          <div style={{ fontSize: 9, color: C.txtM, marginTop: 1 }}>{o.d}</div>
+        </button>
+      ))}
+      <Label style={{ marginTop: 16 }}>Community</Label>
+      <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>{[["general","🌐"],["sustainable","🌿"],["integral","◈"],["turquoise","✿"]].map(([v,i]) => <Btn key={v} active={q.community===v} onClick={() => setQ({...q, community: v})} small>{i} {v}</Btn>)}</div>
+    </div>,
+    <div key={2} style={{ maxWidth: 440, width: "100%" }}>
+      <Label>Domains <span style={{ color: C.warm }}>(optional)</span></Label>
+      <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 18 }}>{["Education","Health","Environment","Economy","Culture","Tech","Governance"].map(d => <Btn key={d} active={q.domains.includes(d)} onClick={() => setQ({...q, domains: q.domains.includes(d) ? q.domains.filter(x=>x!==d) : [...q.domains,d]})} small>{d}</Btn>)}</div>
+      <Label>Budget <span style={{ color: C.warm }}>(optional)</span></Label>
+      <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 18 }}>{["€0-50","€50-500","€500-5k","€5k-50k","€50k+"].map(b => <Btn key={b} active={q.budget===b} onClick={() => setQ({...q, budget: q.budget===b?"":b})} small>{b}</Btn>)}</div>
+      <Label>Pledge chain <span style={{ color: C.warm }}>(optional)</span></Label>
+      <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 18 }}>{[["none","€ Fiat"],["solana","◎ SOL"],["celo","⊕ CELO"],["ethereum","Ξ ETH"]].map(([v,l]) => <Btn key={v} active={q.chain===v} onClick={() => setQ({...q, chain: v})} small>{l}</Btn>)}</div>
+      <div style={{ background: C.bgL, border: `1px solid ${C.brd}`, borderRadius: 3, padding: "10px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div><div style={{ fontSize: 11, color: C.txt }}>Soaro Five</div><div style={{ fontSize: 9, color: C.txtM }}>Optional premium framework</div></div>
+        <Btn active={q.soaro} onClick={() => setQ({...q, soaro: !q.soaro})} small>{q.soaro ? "✓ On" : "Off"}</Btn>
+      </div>
+    </div>,
+    <div key={3} style={{ maxWidth: 400, width: "100%" }}>
+      <Label>Identity</Label>
+      <div style={{ display: "flex", gap: 4, marginBottom: 20, flexWrap: "wrap" }}>{[["anonymous","Anonymous"],["pseudonymous","Pseudonym"],["named","Named"]].map(([v,l]) => <Btn key={v} active={q.id===v} onClick={() => setQ({...q, id: v})}>{l}</Btn>)}</div>
+      {q.id==="anonymous" && <p style={{ fontSize: 9, color: C.txtM, marginBottom: 16, background: C.bgC, padding: 10, borderRadius: 2, border: `1px solid ${C.brd}` }}>💡 Use Proton one-time email for full anonymity.</p>}
+      <Label>Contact email</Label>
+      <input value={q.email} onChange={e => setQ({...q, email: e.target.value})} placeholder="your@email.com" type="email" style={{ width: "100%", background: "transparent", border: "none", borderBottom: `1px solid ${C.brdL}`, color: C.txt, fontSize: 13, ...sn, padding: "8px 0", outline: "none", boxSizing: "border-box" }} />
+      <p style={{ fontSize: 8, color: C.txtM, marginTop: 8 }}>Swiss-hosted · AGPL-3.0 · Export/delete anytime</p>
+    </div>,
+  ];
+
+  return (
+    <section style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "80px 20px 60px" }}>
+      <div style={{ display: "flex", gap: 5, marginBottom: 20 }}>{Array.from({length:N}).map((_,i) => <div key={i} style={{ width: 28, height: 2, background: i<=step?C.acc:C.brd, borderRadius: 1 }} />)}</div>
+      <div style={{ fontSize: 9, color: C.txtM, marginBottom: 24, letterSpacing: 1 }}>{["Quest","Scale & Space","Optional Fields","Identity"][step]}</div>
+      {steps[step]}
+      <div style={{ display: "flex", gap: 8, marginTop: 32 }}>
+        <button onClick={() => step>0?setStep(step-1):onBack()} style={{ ...sn, background: "transparent", border: `1px solid ${C.brd}`, color: C.txtD, padding: "8px 20px", fontSize: 11, borderRadius: 2, cursor: "pointer" }}>{step>0?"Back":"← Home"}</button>
+        <button onClick={() => step<N-1?setStep(step+1):setDone(true)} disabled={step===0&&!q.title} style={{ ...sn, background: (step===0&&!q.title)?C.brd:C.acc, border: "none", color: (step===0&&!q.title)?C.txtM:C.bg, padding: "8px 24px", fontSize: 11, fontWeight: 500, borderRadius: 2, cursor: (step===0&&!q.title)?"not-allowed":"pointer" }}>{step<N-1?"Continue →":"Submit"}</button>
+      </div>
+    </section>
+  );
+}
+
+// ═══════════════════════════════════════
+// FOOTER
+// ═══════════════════════════════════════
+function Footer() {
+  return (
+    <footer style={{ padding: "40px 20px 24px", textAlign: "center", borderTop: `1px solid ${C.brd}` }}>
+      <div style={{ ...sf, fontSize: 15, color: C.txtD, marginBottom: 8 }}>QuestHub</div>
+      <div style={{ fontSize: 9, color: C.txtM, lineHeight: 2 }}>
+        EvoBioSys Holon · Kidur-native · AGPL-3.0 · Swiss-hosted · Federated<br/>
+        Vienna, AT · evobiosys.org · Matrix · Fediverse · Solana · Celo · Ethereum
+      </div>
+    </footer>
+  );
+}
+
+// ═══════════════════════════════════════
+// MAIN
+// ═══════════════════════════════════════
+export default function App() {
+  const [v, setV] = useState("home");
+  const go = (id) => { setV(id); window.scrollTo(0, 0); };
+
+  return (
+    <div style={{ minHeight: "100vh", background: C.bg, color: C.txt, ...sn, fontWeight: 300, lineHeight: 1.7, overflowX: "hidden" }}>
+      <Nav cur={v} go={go} />
+
+      {v === "quest" ? <QuestForm onBack={() => go("home")} /> : (<>
+
+        {v === "home" && <Hero go={go} />}
+
+        {(v === "home" || v === "seasonal") && <SeasonalClock />}
+        {(v === "home" || v === "quest" || v === "graph") && <QuestLifecycle />}
+        {(v === "home" || v === "graph") && <QuestGraph />}
+        {(v === "home" || v === "graph") && <VersionHistory />}
+        {(v === "home" || v === "spaces") && <Communities />}
+        {(v === "home" || v === "spaces") && <ModerationSection />}
+        {(v === "home" || v === "spaces") && <Membership />}
+        {(v === "home" || v === "pledge") && <PledgeSection />}
+        {(v === "home" || v === "nudge") && <NudgeMarketplace />}
+        {(v === "home" || v === "civic") && <CivicAI />}
+        {(v === "home" || v === "ideology") && <IdeologyPage />}
+
+        {v === "home" && (
+          <section style={{ padding: "60px 20px", textAlign: "center" }}>
+            <F>
+              <div style={{ ...sf, fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 300, marginBottom: 20 }}>Ready?</div>
+              <button onClick={() => go("quest")} style={{ ...sn, background: C.acc, border: "none", color: C.bg, padding: "12px 28px", fontSize: 12, fontWeight: 500, borderRadius: 2, cursor: "pointer" }}>Share Your Quest</button>
+            </F>
+          </section>
+        )}
+
+        <Footer />
+      </>)}
+    </div>
+  );
+}
+
+// Reuse PledgeSection and Communities from inline
+function PledgeSection() {
+  const [chain, setChain] = useState("fiat");
+  const chains = {
+    fiat: { l: "€ Fiat", c: C.acc, d: "Euro via Stripe/Mangopay. Standard escrow. PSD2 compliant.", f: "~2.5%" },
+    solana: { l: "◎ Solana", c: C.sol, d: "Green PoS. ~$0.001 fees. Smart contract escrow.", f: "~0.1%" },
+    celo: { l: "⊕ Celo", c: C.celo, d: "Mobile-first, carbon-negative. Stablecoin-native.", f: "~0.1%" },
+    ethereum: { l: "Ξ Ethereum", c: C.eth, d: "Widely adopted. PoS. Maximum interoperability.", f: "Variable" },
+  };
+  return (
+    <section style={{ padding: "80px 20px", maxWidth: 800, margin: "0 auto" }}>
+      <F>
+        <div style={{ ...sf, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 300, textAlign: "center", marginBottom: 6 }}>Pledge & quality signals</div>
+        <p style={{ textAlign: "center", color: C.txtD, fontSize: 12, maxWidth: 480, margin: "0 auto 28px" }}>Put skin in the game. Fiat or green crypto. Every signal of commitment strengthens the quest.</p>
+      </F>
+      <F>
+        <div style={{ display: "flex", gap: 5, marginBottom: 16, justifyContent: "center", flexWrap: "wrap" }}>
+          {Object.entries(chains).map(([k,v]) => <Btn key={k} active={chain===k} onClick={() => setChain(k)}>{v.l}</Btn>)}
+        </div>
+        <Card style={{ marginBottom: 20 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+            <span style={{ fontSize: 14, fontWeight: 500, color: chains[chain].c }}>{chains[chain].l}</span>
+            <span style={{ fontSize: 9, color: C.txtM }}>{chains[chain].f}</span>
+          </div>
+          <p style={{ fontSize: 11, color: C.txtD, lineHeight: 1.7 }}>{chains[chain].d}</p>
+        </Card>
+      </F>
+      <F>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 8 }}>
+          {[["📣","Shared on Fediverse","Low"],["💶","Money pledged","Medium"],["🤖","AI compute donated","Medium"],["🫂","Resonance call","High"],["✓","Verified profile","Medium"],["🌿","Maintained > 1 season","High"],["🤝","Alliance formed","High"]].map(([i,l,w],idx) => (
+            <div key={idx} style={{ display: "flex", gap: 8, alignItems: "center", background: C.bgC, border: `1px solid ${C.brd}`, borderRadius: 3, padding: "8px 10px" }}>
+              <span style={{ fontSize: 14 }}>{i}</span>
+              <div><div style={{ fontSize: 10, color: C.txt }}>{l}</div><div style={{ fontSize: 8, color: C.txtM }}>{w}</div></div>
+            </div>
+          ))}
+        </div>
+      </F>
+    </section>
+  );
+}
+
+function Communities() {
+  const spaces = [
+    { n: "General", i: "🌐", c: C.txtD, d: "Politically balanced. Standard policy.", v: "Mainstream" },
+    { n: "Sustainable", i: "🌿", c: "#5aaa5a", d: "Achievement + ecology. SDG-aligned.", v: "Amber-Green" },
+    { n: "Integral", i: "◈", c: C.evo, d: "All-quadrant. Developmental moderation.", v: "Teal" },
+    { n: "Turquoise", i: "✿", c: "#48c9b0", d: "Holistic, seasonal, sacred. Resonance-based.", v: "Turquoise" },
+    { n: "Jakob's Field", i: "♦", c: C.warm, d: "Full EvoBioSys. Deepest practice.", v: "Personal" },
+    { n: "Create Yours", i: "+", c: C.brdL, d: "Your moderation, your values, your curation.", v: "Custom" },
+  ];
+  return (
+    <section style={{ padding: "80px 20px", maxWidth: 880, margin: "0 auto" }}>
+      <F>
+        <div style={{ ...sf, fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 300, textAlign: "center", marginBottom: 6 }}>Curated spaces</div>
+        <p style={{ textAlign: "center", color: C.txtD, fontSize: 12, maxWidth: 500, margin: "0 auto 28px" }}>One graph. Multiple communities. Quests belong to many spaces. You choose your home.</p>
+      </F>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 10 }}>
+        {spaces.map((s,idx) => (
+          <F key={idx}><Card style={{ borderTop: `3px solid ${s.c}` }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+              <span style={{ fontSize: 18 }}>{s.i}</span>
+              <span style={{ fontSize: 8, color: s.c, letterSpacing: 1, textTransform: "uppercase" }}>{s.v}</span>
+            </div>
+            <h3 style={{ fontSize: 13, fontWeight: 500, color: C.txt, marginBottom: 4 }}>{s.n}</h3>
+            <p style={{ fontSize: 10, color: C.txtD, lineHeight: 1.6 }}>{s.d}</p>
+          </Card></F>
+        ))}
+      </div>
+    </section>
+  );
+}
