@@ -1,0 +1,9 @@
+# Rust build artefacts
+/target/
+
+# Runtime data — quest log lives on the VPS, not in the repo
+/data/
+
+# Local config overrides
+.env
+.env.*

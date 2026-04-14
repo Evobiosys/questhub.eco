@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About QuestHub — Why Quests, How It Works, Our Values</title>
+  <meta name="description" content="Why quests matter, how QuestHub works today, and where it is heading. Open source, EU-hosted, AGPL-3.0.">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+<div class="qh-page">
+
+  <!-- NAV -->
+  <nav class="qh-nav" id="nav">
+    <a href="/" class="qh-nav-logo">Quest<span>Hub</span></a>
+    <div class="qh-nav-right">
+      <a href="/#submit" class="qh-nav-link">Share a Quest</a>
+      <a href="/about" class="qh-nav-link">About</a>
+      {{NAV_AUTH_AREA}}
+    </div>
+  </nav>
+
+  <div class="qh-about-header">
+    <div class="qh-container">
+      <h1>Why QuestHub?</h1>
+      <p class="qh-tagline">The philosophy, the mechanics, and where we are headed.</p>
+    </div>
+  </div>
+
+  <!-- WHY A QUEST? -->
+  <section class="qh-why-section">
+    <div class="qh-container">
+      <h2 class="qh-section-title qh-fade-in">
+        A quest transcends the individual.<br>
+        <span class="qh-section-subtitle-accent">It belongs to something larger.</span>
+      </h2>
+      <div class="qh-why-grid">
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">🌱</div>
+          <h3>Beyond the Personal</h3>
+          <p>A quest is not just a wish. It&rsquo;s something that, when realized, benefits more than just you.</p>
+        </div>
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">🔗</div>
+          <h3>Connective by Nature</h3>
+          <p>Quests attract resonance. Others who share your vision can connect, offer time, or simply affirm.</p>
+        </div>
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">🛡️</div>
+          <h3>An Inventory, Not a Feed</h3>
+          <p>QuestHub is a persistent record of aspiration &mdash; not a social stream. Quests stay findable and linkable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS TODAY -->
+  <section class="qh-steps-section">
+    <div class="qh-container">
+      <h2 class="qh-section-title qh-fade-in">How it works today</h2>
+      <div class="qh-steps">
+        <div class="qh-step qh-fade-in">
+          <div class="qh-step-num">01</div>
+          <div>
+            <h3>Articulate</h3>
+            <p>Describe what you want to see in the world. No plan needed &mdash; just the aspiration.</p>
+          </div>
+        </div>
+        <div class="qh-step qh-fade-in">
+          <div class="qh-step-num">02</div>
+          <div>
+            <h3>Choose visibility</h3>
+            <p>Submit with your name or anonymously. Your quest is listed publicly in the garden.</p>
+          </div>
+        </div>
+        <div class="qh-step qh-fade-in">
+          <div class="qh-step-num">03</div>
+          <div>
+            <h3>Get a shareable link</h3>
+            <p>Every quest has a permanent URL you can send to anyone. Comments are open.</p>
+          </div>
+        </div>
+        <div class="qh-step qh-fade-in">
+          <div class="qh-step-num">04</div>
+          <div>
+            <h3>Connect</h3>
+            <p>Anyone can request to connect with the quest author. Approval is by the author only &mdash; via a private email link.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW DATA IS STORED -->
+  <section class="qh-datasec-section">
+    <div class="qh-container">
+      <h2 class="qh-section-title qh-fade-in">How your data is stored</h2>
+      <p class="qh-section-lead qh-fade-in">QuestHub uses a simple, auditable design: an append-only log on EU infrastructure.</p>
+      <div class="qh-datasec-panels qh-fade-in" style="margin-top:2rem">
+        <div class="qh-datasec-panel active" data-tier="public">
+          <h3>Append-only log &mdash; no hidden mutations</h3>
+          <ul>
+            <li>Every quest is stored as an entry in a plain <code>.jsonl</code> file</li>
+            <li>Nothing is silently rewritten &mdash; all changes are logged entries</li>
+            <li>Hosted on Infomaniak VPS in Switzerland &mdash; EU-law jurisdiction</li>
+            <li>You can export your quests at any time (JSON or Markdown) from your room</li>
+            <li>Source code is AGPL-3.0 &mdash; fully auditable</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RADICAL TRANSPARENCY — what is true today -->
+  <section class="qh-transparency-section">
+    <div class="qh-container">
+      <h2 class="qh-section-title qh-fade-in">What is true today</h2>
+      <div class="qh-transparency-list qh-fade-in">
+        <div class="qh-trans-item">Open-source codebase (AGPL-3.0)</div>
+        <div class="qh-trans-item">All submitted quests are publicly visible and linkable</div>
+        <div class="qh-trans-item">Author-controlled connection requests &mdash; you approve who reaches you</div>
+        <div class="qh-trans-item">Export your quests at any time as JSON or Markdown</div>
+        <div class="qh-trans-item">No tracking pixels, no third-party scripts, no Google dependencies</div>
+        <div class="qh-trans-item">Hosted on sovereign EU infrastructure (Infomaniak, Switzerland)</div>
+        <div class="qh-trans-item">No advertising. No selling of data. No venture funding.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP TEASER -->
+  <section class="qh-why-section" style="background: var(--qh-bg-light);">
+    <div class="qh-container" style="text-align:center; padding: 4rem 2rem;">
+      <h2 class="qh-section-title qh-fade-in">Where we are heading</h2>
+      <p class="qh-section-lead qh-fade-in" style="max-width:560px; margin: 0 auto 2.5rem;">
+        Quest Graph, Spaces, Nudge Marketplace, E2E Encryption, Federation, Blockchain Timestamping, Seasonal Clock, Version History, Membership, Civic AI &mdash; and more.<br><br>
+        These are aspirations, not promises. No dates.
+      </p>
+      <a href="/peak" class="qh-hero-cta qh-fade-in">See the full roadmap &rarr;</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="qh-footer">
+    <div class="qh-footer-inner">
+      <span class="qh-footer-logo">QuestHub</span>
+      <div class="qh-footer-links">
+        <a href="/privacy/">Privacy</a>
+        <a href="/legal/">Legal</a>
+        <a href="mailto:connect@questhub.eco">Contact</a>
+      </div>
+      <p class="qh-footer-copy">Open source &middot; Swiss-hosted &middot; Built with care in Vienna, AT &middot; Part of the EvoBioSys ecosystem</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+// ── Fade-in on scroll ───────────────────────────────────────
+(function() {
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.qh-fade-in').forEach(function(el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = 'opacity 0.65s ease, transform 0.65s ease';
+    obs.observe(el);
+  });
+})();
+
+// ── Nav scroll border ───────────────────────────────────────
+window.addEventListener('scroll', function() {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+</script>
+</body>
+</html>

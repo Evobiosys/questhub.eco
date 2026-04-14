@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{QUEST_TITLE}} — QuestHub</title>
+  <meta name="description" content="{{QUEST_DESCRIPTION}}">
+  <meta property="og:title" content="{{QUEST_TITLE}} — QuestHub">
+  <meta property="og:description" content="{{QUEST_DESCRIPTION}}">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://questhub.eco/quest/{{QUEST_ID}}">
+  <meta property="og:site_name" content="QuestHub">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+<div class="qh-page">
+
+  <nav class="qh-nav">
+    <a href="/" class="qh-nav-logo">Quest<span>Hub</span></a>
+    <div class="qh-nav-right">
+      <a href="/" class="qh-nav-link">&larr; Back to garden</a>
+      <button class="qh-share-btn" onclick="document.getElementById('share-box').classList.toggle('open')"
+              title="Share this quest">&#x2197; Share</button>
+      <a href="https://evobiosys.org" class="qh-nav-parent" target="_blank" rel="noopener">EvoBioSys &#x2197;</a>
+    </div>
+  </nav>
+
+  <!-- Share popover -->
+  <div id="share-box" class="qh-share-box">
+    <input type="text" readonly id="share-url" value="https://questhub.eco/quest/{{QUEST_ID}}"
+           onclick="this.select()" class="qh-share-input" aria-label="Quest URL">
+    <button class="qh-share-copy" onclick="copyShareUrl()">Copy</button>
+  </div>
+
+  <main class="qh-quest-detail">
+    <div class="qh-container">
+      <span class="qh-detail-badge">{{QUEST_CATEGORY}}</span>
+      <h1>{{QUEST_TITLE}}</h1>
+      {{QUEST_PARENT}}
+      <div class="qh-detail-meta">
+        <span class="qh-detail-lifecycle">{{QUEST_LIFECYCLE}}</span>
+        <span class="qh-detail-date">{{QUEST_DATE}}</span>
+        <span class="qh-detail-by">by {{QUEST_SUBMITTER}}</span>
+      </div>
+      <div class="qh-detail-body">
+        <p>{{QUEST_DESCRIPTION}}</p>
+      </div>
+
+      <!-- Connect button (only shown if quest owner provided contact) -->
+      <div class="qh-detail-actions">
+        {{CONNECT_BUTTON}}
+      </div>
+
+      <!-- Comment section -->
+      <section class="qh-comments" id="comments">
+        <h2>Comments</h2>
+        <div id="comment-list">
+          {{COMMENTS_HTML}}
+        </div>
+
+        <form class="qh-comment-form" id="comment-form"
+              action="/api/quests/{{QUEST_ID}}/comments" method="POST">
+          <!-- Honeypot -->
+          <div style="position:absolute;left:-9999px" aria-hidden="true">
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <input type="text" name="name" maxlength="200" placeholder="Your name (optional)">
+          <textarea name="body" required maxlength="2000" rows="3"
+                    placeholder="Leave a comment..."></textarea>
+          <button type="submit" class="qh-btn">Post comment</button>
+        </form>
+      </section>
+
+      <!-- Matrix placeholder -->
+      <section class="qh-matrix-placeholder">
+        <div class="qh-matrix-inner">
+          <span class="qh-matrix-icon">&#x1F4AC;</span>
+          <div>
+            <strong>Discuss in Matrix</strong>
+            <p>A federated chat room for this quest is coming once the community grows &mdash;
+               hosted at <a href="https://jakaja.org" target="_blank" rel="noopener">jakaja.org</a>.</p>
+          </div>
+        </div>
+      </section>
+
+      <a href="/" class="qh-btn qh-btn-secondary">&larr; Back to the garden</a>
+    </div>
+  </main>
+
+  <!-- Connect modal (hidden by default) -->
+  <div id="connect-modal" class="qh-modal" style="display:none"
+       onclick="if(event.target===this)this.style.display='none'">
+    <div class="qh-modal-box">
+      <button class="qh-modal-close" onclick="document.getElementById('connect-modal').style.display='none'">&times;</button>
+      <h2>Connect with {{QUEST_SUBMITTER}}</h2>
+      <p class="qh-modal-lead">Your contact will only be shared after {{QUEST_SUBMITTER}} approves the introduction.</p>
+      <form id="connect-form" class="qh-form">
+        <label for="cf-name">Your name <small>(required)</small></label>
+        <input type="text" id="cf-name" name="name" required maxlength="200">
+        <label for="cf-email">Your email <small>(required — shared only on approval)</small></label>
+        <input type="email" id="cf-email" name="email" required maxlength="300">
+        <label for="cf-message">Why do you want to connect? <small>(required)</small></label>
+        <textarea id="cf-message" name="message" required maxlength="1000" rows="3"
+                  placeholder="What's your interest in this quest?"></textarea>
+        <button type="submit" class="qh-btn" id="connect-submit-btn">Send request</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="qh-footer">
+    <div class="qh-footer-inner">
+      <span class="qh-footer-logo">QuestHub</span>
+      <p class="qh-footer-copy">&copy; 2026 QuestHub &middot; Part of EvoBioSys</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+// Share URL popover
+function copyShareUrl() {
+  const input = document.getElementById('share-url');
+  input.select();
+  navigator.clipboard.writeText(input.value).then(() => {
+    const btn = document.querySelector('.qh-share-copy');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1800);
+  });
+}
+// Close share box on outside click
+document.addEventListener('click', function(e) {
+  const box = document.getElementById('share-box');
+  const btn = document.querySelector('.qh-share-btn');
+  if (box && !box.contains(e.target) && e.target !== btn) {
+    box.classList.remove('open');
+  }
+});
+
+// Comment form: submit via fetch (no page reload)
+document.getElementById('comment-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  btn.disabled = true; btn.textContent = 'Posting...';
+  const data = new URLSearchParams(new FormData(form));
+  try {
+    const resp = await fetch(form.action, { method: 'POST', body: data });
+    if (resp.ok) {
+      const comment = await resp.json();
+      const list = document.getElementById('comment-list');
+      const el = document.createElement('div');
+      el.className = 'qh-comment';
+      el.innerHTML = `<div class="qh-comment-meta"><strong>${escHtml(comment.commenter_name)}</strong>
+        <span class="qh-comment-date">${comment.created_at.slice(0,10)}</span></div>
+        <p>${escHtml(comment.body)}</p>`;
+      const empty = list.querySelector('.qh-no-comments');
+      if (empty) empty.remove();
+      list.appendChild(el);
+      form.reset();
+      btn.textContent = 'Posted!';
+    } else {
+      btn.textContent = 'Error — try again';
+    }
+  } catch(_) { btn.textContent = 'Network error'; }
+  setTimeout(() => { btn.disabled = false; btn.textContent = 'Post comment'; }, 2500);
+});
+
+// Connect form: submit via fetch
+document.getElementById('connect-form')?.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('connect-submit-btn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  const data = Object.fromEntries(new FormData(form));
+  const questId = window.location.pathname.split('/').pop();
+  try {
+    const resp = await fetch(`/api/quests/${questId}/connect`, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    if (resp.ok) {
+      form.innerHTML = '<p class="qh-success">Request sent! The quest owner will be notified.</p>';
+    } else {
+      btn.disabled = false; btn.textContent = 'Error — try again';
+    }
+  } catch(_) { btn.disabled = false; btn.textContent = 'Network error'; }
+});
+
+function escHtml(s) {
+  const d = document.createElement('div'); d.textContent = s; return d.innerHTML;
+}
+</script>
+</body>
+</html>

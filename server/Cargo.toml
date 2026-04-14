@@ -1,0 +1,32 @@
+[package]
+name = "questhub-server"
+version = "0.1.0"
+edition = "2021"
+license = "AGPL-3.0-only"
+
+[dependencies]
+kidur-core     = { path = "../../Evobiosys/projects/Sys/kidur/instances/MVP/crates/kidur-core" }
+kidur-log      = { path = "../../Evobiosys/projects/Sys/kidur/instances/MVP/crates/kidur-log" }
+kidur-supertag = { path = "../../Evobiosys/projects/Sys/kidur/instances/MVP/crates/kidur-supertag" }
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.5", features = ["trace", "cors", "fs"] }
+tokio-stream = { version = "0.1", features = ["sync"] }
+askama = "0.12"
+askama_axum = "0.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = { version = "0.4", features = ["serde"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1"
+futures-core = "0.3"
+lettre = { version = "0.11", features = ["smtp-transport", "native-tls", "builder"] }
+uuid = { version = "1", features = ["v4"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "symbols"

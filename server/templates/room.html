@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Room — QuestHub</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+<div class="qh-page">
+
+  <nav class="qh-nav">
+    <a href="/" class="qh-nav-logo">Quest<span>Hub</span></a>
+    <div class="qh-nav-right">
+      <a href="/" class="qh-nav-link">Garden</a>
+      <a href="/auth/logout" class="qh-nav-link qh-nav-signin">Sign Out</a>
+    </div>
+  </nav>
+
+  <main class="qh-room-main">
+    <div class="qh-container">
+
+      <!-- Room header -->
+      <header class="qh-room-header">
+        <h1>My <span class="accent">Room</span></h1>
+        <p class="qh-room-email">{{USER_EMAIL}}</p>
+        <div class="qh-room-export">
+          <span>Export:</span>
+          <a href="/my/export.json" class="qh-export-btn">JSON</a>
+          <a href="/my/export.md"   class="qh-export-btn">Markdown</a>
+        </div>
+      </header>
+
+      <!-- My Quests -->
+      <section class="qh-room-section">
+        <h2>My Quests <span class="qh-room-count">{{MY_QUESTS_COUNT}}</span></h2>
+        <p class="qh-room-section-note">Quests you've submitted. Sign in when submitting to have them appear here.</p>
+        <div class="qh-room-grid">
+          {{MY_QUESTS_HTML}}
+        </div>
+      </section>
+
+      <!-- Saved Quests -->
+      <section class="qh-room-section">
+        <h2>Saved Quests <span class="qh-room-count">{{SAVED_QUESTS_COUNT}}</span></h2>
+        <p class="qh-room-section-note">Quests you've saved from the garden. Click "Save" on any quest card to curate your collection.</p>
+        <div class="qh-room-grid">
+          {{SAVED_QUESTS_HTML}}
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+// Save / unsave quest buttons
+document.addEventListener('click', async function(e) {
+  const btn = e.target.closest('.qh-save-btn');
+  if (!btn) return;
+  const id    = btn.dataset.questId;
+  const saved = btn.classList.contains('qh-save-btn--saved');
+  const url   = saved ? `/my/unsave/${id}` : `/my/save/${id}`;
+
+  btn.disabled = true;
+  try {
+    const r    = await fetch(url, { method: 'POST' });
+    const json = await r.json();
+    if (json.saved) {
+      btn.textContent = 'Saved ✓';
+      btn.classList.add('qh-save-btn--saved');
+    } else {
+      btn.textContent = '+ Save';
+      btn.classList.remove('qh-save-btn--saved');
+    }
+  } catch (_) {
+    btn.textContent = 'Error';
+  }
+  btn.disabled = false;
+});
+</script>
+</body>
+</html>

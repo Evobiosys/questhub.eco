@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peak — QuestHub Roadmap</title>
+  <meta name="description" content="Everything QuestHub is becoming. A full inventory of aspirations: features, philosophy, and the arc from here to there.">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+<div class="qh-page">
+
+  <!-- NAV -->
+  <nav class="qh-nav" id="nav">
+    <a href="/" class="qh-nav-logo">Quest<span>Hub</span></a>
+    <div class="qh-nav-right">
+      <a href="/#submit" class="qh-nav-link">Share a Quest</a>
+      <a href="/about" class="qh-nav-link">About</a>
+      {{NAV_AUTH_AREA}}
+    </div>
+  </nav>
+
+  <div class="qh-about-header">
+    <div class="qh-container">
+      <h1>The Peak</h1>
+      <p class="qh-tagline">Everything QuestHub is becoming. No dates. No promises. Just direction.</p>
+    </div>
+  </div>
+
+  <!-- WHAT EXISTS NOW -->
+  <section class="qh-transparency-section" style="padding-top: 4rem;">
+    <div class="qh-container">
+      <h2 class="qh-section-title qh-fade-in">What exists today</h2>
+      <div class="qh-transparency-list qh-fade-in">
+        <div class="qh-trans-item qh-trans-item--done">Submit a quest — title, description, category, contact</div>
+        <div class="qh-trans-item qh-trans-item--done">Public quest garden with real-time updates (SSE)</div>
+        <div class="qh-trans-item qh-trans-item--done">Permanent shareable URL for every quest</div>
+        <div class="qh-trans-item qh-trans-item--done">Comments on quests</div>
+        <div class="qh-trans-item qh-trans-item--done">Connect requests — author-approved via email</div>
+        <div class="qh-trans-item qh-trans-item--done">Personal room: saved quests, export as JSON or Markdown</div>
+        <div class="qh-trans-item qh-trans-item--done">Sign in via magic link or OIDC (Infomaniak, GitLab)</div>
+        <div class="qh-trans-item qh-trans-item--done">Append-only log (Kidur .jsonl) — every mutation is permanent record</div>
+        <div class="qh-trans-item qh-trans-item--done">Open source &mdash; AGPL-3.0</div>
+        <div class="qh-trans-item qh-trans-item--done">No Google dependencies &mdash; no tracking</div>
+        <div class="qh-trans-item qh-trans-item--done">Hosted on Infomaniak VPS, Switzerland</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUEST EXPERIENCE -->
+  <section class="qh-why-section">
+    <div class="qh-container">
+      <h2 class="qh-section-title qh-fade-in">Quest experience</h2>
+      <p class="qh-section-lead qh-fade-in">How quests are created, explored, and lived.</p>
+      <div class="qh-why-grid">
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">📋</div>
+          <h3>Multi-step Form Wizard</h3>
+          <p>A guided 4-step submission: articulate &rarr; privacy settings &rarr; contact &rarr; confirm. Reduces friction and helps questors think through what they&rsquo;re sharing.</p>
+        </div>
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">📜</div>
+          <h3>Version History</h3>
+          <p>Every edit to a quest is logged. You can see how a quest has evolved over time &mdash; what changed, when, and why.</p>
+        </div>
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">🔗</div>
+          <h3>Quest Graph</h3>
+          <p>A canvas-based node visualization showing how quests relate to each other &mdash; shared themes, mutual support, emerging clusters.</p>
+        </div>
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">🗓️</div>
+          <h3>Seasonal Clock</h3>
+          <p>A time-aware UI layer that shows what season, cycle, and phase the world is in &mdash; contextualizing quests within larger rhythms.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY + COORDINATION -->
+  <section class="qh-steps-section">
+    <div class="qh-container">
+      <h2 class="qh-section-title qh-fade-in">Community &amp; coordination</h2>
+      <p class="qh-section-lead qh-fade-in">The structures that let people actually work together around quests.</p>
+      <div class="qh-why-grid">
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">🌿</div>
+          <h3>Spaces</h3>
+          <p>Curated community collections &mdash; sub-gardens organized by theme, geography, or group. A Space for Vienna regenerators, a Space for open-source finance tools.</p>
+        </div>
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">👋</div>
+          <h3>Nudge Marketplace</h3>
+          <p>Lightweight invitations: &ldquo;I can help with this&rdquo;, &ldquo;I know someone&rdquo;, &ldquo;This resonates.&rdquo; Lower-commitment than pledging, higher signal than a like.</p>
+        </div>
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">🤝</div>
+          <h3>Resonance &amp; Pledging</h3>
+          <p>Others can pledge support &mdash; time, funding, connections, skills &mdash; when a quest is ready to receive it. Coordination without coercion.</p>
+        </div>
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">⚖️</div>
+          <h3>Moderation Framework</h3>
+          <p>Transparent moderation principles. Appeals via resonance calls. No unilateral removals &mdash; community-governed, author-protected.</p>
+        </div>
+        <div class="qh-why-card qh-fade-in">
+          <div class="qh-why-icon">🪙</div>
+          <h3>Membership Tiers</h3>
+          <p>Optional support tiers for those who want to sustain QuestHub. No features locked away &mdash; tiers fund the infrastructure, not the access.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFRASTRUCTURE + SOVEREIGNTY -->
+  <section class="qh-datasec-section">
+    <div class="qh-container">
+      <h2 class="qh-section-title qh-fade-in">Infrastructure &amp; data sovereignty</h2>
+      <p class="qh-section-lead qh-fade-in">The technical guarantees that make QuestHub a safe place to share real aspirations.</p>
+      <div class="qh-why-grid qh-fade-in" style="margin-top:2rem">
+        <div class="qh-why-card">
+          <div class="qh-why-icon">🔒</div>
+          <h3>Optional E2E Encryption</h3>
+          <p>Client-side key management. The platform cannot read your quest even if compelled. Delete your key &rarr; permanently unreadable.</p>
+        </div>
+        <div class="qh-why-card">
+          <div class="qh-why-icon">🌐</div>
+          <h3>Federation Protocol</h3>
+          <p>Multiple independently-operated QuestHub nodes sharing a common protocol. No single point of failure or control.</p>
+        </div>
+        <div class="qh-why-card">
+          <div class="qh-why-icon">⛓️</div>
+          <h3>Blockchain Timestamping</h3>
+          <p>Immutable proof that a quest existed at a specific time. Hash on-chain; full data off-chain (GDPR-safe). Pseudonymous.</p>
+        </div>
+        <div class="qh-why-card">
+          <div class="qh-why-icon">🗺️</div>
+          <h3>Quest Map</h3>
+          <p>Geographic view of where quests originate and what patterns emerge across places and communities worldwide.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECOSYSTEM CONNECTIONS -->
+  <section class="qh-partners-section">
+    <div class="qh-container">
+      <h2 class="qh-section-title qh-fade-in">Ecosystem connections</h2>
+      <p class="qh-section-lead qh-fade-in">QuestHub is one node. Each partner serves a distinct need.</p>
+      <div class="qh-partners">
+        <div class="qh-partner qh-partner--acc qh-fade-in">
+          <h3>idea2.life</h3>
+          <p>Activation layer. Quests ready to build flow into idea2.life for scaffolding, methodology, and builder support.</p>
+        </div>
+<div class="qh-partner qh-partner--dim qh-fade-in">
+          <h3>Tana &amp; Logseq</h3>
+          <p>PKM-compatible tagging. Quests are structured for interoperability with graph-based personal knowledge tools.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="qh-transparency-section">
+    <div class="qh-container">
+      <h2 class="qh-section-title qh-fade-in">Philosophy &amp; values</h2>
+      <p class="qh-section-lead qh-fade-in">What QuestHub believes, independent of what it has built so far.</p>
+      <div class="qh-why-grid qh-fade-in" style="margin-top:2rem">
+        <div class="qh-why-card">
+          <div class="qh-why-icon">🤖</div>
+          <h3>Civic AI</h3>
+          <p>AI that works in service of collective aspiration &mdash; surfacing resonance, detecting patterns, never replacing human judgment about what matters.</p>
+        </div>
+        <div class="qh-why-card">
+          <div class="qh-why-icon">📖</div>
+          <h3>Values &amp; Ideology</h3>
+          <p>A full accounting of what QuestHub stands for: care, sovereignty, federation, radical transparency, and why those aren&rsquo;t just marketing words.</p>
+        </div>
+        <div class="qh-why-card">
+          <div class="qh-why-icon">🔭</div>
+          <h3>Published Algorithm</h3>
+          <p>When matching is introduced, the algorithm will be fully published. No black boxes deciding what gets seen or who gets connected.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="qh-footer">
+    <div class="qh-footer-inner">
+      <span class="qh-footer-logo">QuestHub</span>
+      <div class="qh-footer-links">
+        <a href="/about">About</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="mailto:connect@questhub.eco">Contact</a>
+      </div>
+      <p class="qh-footer-copy">Open source &middot; Swiss-hosted &middot; Built with care in Vienna, AT &middot; Part of the EvoBioSys ecosystem</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+// ── Fade-in on scroll ───────────────────────────────────────
+(function() {
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.qh-fade-in').forEach(function(el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = 'opacity 0.65s ease, transform 0.65s ease';
+    obs.observe(el);
+  });
+})();
+
+// ── Nav scroll border ───────────────────────────────────────
+window.addEventListener('scroll', function() {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+</script>
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuestHub — An Inventory of Human Aspiration</title>
+  <meta name="description" content="A garden for our quests. Share what you want to see in the world — and find others who want it too. Open source, EU-hosted, AGPL-3.0.">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+<div class="qh-page">
+
+  {{SUBMITTED_BANNER}}
+
+  <!-- NAV -->
+  <nav class="qh-nav" id="nav">
+    <a href="/" class="qh-nav-logo">Quest<span>Hub</span></a>
+    <div class="qh-nav-right">
+      <a href="#submit" class="qh-nav-link">Share a Quest</a>
+      <a href="/about" class="qh-nav-link">About</a>
+      {{NAV_AUTH_AREA}}
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="qh-header">
+    <canvas id="qh-canvas" class="qh-canvas" aria-hidden="true"></canvas>
+    <div class="qh-hero-eyebrow">EvoBioSys &middot; Kidur-Native &middot; AGPL-3.0 &middot; Swiss-hosted</div>
+    <h1>A garden for our quests</h1>
+    <p class="qh-tagline">what do <em>you</em> want to see in the world?</p>
+    <p class="qh-subtitle"><strong>{{QUEST_COUNT}}</strong> seeds planted so far.</p>
+    <a href="#submit" class="qh-hero-cta">Share Your Quest</a>
+    <p class="qh-canvas-hint" id="canvas-hint">click or tap anywhere to plant a seed</p>
+  </header>
+
+  <!-- QUEST GARDEN (dynamically loaded via JS) -->
+  <section class="qh-section qh-garden-section" id="quests">
+    <div id="quest-grid">
+      <p class="qh-loading">Loading the garden&hellip;</p>
+    </div>
+  </section>
+
+  <!-- SUBMIT FORM -->
+  <section class="qh-section qh-submit-section" id="submit">
+    <div class="qh-container">
+      <h2>Share Your Quest</h2>
+      <p class="qh-submit-lead">
+        What do you want to see in the world? Plant a seed.
+      </p>
+      <form id="quest-form" class="qh-form" action="/api/quests" method="POST">
+        <!-- Honeypot -->
+        <div style="position:absolute;left:-9999px" aria-hidden="true">
+          <input type="text" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <label for="qf-name">Your name <small>(pseudonym ok)</small></label>
+        <input type="text" id="qf-name" name="name" maxlength="200" placeholder="Listed alongside your quest">
+
+        <label for="qf-quest">Quest title <small>(required)</small></label>
+        <input type="text" id="qf-quest" name="quest" required maxlength="500" placeholder="e.g. Regenerative urban farming network for every city">
+
+        <label for="qf-category">Category <small>(required)</small></label>
+        <select id="qf-category" name="category" required>
+          <option value="">Choose one&hellip;</option>
+          <option value="tech">Technology &amp; Infrastructure</option>
+          <option value="society">Society &amp; Politics</option>
+          <option value="finance">Finance &amp; Economics</option>
+          <option value="knowledge">Knowledge &amp; Learning</option>
+          <option value="tools">Tools &amp; Products</option>
+          <option value="culture">Culture &amp; Life</option>
+          <option value="other">Other</option>
+        </select>
+
+        <div id="custom-category-wrap" style="display:none">
+          <label for="qf-category-custom">Your category</label>
+          <input type="text" id="qf-category-custom" name="category_custom" maxlength="80" placeholder="Name your category">
+        </div>
+
+        <label for="qf-description">Description <small>(required)</small></label>
+        <textarea id="qf-description" name="description" required maxlength="2000" rows="4"
+          placeholder="What problem does this solve? What&rsquo;s the vision?"></textarea>
+
+        <label for="qf-contact">How to reach you <small>(optional)</small></label>
+        <input type="text" id="qf-contact" name="contact" maxlength="300" placeholder="Email, website, or social handle">
+
+        <button type="submit" class="qh-btn">Plant this seed</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="qh-footer">
+    <div class="qh-footer-inner">
+      <span class="qh-footer-logo">QuestHub</span>
+      <div class="qh-footer-links">
+        <a href="/privacy/">Privacy</a>
+        <a href="/legal/">Legal</a>
+        <a href="mailto:connect@questhub.eco">Contact</a>
+      </div>
+      <p class="qh-footer-copy">Open source &middot; Swiss-hosted &middot; Federated by design &middot; Built with care in Vienna, AT &middot; Part of the EvoBioSys ecosystem</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+// ── Category custom field toggle ────────────────────────────
+document.getElementById('qf-category').addEventListener('change', function() {
+  document.getElementById('custom-category-wrap').style.display =
+    this.value === 'other' ? 'block' : 'none';
+});
+
+// ── Nav scroll border ───────────────────────────────────────
+window.addEventListener('scroll', function() {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+// ── Category display names ──────────────────────────────────
+const CATEGORIES = {
+  tech:     'Technology & Infrastructure',
+  society:  'Society & Politics',
+  finance:  'Finance & Economics',
+  knowledge:'Knowledge & Learning',
+  tools:    'Tools & Products',
+  culture:  'Culture & Life',
+  other:    'Other',
+};
+
+// ── Lifecycle stage colors (7-stage) ───────────────────────
+const LIFECYCLE_COLORS = {
+  dreaming:     '#b8a0d4',
+  articulating: '#7dcba4',
+  connecting:   '#6ab0d4',
+  planning:     '#d4a96a',
+  building:     '#daa520',
+  sustaining:   '#4a7c59',
+  resting:      '#8899aa',
+  // legacy aliases
+  identified:   '#5a7365',
+  sprouting:    '#daa520',
+  growing:      '#4a7c59',
+  holon:        '#2e6b3e',
+  gifted:       '#b8860b',
+};
+
+function escapeHtml(s) {
+  var d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+function createQuestCard(q) {
+  var color = LIFECYCLE_COLORS[q.lifecycle_stage] || LIFECYCLE_COLORS.identified;
+  var parent = q.parent_project
+    ? '<span class="qh-card-parent">under ' + escapeHtml(q.parent_project) + '</span>'
+    : '';
+  return [
+    '<a href="/quest/' + q.id + '" class="qh-card" data-cat="' + escapeHtml(q.category || 'other') + '">',
+    '  <div class="qh-card-top">',
+    '    <span class="qh-seed-dot" style="background:' + color + '" title="' + escapeHtml(q.lifecycle_stage) + '"></span>',
+    '    <h3>' + escapeHtml(q.title) + '</h3>',
+    '  </div>',
+    parent,
+    '  <p>' + escapeHtml(q.description || '').substring(0, 180) + '</p>',
+    '</a>'
+  ].join('');
+}
+
+function createSeedSlot(cat) {
+  return '<a href="#submit" class="qh-card qh-card--seed-slot" data-cat="' + cat + '" title="Plant a quest in this category">'
+    + '<span class="qh-seed-slot-inner"><span class="qh-seed-slot-plus">+</span><span>Plant your seed here</span></span>'
+    + '</a>';
+}
+
+function renderQuests(quests) {
+  var grid = document.getElementById('quest-grid');
+  var grouped = {};
+  for (var q of quests) {
+    var cat = q.category || 'other';
+    (grouped[cat] = grouped[cat] || []).push(q);
+  }
+  for (var cat of Object.keys(CATEGORIES)) {
+    if (!grouped[cat]) grouped[cat] = [];
+  }
+  var html = '<div class="qh-ecosystems">';
+  for (var [cat, items] of Object.entries(grouped)) {
+    var name = CATEGORIES[cat] || cat;
+    var slotCount = items.length === 0 ? 3 : (items.length < 3 ? 2 : 1);
+    var slots = Array.from({length: slotCount}, function() { return createSeedSlot(cat); }).join('');
+    html += '<div class="qh-ecosystem" data-cat="' + cat + '">'
+      + '<div class="qh-ecosystem-label">' + escapeHtml(name) + '</div>'
+      + '<div class="qh-ecosystem-pods">'
+      + items.map(createQuestCard).join('')
+      + slots
+      + '</div></div>';
+  }
+  html += '</div>';
+  grid.innerHTML = html;
+}
+
+// Pre-fill category when clicking a seed slot
+document.addEventListener('click', function(e) {
+  var slot = e.target.closest('.qh-card--seed-slot');
+  if (!slot) return;
+  var cat = slot.dataset.cat;
+  if (cat) {
+    var sel = document.getElementById('qf-category');
+    if (sel) { sel.value = cat; sel.dispatchEvent(new Event('change')); }
+    document.getElementById('submit').scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+// ── Fetch quests on page load ───────────────────────────────
+fetch('/api/quests')
+  .then(function(r) { return r.json(); })
+  .then(renderQuests)
+  .catch(function() {
+    document.getElementById('quest-grid').innerHTML =
+      '<p class="qh-loading">Could not load quests. Please refresh.</p>';
+  });
+
+// ── SSE for real-time updates ───────────────────────────────
+var source = new EventSource('/api/quests/stream');
+source.addEventListener('quest_update', function(e) {
+  var event = JSON.parse(e.data);
+  if (event.type === 'quest_created') {
+    fetch('/api/quests').then(function(r) { return r.json(); }).then(renderQuests);
+  }
+});
+
+// ── Form submit via fetch (no page reload) ──────────────────
+document.getElementById('quest-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var form = e.target;
+  var btn = form.querySelector('button[type="submit"]');
+  btn.disabled = true;
+  btn.textContent = 'Planting…';
+  try {
+    var data = new FormData(form);
+    var resp = await fetch('/api/quests/json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(data)),
+    });
+    if (resp.ok) {
+      btn.textContent = 'Seed planted!';
+      form.reset();
+      document.getElementById('custom-category-wrap').style.display = 'none';
+      setTimeout(function() { btn.disabled = false; btn.textContent = 'Plant this seed'; }, 2500);
+    } else {
+      var err = await resp.json();
+      btn.textContent = err.error || 'Something went wrong';
+      setTimeout(function() { btn.disabled = false; btn.textContent = 'Plant this seed'; }, 3000);
+    }
+  } catch (_) {
+    btn.textContent = 'Network error — try again';
+    setTimeout(function() { btn.disabled = false; btn.textContent = 'Plant this seed'; }, 3000);
+  }
+});
+
+// ── Quest Garden — solarpunk canvas animation ────────────────
+// Plants grow upward from the ground, bloom in category flower
+// colours. Mouse draws them toward it. Click plants a new seed.
+class QuestGarden {
+  constructor(canvas) {
+    this.canvas  = canvas;
+    this.ctx     = canvas.getContext('2d');
+    this.dpr     = window.devicePixelRatio || 1;
+    this.frame   = 0;
+    this.plants  = [];
+    this.LIMIT   = 24;
+    this.mouse   = { x: -9999, y: -9999 };
+    this.ripples = [];
+
+    // Solarpunk bloom colours [hue, sat%, lit%]
+    this.BLOOMS = [
+      [207, 52, 63],  // morning glory blue
+      [ 10, 60, 58],  // poppy coral
+      [ 46, 68, 55],  // sunflower gold
+      [137, 42, 52],  // fern green
+      [ 25, 62, 56],  // calendula orange
+      [285, 42, 62],  // lavender
+      [160, 30, 58],  // sage
+    ];
+
+    this.resize();
+    window.addEventListener('resize', () => { this.resize(); this.plants = []; this.init(); });
+
+    var par = canvas.parentElement;
+    par.addEventListener('mousemove', e => {
+      var r = canvas.getBoundingClientRect();
+      this.mouse.x = (e.clientX - r.left) * this.dpr;
+      this.mouse.y = (e.clientY - r.top)  * this.dpr;
+    });
+    par.addEventListener('mouseleave', () => { this.mouse.x = this.mouse.y = -9999; });
+
+    par.addEventListener('touchstart', e => {
+      e.preventDefault();
+      Array.from(e.changedTouches).slice(0, 2).forEach(t => {
+        var r  = canvas.getBoundingClientRect();
+        var tx = (t.clientX - r.left) * this.dpr;
+        this.plantSeed(tx, this.H * 0.86);
+        this.ripples.push({ x: tx, y: this.H * 0.88, age: 0 });
+      });
+    }, { passive: false });
+    par.addEventListener('touchmove', e => { e.preventDefault(); }, { passive: false });
+
+    par.addEventListener('click', e => {
+      if (e.target.closest('a,button,form,nav')) return;
+      var r = canvas.getBoundingClientRect();
+      var x = (e.clientX - r.left) * this.dpr;
+      this.plantSeed(x, this.H * 0.86);
+      this.ripples.push({ x, y: this.H * 0.88, age: 0 });
+    });
+
+    this.init();
+    for (var i = 0; i < 420; i++) this.step(false);
+    this.tick();
+  }
+
+  resize() {
+    var p = this.canvas.parentElement;
+    this.W = p.offsetWidth  * this.dpr;
+    this.H = p.offsetHeight * this.dpr;
+    this.canvas.width        = this.W;
+    this.canvas.height       = this.H;
+    this.canvas.style.width  = p.offsetWidth  + 'px';
+    this.canvas.style.height = p.offsetHeight + 'px';
+  }
+
+  init() {
+    // Seed only in the outer margins so flowers never block the centred hero text.
+    // Left band: 0–32 % of width.  Right band: 68–100 % of width.
+    var perSide = Math.max(3, Math.floor(this.W / (200 * this.dpr)));
+    for (var i = 0; i < perSide; i++) {
+      var frac = (i + 0.5) / perSide;
+      // left side
+      this.plantSeed(
+        (0.03 + 0.29 * frac) * this.W,
+        this.H * (0.83 + Math.random() * 0.10), true
+      );
+      // right side
+      this.plantSeed(
+        (0.68 + 0.29 * frac) * this.W,
+        this.H * (0.83 + Math.random() * 0.10), true
+      );
+    }
+  }
+
+  plantSeed(x, y, initial) {
+    if (this.plants.length >= this.LIMIT) return;
+    var bloom    = this.BLOOMS[Math.floor(Math.random() * this.BLOOMS.length)];
+    var maxLen   = (0.26 + Math.random() * 0.34) * this.H;
+    var lCount   = 2 + Math.floor(Math.random() * 3);
+    var leaves   = [];
+    for (var i = 0; i < lCount; i++) {
+      leaves.push({
+        at:    maxLen * (0.16 + 0.66 * ((i + 0.5) / lCount)),
+        side:  i % 2 === 0 ? 1 : -1,
+        scale: 0.7 + Math.random() * 0.6,
+      });
+    }
+    // Lean plants away from the centre so tips stay in the margins.
+    // xBias: -1 = far left, 0 = centre, +1 = far right.
+    var xBias  = (x / this.W) * 2 - 1;           // –1 … +1
+    var outLean = xBias * 0.48;                   // up to ±27° outward tilt
+    this.plants.push({
+      pts:      [{ x, y }],
+      angle:    -Math.PI / 2 + outLean + (Math.random() - 0.5) * 0.32,
+      speed:    (0.9 + Math.random() * 1.1) * this.dpr,
+      len:      initial ? -Math.floor(Math.random() * 220) : 0,
+      maxLen,
+      bloom, bloomR: (11 + Math.random() * 15) * this.dpr,
+      lw:       (1.3 + Math.random() * 2.0) * this.dpr,
+      wander:   0.006 + Math.random() * 0.013,
+      wPhase:   Math.random() * Math.PI * 2,
+      leaves,   lDone: new Set(),
+      pathLen:  0,
+      bloomed:  false, bloomAge: 0,
+    });
+  }
+
+  step(render) {
+    this.frame++;
+    var ctx = this.ctx;
+    if (render) ctx.clearRect(0, 0, this.W, this.H);
+
+    if (render && this.frame % 500 === 0 && this.plants.length < this.LIMIT) {
+      this.plantSeed(
+        (0.06 + Math.random() * 0.88) * this.W,
+        this.H * (0.83 + Math.random() * 0.10)
+      );
+    }
+
+    for (var p of this.plants) {
+      p.len++;
+      if (p.len <= 0) continue;
+      var growing = p.len < p.maxLen;
+
+      if (growing) {
+        var last = p.pts[p.pts.length - 1];
+        // Gentle sway
+        p.angle += Math.sin(this.frame * p.wander + p.wPhase) * 0.015;
+        // Stay upward: clamp to ±148° from straight up
+        p.angle = Math.max(-Math.PI * 0.82, Math.min(-Math.PI * 0.18, p.angle));
+        // Heliotropism — lean toward mouse
+        var dx = this.mouse.x - last.x, dy = this.mouse.y - last.y;
+        var d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < 260 * this.dpr && d > 4) {
+          var ta = Math.atan2(dy, dx), diff = ta - p.angle;
+          while (diff >  Math.PI) diff -= Math.PI * 2;
+          while (diff < -Math.PI) diff += Math.PI * 2;
+          p.angle += diff * 0.016 * (1 - d / (260 * this.dpr));
+        }
+        var nx = Math.max(1, Math.min(this.W - 1, last.x + Math.cos(p.angle) * p.speed));
+        var ny = last.y + Math.sin(p.angle) * p.speed;
+        p.pathLen += Math.hypot(nx - last.x, ny - last.y);
+        p.pts.push({ x: nx, y: ny });
+      } else {
+        p.bloomed = true;
+        p.bloomAge++;
+      }
+
+      if (!render || p.pts.length < 2) continue;
+      var fadeIn = Math.min(1, Math.max(0, p.len) / 35);
+      var [bH, bS, bL] = p.bloom;
+
+      // Stem
+      ctx.beginPath();
+      ctx.moveTo(p.pts[0].x, p.pts[0].y);
+      for (var i = 1; i < p.pts.length; i++) {
+        var a = p.pts[i - 1], b = p.pts[i];
+        ctx.quadraticCurveTo(a.x, a.y, (a.x + b.x) / 2, (a.y + b.y) / 2);
+      }
+      ctx.strokeStyle = 'hsla(137,38%,38%,' + (fadeIn * 0.84) + ')';
+      ctx.lineWidth   = p.lw;
+      ctx.lineCap = ctx.lineJoin = 'round';
+      ctx.stroke();
+
+      // Leaves — placed at measured path lengths
+      var acc = 0;
+      for (var i = 1; i < p.pts.length; i++) {
+        var a = p.pts[i - 1], b = p.pts[i];
+        var seg = Math.hypot(b.x - a.x, b.y - a.y);
+        var prev = acc; acc += seg;
+        for (var li = 0; li < p.leaves.length; li++) {
+          var lf = p.leaves[li];
+          if (!p.lDone.has(li) && acc >= lf.at && prev < lf.at) {
+            p.lDone.add(li);
+            var t  = (lf.at - prev) / seg;
+            var lx = a.x + (b.x - a.x) * t, ly = a.y + (b.y - a.y) * t;
+            var sa = Math.atan2(b.y - a.y, b.x - a.x);
+            var la = sa + lf.side * (Math.PI / 2.6 + 0.15);
+            var ll = (18 + 11 * lf.scale) * this.dpr;
+            ctx.save();
+            ctx.translate(lx, ly);
+            ctx.rotate(la);
+            ctx.beginPath();
+            ctx.ellipse(ll * 0.42, 0, ll * 0.5, ll * 0.21, 0, 0, Math.PI * 2);
+            ctx.fillStyle = 'hsla(137,42%,36%,' + (fadeIn * 0.55) + ')';
+            ctx.fill();
+            ctx.restore();
+          }
+        }
+      }
+
+      // Flower bloom
+      if (p.bloomAge > 0) {
+        var tip  = p.pts[p.pts.length - 1];
+        var bA   = Math.min(0.90, p.bloomAge / 20);
+        var bR   = p.bloomR * Math.min(1, p.bloomAge / 14);
+        // 5 petals
+        for (var k = 0; k < 5; k++) {
+          var pa = (k / 5) * Math.PI * 2;
+          ctx.save();
+          ctx.translate(tip.x + Math.cos(pa) * bR * 0.62, tip.y + Math.sin(pa) * bR * 0.62);
+          ctx.rotate(pa);
+          ctx.beginPath();
+          ctx.ellipse(0, 0, bR * 0.56, bR * 0.28, 0, 0, Math.PI * 2);
+          ctx.fillStyle = 'hsla(' + bH + ',' + bS + '%,' + bL + '%,' + (bA * 0.76) + ')';
+          ctx.fill();
+          ctx.restore();
+        }
+        // Centre
+        ctx.beginPath();
+        ctx.arc(tip.x, tip.y, bR * 0.36, 0, Math.PI * 2);
+        ctx.fillStyle = 'hsla(' + (bH + 22) + ',' + (bS - 4) + '%,' + (bL + 14) + '%,' + bA + ')';
+        ctx.fill();
+        // Glow halo
+        var glow = ctx.createRadialGradient(tip.x, tip.y, 0, tip.x, tip.y, bR * 2.6);
+        glow.addColorStop(0, 'hsla(' + bH + ',' + bS + '%,' + (bL + 12) + '%,' + (bA * 0.26) + ')');
+        glow.addColorStop(1, 'hsla(' + bH + ',' + bS + '%,' + bL + '%,0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(tip.x, tip.y, bR * 2.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // Ground ripples on seed-plant
+    this.ripples = this.ripples.filter(r => r.age < 48);
+    this.ripples.forEach(r => {
+      r.age++;
+      if (!render) return;
+      var t = r.age / 48;
+      ctx.beginPath();
+      ctx.ellipse(r.x, r.y, t * 52 * this.dpr, t * 10 * this.dpr, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = 'hsla(46,68%,55%,' + ((1 - t) * 0.52) + ')';
+      ctx.lineWidth = (1 - t) * 1.8 * this.dpr;
+      ctx.stroke();
+    });
+  }
+
+  tick() { this.step(true); requestAnimationFrame(() => this.tick()); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  var c = document.getElementById('qh-canvas');
+  if (c) new QuestGarden(c);
+
+  var hint = document.getElementById('canvas-hint');
+  if (hint) setTimeout(() => {
+    hint.style.transition = 'opacity 1.8s ease';
+    hint.style.opacity = '0';
+    setTimeout(() => hint.remove(), 1900);
+  }, 5000);
+});
+</script>
+</body>
+</html>
