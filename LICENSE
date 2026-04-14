@@ -1,14 +1,12 @@
 Adapted Modular Public License Version 1.0
 ==========================================
 
+Copyright (c) 2026 Jakob Possert-Bienzle
+
 ============================================================
- A-MPL 1.0 — MODIFIED VERSION OF MPL 2.0
- A-MPL 1.0 is MPL 2.0 with one parallel extension:
- the same network clause that AGPL added to GPL,
- adapted to MPL's file-level scope by replacing
- "the Program" with "Covered Software".
- Created under MPL 2.0 Section 10.3. No further modifications
- to this version are permitted.
+ AMPL 1.0 is MPL 2.0 with a parallel network extension —
+ the same addition AGPL made to GPL, applied at the file level.
+ Created under MPL 2.0 Section 10.3.
 ============================================================
 
 1. Definitions
@@ -214,7 +212,7 @@ the Covered Software, except that You may alter any license notices to
 the extent required to remedy known factual inaccuracies.
 
 ============================================================
- A-MPL ADDITION TO MPL 2.0 — Section 3.5 (Network Use)
+ AMPL ADDITION TO MPL 2.0 — Section 3.5 (Network Use)
  This section extends MPL 2.0 with a network interaction
  clause scoped to Covered Software (modified files only).
 ============================================================
@@ -230,7 +228,7 @@ deployment or by providing a prominent written offer to supply it
 at no charge via a publicly accessible network server.
 
 ============================================================
- END OF A-MPL ADDITION — remaining sections are MPL 2.0
+ END OF AMPL ADDITION — remaining sections are MPL 2.0
  Section 3.5 (Application of Additional Terms) renumbered
  to Section 3.6 below.
 ============================================================
@@ -355,12 +353,20 @@ shall not be used to construe this License against a Contributor.
 10. Versions of the License
 ----------------------------
 
-10.1. This License
+============================================================
+ AMPL CHANGE TO MPL 2.0 — Section 10 (Versions of the License)
+ 10.1 names Jakob Possert-Bienzle as steward of AMPL 1.0.
+============================================================
+
+10.1. New Versions
+
+Jakob Possert-Bienzle is the license steward. Except as provided in
+Section 10.3, no one other than the license steward has the right to
+modify or publish new versions of this License. Each version will be
+given a distinguishing version number.
 
 This License is a modified version of the Mozilla Public License 2.0,
-created under MPL 2.0 Section 10.3. It has no designated steward. No
-modifications to this version are permitted. To create a further
-modified license, follow MPL 2.0 Section 10.3 independently.
+created under MPL 2.0 Section 10.3.
 
 10.2. Effect of New Versions
 
@@ -387,9 +393,9 @@ Exhibit A - Source Code Form License Notice
 --------------------------------------------
 
   This Source Code Form is subject to the terms of the Adapted Modular
-  Public License, v. 2.0 (A-MPL 1.0). If a copy of the A-MPL was not
-  distributed with this file, You can obtain one at
-  https://github.com/kidur/kidur/blob/main/LICENSE.
+  Public License, v. 1.0. If a copy of the AMPL was not distributed
+  with this file, You can obtain one at
+  https://evobiosys.org/legal/ampl-1.0.
 
 If it is not possible or desirable to put the notice in a particular
 file, then You may include the notice in a location (such as a LICENSE
@@ -403,3 +409,5 @@ Exhibit B - "Incompatible With Secondary Licenses" Notice
 
   This Source Code Form is "Incompatible With Secondary Licenses", as
   defined by the Adapted Modular Public License, v. 1.0.
+
+Note: AMPL 2.0 is intended to say 'EvoBioSys Foundation is the license steward.'

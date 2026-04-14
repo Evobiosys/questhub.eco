@@ -2,7 +2,7 @@
 
 ## License
 
-This project is licensed under the Adapted Modular Public License v1.0 (A-MPL 1.0).
+This project is licensed under the Adapted Modular Public License v1.0 (AMPL 1.0).
 See [LICENSE](LICENSE) for the full text.
 
 ## Copyright Assignment
