@@ -157,7 +157,7 @@ def make_log_entry(seq: int, title: str, category: str, lifecycle: str,
         "category": make_field("enum", category),
         "description": make_field("rich_text", description),
         "lifecycle_stage": make_field("enum", lifecycle),
-        "submitter_name": make_field("text", "Jakob Possert"),
+        "submitter_name": make_field("text", "Jakob Possert-Bienzle"),
     }
 
     if parent_project:
