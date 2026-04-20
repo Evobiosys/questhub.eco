@@ -118,6 +118,7 @@ a:hover { color: var(--qh-green-light); }
 .btn-primary {
   background: var(--qh-gold);
   color: var(--color-white);
+  border-radius: 999px;
 }
 .btn-primary:hover { background: var(--qh-gold-light); color: var(--color-white); }
 
