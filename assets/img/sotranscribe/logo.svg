@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 40" fill="currentColor" role="img" aria-label="SoTranscribe">
+  <!-- mark: waveform bars + cursor underline -->
+  <g>
+    <rect x="0"  y="14" width="3" height="6"  rx="1.5"/>
+    <rect x="6"  y="10" width="3" height="14" rx="1.5"/>
+    <rect x="12" y="6"  width="3" height="22" rx="1.5"/>
+    <rect x="18" y="11" width="3" height="12" rx="1.5"/>
+    <rect x="24" y="15" width="3" height="4"  rx="1.5"/>
+    <!-- cursor underline in accent -->
+    <line x1="-1" y1="33" x2="28" y2="33" stroke="#5C223D" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <!-- wordmark -->
+  <text x="40" y="27" font-family="Inter, ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="22" font-weight="600" letter-spacing="-0.5">SoTranscribe</text>
+</svg>

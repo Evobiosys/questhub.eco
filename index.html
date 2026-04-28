@@ -192,6 +192,9 @@ description: >-
   }
   .qh-card:hover { border-color: var(--qh-gold-light); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(184, 134, 11, 0.08); }
   .qh-card:hover::before { opacity: 1; }
+  .qh-card-link { display: block; text-decoration: none; color: inherit; cursor: pointer; }
+  .qh-card-link h3 { color: var(--qh-soil); }
+  .qh-card-link:hover { border-color: var(--qh-green-light); }
   .qh-card-top { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem; }
   .qh-card-seed { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .qh-card-seed.gold    { background: var(--qh-gold-light); }
@@ -354,7 +357,7 @@ description: >-
     <div class="qh-cat-header">
       <div class="qh-cat-icon tech">&#x2699;</div>
       <h2 class="qh-cat-title">Technology &amp; Infrastructure</h2>
-      <span class="qh-cat-count">10 seeds</span>
+      <span class="qh-cat-count">11 seeds</span>
     </div>
     <div class="qh-grid">
       <div class="qh-card">
@@ -397,6 +400,10 @@ description: >-
       <div class="qh-card">
         <div class="qh-card-top"><span class="qh-card-seed dormant"></span><h3>Obsidian Plugin</h3></div>
         <p>Bridging personal knowledge management with the broader EvoBioSys ecosystem through plugin development.</p>
+      </div>
+      <div class="qh-card">
+        <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Sovereign Switch</h3></div>
+        <p>The full chain &mdash; export your data from every service you use and re-host it on infrastructure you own. SoTranscribe is the first concrete tool in the chain. Site coming soon.</p>
       </div>
     </div>
   </section>
@@ -500,7 +507,7 @@ description: >-
     <div class="qh-cat-header">
       <div class="qh-cat-icon tools">&#x2692;</div>
       <h2 class="qh-cat-title">Tools &amp; Products</h2>
-      <span class="qh-cat-count">8 seeds</span>
+      <span class="qh-cat-count">9 seeds</span>
     </div>
     <div class="qh-grid">
       <div class="qh-card">
@@ -536,6 +543,11 @@ description: >-
         <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>Green AI Service</h3></div>
         <p>AI infrastructure that accounts for its environmental cost &mdash; compute that is powerful and responsible.</p>
       </div>
+      <a class="qh-card qh-card-link" href="/sotranscribe/">
+        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>SoTranscribe</h3></div>
+        <span class="qh-card-parent">first idea2.life baby &middot; module of Complete Memory</span>
+        <p>Transcribe everything you&rsquo;ve recorded &mdash; no eavesdropping needed. Local Whisper Large v3 with speaker diarization, EU-only stack.</p>
+      </a>
     </div>
   </section>
 

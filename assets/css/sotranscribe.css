@@ -1,0 +1,461 @@
+/* ===================================================================
+   SoTranscribe page styles
+   All references are var(--st-*). Brand tokens live ONLY in the
+   <style>:root block at the top of /sotranscribe.html.
+   Mobile-first responsive.
+   =================================================================== */
+
+.st-page {
+  background: var(--st-bg);
+  color: var(--st-ink);
+  font-family: var(--st-body-stack);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.st-page * { box-sizing: border-box; }
+
+/* --------- shared section scaffolding --------- */
+.st-section {
+  padding: 4.5rem 1.25rem;
+  border-top: 1px solid var(--st-line);
+}
+.st-section-soft { background: var(--st-bg-soft); }
+.st-section-inner {
+  max-width: 920px;
+  margin: 0 auto;
+}
+.st-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.74rem;
+  color: var(--st-primary);
+  font-weight: 600;
+  margin: 0 0 0.6rem;
+}
+.st-h2 {
+  font-size: clamp(1.55rem, 2.5vw + 0.6rem, 2.2rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 0 0 1.25rem;
+  color: var(--st-ink);
+}
+.st-lede {
+  font-size: 1.08rem;
+  color: var(--st-ink-soft);
+  margin: 0 0 1.5rem;
+  max-width: 60ch;
+}
+.st-prose p {
+  font-size: 1.04rem;
+  color: var(--st-ink);
+  margin: 0 0 1rem;
+  max-width: 64ch;
+}
+.st-prose strong { color: var(--st-primary-2); }
+.st-prose a { color: var(--st-accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.st-prose a:hover { color: var(--st-accent-2); }
+.st-aside {
+  font-size: 0.95rem;
+  color: var(--st-ink-soft);
+  margin: 1rem 0 0;
+  max-width: 64ch;
+}
+.st-aside-spaced { margin-top: 2rem; }
+
+/* --------- HERO --------- */
+.st-hero {
+  padding: 5.5rem 1.25rem 4rem;
+  background:
+    radial-gradient(60% 80% at 80% 0%, rgba(46,111,126,0.07), transparent 70%),
+    radial-gradient(50% 70% at 0% 100%, rgba(92,34,61,0.05), transparent 70%),
+    var(--st-bg);
+}
+.st-hero-inner {
+  max-width: 920px;
+  margin: 0 auto;
+}
+.st-logo-row { margin-bottom: 2rem; }
+.st-logo {
+  height: 36px;
+  display: block;
+  color: var(--st-primary-2); /* SVG uses currentColor */
+}
+.st-hero-title {
+  font-size: clamp(2rem, 4vw + 0.5rem, 3.4rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  margin: 0 0 1.25rem;
+  color: var(--st-ink);
+}
+.st-hero-em {
+  color: var(--st-accent);
+  font-style: normal;
+}
+.st-hero-sub {
+  font-size: 1.18rem;
+  color: var(--st-ink-soft);
+  max-width: 60ch;
+  margin: 0 0 2rem;
+  line-height: 1.55;
+}
+.st-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.st-btn {
+  display: inline-block;
+  padding: 0.85rem 1.4rem;
+  border-radius: var(--st-radius-sm);
+  font-size: 0.97rem;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.st-btn-primary {
+  background: var(--st-primary);
+  color: var(--st-on-color);
+}
+.st-btn-primary:hover {
+  background: var(--st-primary-2);
+  transform: translateY(-1px);
+}
+.st-btn-ghost {
+  background: transparent;
+  color: var(--st-ink);
+  border-color: var(--st-line);
+}
+.st-btn-ghost:hover {
+  border-color: var(--st-primary);
+  color: var(--st-primary);
+}
+.st-caveat {
+  font-size: 0.88rem;
+  color: var(--st-ink-soft);
+  margin: 0;
+}
+.st-caveat a { color: var(--st-primary); }
+
+/* --------- KBD pill (cmd+F / ctrl+F) --------- */
+.st-kbd {
+  display: inline-block;
+  padding: 0.18em 0.55em;
+  background: var(--st-bg);
+  border: 1px solid var(--st-line);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  font-family: var(--st-mono-stack);
+  font-size: 0.78em;
+  font-weight: 600;
+  color: var(--st-primary-2);
+  vertical-align: 0.1em;
+}
+
+/* --------- ASCII pipeline --------- */
+.st-pipeline {
+  font-family: var(--st-mono-stack);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  background: var(--st-bg);
+  border: 1px solid var(--st-line);
+  border-radius: var(--st-radius);
+  padding: 1.5rem;
+  overflow-x: auto;
+  color: var(--st-ink);
+  white-space: pre;
+  margin: 0;
+}
+
+/* --------- Continuous-mode list --------- */
+.st-mode-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+  max-width: 64ch;
+}
+.st-mode-list li {
+  background: var(--st-bg);
+  border: 1px solid var(--st-line);
+  border-left: 3px solid var(--st-primary);
+  border-radius: var(--st-radius-sm);
+  padding: 0.85rem 1rem;
+  font-size: 0.98rem;
+  color: var(--st-ink);
+}
+.st-mode-list strong { color: var(--st-primary-2); }
+
+/* --------- Two-card / three-card grids --------- */
+.st-grid-2 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 720px) {
+  .st-grid-2 { grid-template-columns: 1fr 1fr; }
+}
+
+.st-grid-3 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  margin-top: 2rem;
+}
+@media (min-width: 800px) {
+  .st-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+.st-card {
+  background: var(--st-bg);
+  border: 1px solid var(--st-line);
+  border-radius: var(--st-radius);
+  padding: 1.5rem 1.4rem;
+}
+.st-card-accent {
+  border-color: var(--st-primary);
+  border-width: 1.5px;
+}
+.st-card-title {
+  margin: 0 0 0.4rem;
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: var(--st-ink);
+  letter-spacing: -0.01em;
+}
+.st-card-tag {
+  font-size: 0.86rem;
+  color: var(--st-primary);
+  margin: 0 0 1rem;
+  font-weight: 500;
+}
+.st-check-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.st-check-list li {
+  padding: 0.4rem 0 0.4rem 1.4rem;
+  position: relative;
+  font-size: 0.97rem;
+  color: var(--st-ink);
+  border-top: 1px solid var(--st-line);
+}
+.st-check-list li:first-child { border-top: 0; }
+.st-check-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0.1rem;
+  color: var(--st-success);
+  font-weight: 600;
+}
+
+/* --------- Pricing tiers --------- */
+.st-tier {
+  background: var(--st-bg);
+  border: 1px solid var(--st-line);
+  border-radius: var(--st-radius);
+  padding: 1.7rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.st-tier-featured {
+  border-color: var(--st-accent);
+  border-width: 1.5px;
+  box-shadow: 0 4px 18px rgba(92, 34, 61, 0.06);
+}
+.st-tier-flag {
+  position: absolute;
+  top: -0.7rem;
+  left: 1.4rem;
+  background: var(--st-accent);
+  color: var(--st-on-color);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.55rem;
+  border-radius: 4px;
+  margin: 0;
+  font-weight: 600;
+}
+.st-tier-name {
+  margin: 0 0 0.6rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--st-ink);
+}
+.st-tier-price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--st-primary-2);
+  margin: 0 0 1rem;
+  font-family: var(--st-mono-stack);
+}
+.st-tier-desc {
+  font-size: 0.95rem;
+  color: var(--st-ink-soft);
+  margin: 0 0 1.25rem;
+  flex-grow: 1;
+}
+.st-tier-cta {
+  display: inline-block;
+  color: var(--st-primary);
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-bottom: 1px solid currentColor;
+  align-self: flex-start;
+  padding-bottom: 1px;
+}
+.st-tier-cta:hover {
+  color: var(--st-accent);
+}
+.st-tier-cta-disabled {
+  color: var(--st-ink-soft);
+  border-bottom-color: transparent;
+  font-style: italic;
+}
+.st-enterprise {
+  margin-top: 1.5rem;
+  padding: 1rem 1.2rem;
+  background: var(--st-bg);
+  border: 1px solid var(--st-line);
+  border-radius: var(--st-radius-sm);
+  font-size: 0.96rem;
+  color: var(--st-ink);
+}
+.st-enterprise strong { color: var(--st-accent); }
+.st-enterprise a { color: var(--st-primary); }
+
+/* --------- Cost list --------- */
+.st-cost-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+}
+.st-cost-list li {
+  background: var(--st-bg);
+  border: 1px solid var(--st-line);
+  border-radius: var(--st-radius-sm);
+  padding: 0.9rem 1.1rem;
+  font-size: 0.97rem;
+  color: var(--st-ink);
+}
+.st-cost-list strong { color: var(--st-primary-2); }
+
+/* --------- Lineage chips --------- */
+.st-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.st-chip {
+  display: inline-block;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  background: var(--st-bg);
+  border: 1px solid var(--st-line);
+  color: var(--st-ink);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.st-chip:hover {
+  transform: translateY(-1px);
+  border-color: var(--st-primary);
+}
+.st-chip-primary {
+  background: var(--st-primary);
+  color: var(--st-on-color);
+  border-color: var(--st-primary);
+}
+.st-chip-primary:hover { background: var(--st-primary-2); }
+.st-chip-accent {
+  background: var(--st-accent);
+  color: var(--st-on-color);
+  border-color: var(--st-accent);
+}
+.st-chip-accent:hover { background: var(--st-accent-2); }
+
+/* --------- Channels list --------- */
+.st-channels {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.45rem;
+  max-width: 50ch;
+}
+.st-channels li {
+  font-size: 1rem;
+  color: var(--st-ink);
+}
+.st-channels strong { color: var(--st-primary-2); display: inline-block; min-width: 5rem; }
+.st-channels a { color: var(--st-accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* --------- FAQ --------- */
+.st-faq {
+  margin: 0;
+}
+.st-faq dt {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--st-primary-2);
+  margin-top: 1.5rem;
+  margin-bottom: 0.4rem;
+}
+.st-faq dt:first-of-type { margin-top: 0; }
+.st-faq dd {
+  margin: 0;
+  padding: 0;
+  color: var(--st-ink);
+  font-size: 1rem;
+  max-width: 64ch;
+}
+.st-faq dd a { color: var(--st-accent); text-decoration: underline; text-underline-offset: 3px; }
+.st-faq abbr {
+  border-bottom: 1px dotted var(--st-ink-soft);
+  cursor: help;
+  text-decoration: none;
+}
+
+/* --------- Footer --------- */
+.st-footer {
+  background: var(--st-primary-2);
+  color: var(--st-on-color);
+  padding: 2.5rem 1.25rem;
+}
+.st-footer-inner {
+  max-width: 920px;
+  margin: 0 auto;
+  text-align: center;
+}
+.st-footer p { margin: 0 0 0.5rem; font-size: 0.95rem; }
+.st-footer a { color: var(--st-on-color); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.st-footer a:hover { opacity: 0.85; }
+.st-footer-meta {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin-top: 0.5rem;
+}
+
+/* --------- Smaller-screen tweaks --------- */
+@media (max-width: 480px) {
+  .st-section { padding: 3rem 1.1rem; }
+  .st-hero { padding: 3.5rem 1.1rem 2.5rem; }
+  .st-cta-row .st-btn { width: 100%; text-align: center; }
+}
