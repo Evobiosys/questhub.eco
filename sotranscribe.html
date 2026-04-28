@@ -1,8 +1,8 @@
 ---
 layout: default
 permalink: /sotranscribe/
-title: "SoTranscribe — Transcribe everything you've recorded, no eavesdropping needed"
-description: "Local Whisper Large v3 with speaker diarization. Self-host or run on EU-sovereign servers. First idea2.life baby. EU-only stack — no Stripe, no CLOUD Act exposure."
+title: "SoTranscribe — Find anything you've ever said. We don't listen."
+description: "Turn your voice memos, meetings, and recordings into searchable notes. Without sending a byte to Big Tech. Self-host free, or join the beta waitlist."
 ---
 
 <style>
@@ -32,8 +32,8 @@ description: "Local Whisper Large v3 with speaker diarization. Self-host or run 
 <link rel="stylesheet" href="/assets/css/sotranscribe.css">
 <link rel="icon" type="image/svg+xml" href="/assets/img/sotranscribe/favicon.svg">
 <link rel="alternate icon" href="/assets/img/sotranscribe/favicon.ico">
-<meta property="og:title" content="SoTranscribe — Transcribe everything you've recorded, no eavesdropping needed">
-<meta property="og:description" content="Local Whisper Large v3 with speaker diarization. Self-host or run on EU-sovereign servers. First idea2.life baby.">
+<meta property="og:title" content="SoTranscribe — Find anything you've ever said. We don't listen.">
+<meta property="og:description" content="Turn your voice memos, meetings, and recordings into searchable notes. Without sending a byte to Big Tech.">
 <meta property="og:image" content="https://questhub.eco/assets/img/sotranscribe/og.png">
 <meta property="og:url" content="https://questhub.eco/sotranscribe/">
 <meta name="twitter:card" content="summary_large_image">
@@ -46,215 +46,201 @@ description: "Local Whisper Large v3 with speaker diarization. Self-host or run 
       <div class="st-logo-row">
         <img src="/assets/img/sotranscribe/logo.svg" alt="SoTranscribe" class="st-logo">
       </div>
-      <h1 class="st-hero-title">Transcribe everything you&rsquo;ve recorded.<br><span class="st-hero-em">No eavesdropping needed.</span></h1>
-      <p class="st-hero-sub">Local Whisper Large&nbsp;v3 with speaker diarization. Self-host on your own GPU, or run it on EU-sovereign servers. Your audio never touches a US-jurisdiction processor.</p>
+      <h1 class="st-hero-title">Find anything you&rsquo;ve ever said.<br><span class="st-hero-em">We don&rsquo;t listen.</span></h1>
+      <p class="st-hero-sub">SoTranscribe turns your voice memos, meetings, and recordings into searchable notes. The transcription happens on your computer or on our European servers &mdash; never on a Big Tech cloud.</p>
       <div class="st-cta-row">
-        <a href="https://github.com/evobiosys/sotranscribe" class="st-btn st-btn-primary">Self-host (free)</a>
-        <a href="mailto:connect@evobiosys.org?subject=SoTranscribe%20beta%20waitlist&body=I%27d%20like%20to%20join%20the%20SoTranscribe%20beta.%20My%20use%20case%3A%20" class="st-btn st-btn-ghost">Join the beta waitlist &rarr;</a>
+        <a href="mailto:connect@evobiosys.org?subject=SoTranscribe%20beta%20waitlist&body=I%27d%20like%20to%20join%20the%20SoTranscribe%20beta.%20My%20use%20case%3A%20" class="st-btn st-btn-primary">Join the beta waitlist &rarr;</a>
+        <a href="https://github.com/evobiosys/sotranscribe" class="st-btn st-btn-ghost">Or self-host (free)</a>
       </div>
-      <p class="st-caveat">v1 is hosted on GitHub Pages while we finish migrating to our own EU infrastructure. <a href="#faq">More on that below.</a></p>
+      <p class="st-caveat">No credit card. No tracking. We&rsquo;ll mail you when there&rsquo;s a slot.</p>
     </div>
   </section>
 
-  <!-- ===================== DEFAULT USE CASE ====================== -->
+  <!-- ===================== THE PROBLEM ====================== -->
   <section class="st-section st-section-soft">
-    <div class="st-section-inner">
-      <p class="st-eyebrow">The default use case</p>
-      <h2 class="st-h2"><kbd id="kbd-find" class="st-kbd">⌘F</kbd> everything you&rsquo;ve ever said.</h2>
-      <p class="st-lede">Every meeting, voice memo, podcast you appeared on &mdash; turned into searchable text on your own machine. The audio stays where it started. The transcript is yours.</p>
-    </div>
-  </section>
-
-  <!-- ========================= WHAT IT IS ========================= -->
-  <section class="st-section">
     <div class="st-section-inner st-prose">
-      <p class="st-eyebrow">What it is</p>
-      <h2 class="st-h2">A transcription module &mdash; productized.</h2>
-      <p>SoTranscribe started as the transcription stage inside <strong>Complete Memory</strong> &mdash; the personal-recall system that turns every recording into searchable text. We&rsquo;re shipping it as a product because the privacy-first transcription space is dominated by services that can&rsquo;t honestly promise data minimization.</p>
-      <p>It&rsquo;s the <strong>first <a href="https://idea2.life">idea2.life</a> baby</strong>. The choices we make here &mdash; EU-only stack, single-source-of-truth branding, federation-friendly architecture &mdash; become the template for every product that follows.</p>
+      <p class="st-eyebrow">The problem</p>
+      <h2 class="st-h2">Most transcription apps record more than your voice.</h2>
+      <p>When you upload audio to a cloud transcription service, you&rsquo;re trusting a long chain of companies with what was said in your meeting, your therapy session, your interview, or your private voice note. The audio gets copied, stored, processed, and sometimes used to train someone else&rsquo;s product.</p>
+      <p>Most of the popular tools are American companies, which means a US court can request your data even when it&rsquo;s &ldquo;stored in Europe&rdquo;. There is a friendlier way to do this.</p>
     </div>
   </section>
 
-  <!-- ======================= HOW IT WORKS ========================= -->
+  <!-- ===================== THREE PROMISES ====================== -->
+  <section class="st-section">
+    <div class="st-section-inner">
+      <p class="st-eyebrow">What we promise</p>
+      <h2 class="st-h2">Three things, in plain language.</h2>
+      <div class="st-grid-3">
+        <div class="st-promise">
+          <div class="st-promise-num">1</div>
+          <h3 class="st-promise-title">Your audio stays where you put it.</h3>
+          <p>Run it on your own computer (free) and nothing leaves the room. Use our hosted service and audio sits on European servers we own, never shared with anyone.</p>
+        </div>
+        <div class="st-promise">
+          <div class="st-promise-num">2</div>
+          <h3 class="st-promise-title">No US company touches your data.</h3>
+          <p>We don&rsquo;t use Stripe, Google Analytics, or American clouds. Our payment processor, our font provider, our email host &mdash; all European. So a US court can&rsquo;t reach in.</p>
+        </div>
+        <div class="st-promise">
+          <div class="st-promise-num">3</div>
+          <h3 class="st-promise-title">You can leave any time.</h3>
+          <p>Your transcripts are yours, in standard formats. Cancel and you take everything with you. The source code is open, so the door always opens outward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW IT WORKS ====================== -->
   <section class="st-section st-section-soft">
     <div class="st-section-inner">
       <p class="st-eyebrow">How it works</p>
-      <h2 class="st-h2">One pipeline, end to end.</h2>
-      <pre class="st-pipeline" aria-label="SoTranscribe pipeline diagram">
-Recordings   ─►  Dedupe   ─►  Whisper Large v3   ─►  Diarize   ─►  Markdown + JSON   ─►  Your storage
-(any source,     (hash-       (faster-whisper,         (pyannote,    (timestamps,           (self-host /
- incl wearable)   based)        word timestamps)        speakers)     speakers, meta)        Swiss / your NAS)
-      </pre>
+      <h2 class="st-h2">Three steps. One result.</h2>
+      <ol class="st-steps">
+        <li>
+          <span class="st-steps-num">A</span>
+          <div>
+            <h3>Drop in your recordings.</h3>
+            <p>Voice memos, meetings, podcast episodes, wearable captures &mdash; whatever you have. Or set a folder to auto-import as new ones land.</p>
+          </div>
+        </li>
+        <li>
+          <span class="st-steps-num">B</span>
+          <div>
+            <h3>We transcribe and tell speakers apart.</h3>
+            <p>Each conversation becomes a clean text document with timestamps and who-said-what. No human listens. No third-party service involved.</p>
+          </div>
+        </li>
+        <li>
+          <span class="st-steps-num">C</span>
+          <div>
+            <h3>Search like you search email.</h3>
+            <p>Press <kbd id="kbd-find" class="st-kbd">⌘F</kbd> &mdash; or open the app &mdash; and find every moment where you said the word you&rsquo;re looking for. Across years of conversations.</p>
+          </div>
+        </li>
+      </ol>
     </div>
   </section>
 
-  <!-- ================== CONTINUOUS DOWNLOAD MODE ================== -->
+  <!-- ===================== USE CASES ====================== -->
   <section class="st-section">
     <div class="st-section-inner">
-      <p class="st-eyebrow">Continuous mode</p>
-      <h2 class="st-h2">Set it and forget it &mdash; new recordings flow in.</h2>
-      <ul class="st-mode-list">
-        <li><strong>Detect</strong> &mdash; new file appears in a watched folder (Drive sync, OMI wearable, voice-memo export, anything).</li>
-        <li><strong>Dedupe</strong> &mdash; content-hash check; identical files don&rsquo;t get re-processed.</li>
-        <li><strong>Filter</strong> &mdash; rules you set (silent files, &lt; 30s clips, screen-share-only meetings) get skipped.</li>
-        <li><strong>Queue</strong> &mdash; passed files line up for transcription; full GPU control, no remote API calls.</li>
-        <li><strong>Optional review</strong> &mdash; flag anything for human dismissal or extra tagging before it&rsquo;s processed.</li>
-      </ul>
-      <p class="st-aside"><em>Coming next:</em> LLM-based or script-based auto-tagging, seeded by your initial tags &mdash; so a year of recordings finds the right project context on its own.</p>
-    </div>
-  </section>
-
-  <!-- ===================== SELF-HOST vs HOSTED =================== -->
-  <section class="st-section st-section-soft">
-    <div class="st-section-inner">
-      <p class="st-eyebrow">Two ways to run it</p>
-      <h2 class="st-h2">Pick the friction you want.</h2>
-      <div class="st-grid-2">
-        <div class="st-card">
-          <h3 class="st-card-title">Self-host</h3>
-          <p class="st-card-tag">Free &middot; EvoBioSys License</p>
-          <ul class="st-check-list">
-            <li>Run it on your own GPU (RTX 3090-class or better)</li>
-            <li>Source on GitHub today, GitLab self-hosted in V2</li>
-            <li>Full control, full responsibility</li>
-            <li>Community support via mail &amp; Matrix (coming)</li>
-          </ul>
+      <p class="st-eyebrow">What people use it for</p>
+      <h2 class="st-h2">Some of the things it&rsquo;s good at.</h2>
+      <div class="st-uses">
+        <div class="st-use">
+          <span class="st-use-icon">&#x1F4DD;</span>
+          <strong>Find that thing you said in last Tuesday&rsquo;s meeting</strong>
+          <span>without scrubbing through the recording.</span>
         </div>
-        <div class="st-card st-card-accent">
-          <h3 class="st-card-title">Hosted</h3>
-          <p class="st-card-tag">Beta waitlist &middot; Swiss servers</p>
-          <ul class="st-check-list">
-            <li>We host on EU-sovereign infrastructure</li>
-            <li>Zero ops &mdash; upload audio, get transcripts back</li>
-            <li>Billing in EUR/CHF via Mollie (NL) + self-hosted Lago (FR)</li>
-            <li>No US payment rails &mdash; ever</li>
-          </ul>
+        <div class="st-use">
+          <span class="st-use-icon">&#x1F3A4;</span>
+          <strong>Turn voice memos into journal entries</strong>
+          <span>that you can actually search and revisit.</span>
+        </div>
+        <div class="st-use">
+          <span class="st-use-icon">&#x1F4FB;</span>
+          <strong>Build a private archive of your conversations</strong>
+          <span>without putting any of them on Big Tech servers.</span>
+        </div>
+        <div class="st-use">
+          <span class="st-use-icon">&#x1F4DA;</span>
+          <strong>Hand transcripts to your AI assistant</strong>
+          <span>so it actually knows what you discussed.</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ========================= PRICING ============================ -->
-  <section class="st-section">
+  <!-- ===================== PRICING ====================== -->
+  <section class="st-section st-section-soft">
     <div class="st-section-inner">
-      <p class="st-eyebrow">Economic engine</p>
-      <h2 class="st-h2">Still exploring what sustains this.</h2>
-      <p class="st-lede">We&rsquo;re not pretending to know the right pricing yet. Here&rsquo;s what we&rsquo;re building toward, in the open.</p>
+      <p class="st-eyebrow">Pricing</p>
+      <h2 class="st-h2">Pick what feels right.</h2>
+      <p class="st-lede">We&rsquo;re still figuring out the right shape. Here&rsquo;s what works today, in the open.</p>
       <div class="st-grid-3">
         <div class="st-tier">
           <h3 class="st-tier-name">Self-host</h3>
           <p class="st-tier-price">Free</p>
-          <p class="st-tier-desc">EvoBioSys License. No strings. No telemetry. Run it on your hardware, in your jurisdiction.</p>
-          <a href="https://github.com/evobiosys/sotranscribe" class="st-tier-cta">Get the source &rarr;</a>
+          <p class="st-tier-desc">Run it on your own computer. The source is open. Bring your own GPU. Community support by mail.</p>
+          <a href="https://github.com/evobiosys/sotranscribe" class="st-tier-cta">Get the code &rarr;</a>
         </div>
         <div class="st-tier st-tier-featured">
-          <p class="st-tier-flag">Power users</p>
-          <h3 class="st-tier-name">Beta waitlist</h3>
+          <p class="st-tier-flag">Most frictionless</p>
+          <h3 class="st-tier-name">Beta access</h3>
           <p class="st-tier-price">Pricing TBD</p>
-          <p class="st-tier-desc">Pay to get early releases &amp; shape the product. Beta users <em>are</em> the feedback loop &mdash; we want the people who&rsquo;d use early access first.</p>
+          <p class="st-tier-desc">We host it for you on European servers. You upload, we transcribe, you download. You also help shape the product &mdash; beta users get early features and direct line to us.</p>
           <a href="mailto:connect@evobiosys.org?subject=SoTranscribe%20beta%20waitlist" class="st-tier-cta">Join the waitlist &rarr;</a>
         </div>
         <div class="st-tier">
-          <h3 class="st-tier-name">Sponsor</h3>
-          <p class="st-tier-price">Coming</p>
-          <p class="st-tier-desc">Open Collective Europe &mdash; recurring patronage with transparent ledger and cost-sharing. Funds the commons, not a transaction.</p>
-          <span class="st-tier-cta st-tier-cta-disabled">Coming midterm</span>
+          <h3 class="st-tier-name">For organisations</h3>
+          <p class="st-tier-price">Custom</p>
+          <p class="st-tier-desc">Larger volume, custom integration, customer support, signed agreement &mdash; we&rsquo;ll work it out together.</p>
+          <a href="mailto:connect@evobiosys.org?subject=SoTranscribe%20for%20organisations" class="st-tier-cta">Contact us &rarr;</a>
         </div>
       </div>
-      <div class="st-enterprise">
-        <strong>Enterprise:</strong> EvoBioSys License + customer support &mdash; bespoke. <a href="mailto:connect@evobiosys.org?subject=SoTranscribe%20enterprise">Contact us</a>.
-      </div>
-      <p class="st-aside st-aside-spaced"><em>On the horizon:</em> cooperative hosting &mdash; self-hosters can become community hosts for friends or small collectives, keeping most of the revenue. Federation-as-business-model. Not yet, but coming.</p>
     </div>
   </section>
 
-  <!-- ===================== TRANSPARENT COSTS ====================== -->
-  <section class="st-section st-section-soft">
-    <div class="st-section-inner">
-      <p class="st-eyebrow">Transparent costs</p>
-      <h2 class="st-h2">Hosting isn&rsquo;t free &mdash; here&rsquo;s the math.</h2>
-      <ul class="st-cost-list">
-        <li><strong>GPU compute</strong> &mdash; Whisper Large v3 wants RTX 3090-class memory. Hetzner GPU instances run roughly &euro;100&ndash;250/month per node, depending on utilization.</li>
-        <li><strong>Storage</strong> &mdash; cheap per-TB, but accumulates. Audio is bulky.</li>
-        <li><strong>Bandwidth</strong> &mdash; egress is the silent line item.</li>
-      </ul>
-      <p class="st-aside">When the hosted tier launches, the actual numbers go in the public ledger via Open Collective Europe. Patronage funds a clearly-priced commons, not a black box.</p>
-    </div>
-  </section>
-
-  <!-- =================== WHY EU? WHY NO STRIPE? =================== -->
-  <section class="st-section">
-    <div class="st-section-inner st-prose">
-      <p class="st-eyebrow">Why EU? Why no Stripe?</p>
-      <h2 class="st-h2">Because the <abbr title="Clarifying Lawful Overseas Use of Data Act, 2018">CLOUD Act</abbr> exists.</h2>
-      <p>US-jurisdiction providers &mdash; Stripe, Google, AWS &mdash; can be compelled under the <strong>CLOUD Act</strong> to hand over data even when it&rsquo;s stored in the EU. Audio of meetings is some of the most sensitive content a person creates. We don&rsquo;t want that exposure on our chain, and you shouldn&rsquo;t either.</p>
-      <p>Our stack is named, boring, and verifiable: <strong>Mollie</strong> (NL) for cards. <strong>Lago</strong> (FR, self-hosted, open-source) for invoicing. <strong>GoCardless</strong> for SEPA direct debit. <strong>Bunny Fonts</strong> (SI) instead of Google Fonts. <strong>Plausible</strong> (EU instance, no cookies) for analytics &mdash; if we add any. <strong>Open Collective Europe</strong> for sponsorship, with a public ledger.</p>
-      <p class="st-aside">V1 caveats we don&rsquo;t hide: GitHub Pages and the GitHub repo are still US-hosted. Migration to a German Hetzner instance and self-hosted GitLab is the V2 commitment.</p>
-    </div>
-  </section>
-
-  <!-- ========================= LINEAGE ============================ -->
-  <section class="st-section st-section-soft">
-    <div class="st-section-inner">
-      <p class="st-eyebrow">Lineage</p>
-      <div class="st-chips">
-        <a href="https://idea2.life" class="st-chip st-chip-primary">part of idea2.life</a>
-        <a href="https://evobiosys.org" class="st-chip st-chip-accent">within EvoBioSys</a>
-        <a href="https://questhub.eco/#tools" class="st-chip">listed on QuestHub</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================= COMMUNITY ========================== -->
+  <!-- ===================== FAQ ====================== -->
   <section class="st-section">
     <div class="st-section-inner">
-      <p class="st-eyebrow">Community</p>
-      <h2 class="st-h2">Talk to us.</h2>
-      <ul class="st-channels">
-        <li><strong>Mail</strong> &mdash; <a href="mailto:connect@evobiosys.org">connect@evobiosys.org</a></li>
-        <li><strong>Matrix</strong> &mdash; self-hosted homeserver, coming soon</li>
-        <li><strong>Discord bridge</strong> &mdash; coming soon</li>
-        <li><strong>Bluesky &amp; Mastodon</strong> &mdash; coming soon</li>
-      </ul>
-      <p class="st-aside">No fake activity feeds. The links go live when the rooms open.</p>
-    </div>
-  </section>
-
-  <!-- ============================= FAQ ============================ -->
-  <section id="faq" class="st-section st-section-soft">
-    <div class="st-section-inner">
-      <p class="st-eyebrow">FAQ</p>
-      <h2 class="st-h2">Honest answers.</h2>
+      <p class="st-eyebrow">Common questions</p>
+      <h2 class="st-h2">Plain answers.</h2>
       <dl class="st-faq">
-        <dt>Why no Stripe?</dt>
-        <dd>CLOUD Act exposure (see above). We use Mollie (NL) for cards and self-hosted Lago (FR) for invoicing. Your billing record never leaves the European jurisdiction.</dd>
+        <dt>Does anyone listen to my recordings?</dt>
+        <dd>No. The whole point is that nobody hears the audio except whoever you choose to share it with. The transcription is done by software, on hardware that&rsquo;s either yours or ours &mdash; never on a service that re-uses your data.</dd>
 
-        <dt>What about my data?</dt>
-        <dd>Self-host: nothing leaves your machine. Hosted (when it launches): audio sits on EU-sovereign servers, named providers, never touching US infrastructure. Crown-jewel data &mdash; meeting audio is exactly that &mdash; deserves the strongest available promise.</dd>
+        <dt>How accurate is it?</dt>
+        <dd>Very. It uses the same family of speech-recognition models that the major services use, just running it without sending the audio elsewhere. For most clean recordings, accuracy is comparable to what you&rsquo;d get from a paid cloud transcription service.</dd>
 
-        <dt>Can I leave?</dt>
-        <dd>Yes. The EvoBioSys License permits export and migration. Hosted tier exports your full transcripts + metadata in standard formats (Markdown + JSON). No lock-in moats. If you&rsquo;re unhappy, the door opens outward.</dd>
+        <dt>What about privacy laws?</dt>
+        <dd>We&rsquo;re built around GDPR. We don&rsquo;t use any US-based company in the data path &mdash; not for payments, not for analytics, not for fonts. That&rsquo;s a deliberate choice, not just a feature bullet.</dd>
 
-        <dt>Where is V1 actually hosted?</dt>
-        <dd>This page is on GitHub Pages today &mdash; we&rsquo;re flagging that openly because it&rsquo;s a US-jurisdiction host. The migration to a German Hetzner instance (and self-hosted GitLab for the repo) is V2. The marketing page is public anyway, but principle matters.</dd>
+        <dt>What languages does it support?</dt>
+        <dd>About 100, with the strongest results in English, German, French, Spanish, Italian, Portuguese, Dutch, and the other major European languages. Detection is automatic.</dd>
 
-        <dt>What&rsquo;s the implementation stack?</dt>
-        <dd>Rust backend, React frontend for the SoTranscribe app itself. Whisper via faster-whisper (Python, CTranslate2). Diarization via pyannote.audio. The marketing page you&rsquo;re on is plain Jekyll &mdash; same site as the rest of <a href="/">QuestHub</a>.</dd>
+        <dt>Do I need to be technical to use it?</dt>
+        <dd>For the hosted version, no &mdash; upload an audio file, get text back. For self-host, yes &mdash; you&rsquo;ll need to be comfortable with running things on your own machine. The hosted version exists for everyone who&rsquo;d rather just have it work.</dd>
 
-        <dt>What&rsquo;s &ldquo;idea2.life&rdquo;?</dt>
-        <dd>A turquoise (Spiral Dynamics tier-2) incubator with a federated, sovereign-by-default worldview. SoTranscribe is its first baby. <a href="https://idea2.life">Read more</a>.</dd>
+        <dt>Can I export my transcripts?</dt>
+        <dd>Always. Standard formats (Markdown + JSON). No lock-in. If you ever leave, you take everything.</dd>
       </dl>
     </div>
   </section>
 
-  <!-- ========================== FOOTER ============================ -->
+  <!-- ============== LINK TO DETAILS PAGE ============== -->
+  <section class="st-section st-section-soft">
+    <div class="st-section-inner">
+      <div class="st-detail-link">
+        <p>Want the technical write-up? CLOUD Act reasoning, named providers, the full pipeline diagram, lineage and ethos &mdash;</p>
+        <p><a href="/sotranscribe/details/" class="st-link-strong">this way if you want to read the jargon-y details &rarr;</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== COMMUNITY ============== -->
+  <section class="st-section">
+    <div class="st-section-inner">
+      <p class="st-eyebrow">Talk to us</p>
+      <h2 class="st-h2">Mail is the front door.</h2>
+      <ul class="st-channels">
+        <li><strong>Mail</strong> &mdash; <a href="mailto:connect@evobiosys.org">connect@evobiosys.org</a> (we read everything)</li>
+        <li><strong>Matrix &amp; Discord</strong> &mdash; coming soon</li>
+        <li><strong>Bluesky &amp; Mastodon</strong> &mdash; coming soon</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============== FOOTER ============== -->
   <footer class="st-footer">
     <div class="st-footer-inner">
       <p>SoTranscribe &middot; first <a href="https://idea2.life">idea2.life</a> baby &middot; within <a href="https://evobiosys.org">EvoBioSys</a></p>
       <p class="st-footer-meta">
+        <a href="/sotranscribe/details/">Technical details</a> &middot;
         <a href="/sotranscribe/imprint/">Imprint</a> &middot;
         <a href="/sotranscribe/privacy/">Privacy</a> &middot;
-        <a href="https://github.com/evobiosys/license">EvoBioSys License</a> &middot;
+        <a href="https://github.com/evobiosys/license">License</a> &middot;
         <a href="/">Back to QuestHub</a>
       </p>
     </div>
