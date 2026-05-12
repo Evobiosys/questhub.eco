@@ -1,5 +1,5 @@
 use axum::{
-    extract::{Path, Query, State},
+    extract::{ConnectInfo, Path, Query, State},
     http::StatusCode,
     response::{IntoResponse, Json, Redirect, Response},
     Form,
@@ -8,9 +8,35 @@ use kidur_core::{FieldValue, Node, NodeId};
 use kidur_log::Mutation;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+use std::net::{IpAddr, SocketAddr};
 
 use crate::session_store::get_session_cookie;
+use crate::spam::CaptchaError;
 use crate::state::{QuestEvent, QuestHubState};
+
+/// Known spam quest IDs to filter from public API
+const SPAM_QUEST_IDS: &[&str] = &[
+    "019e0973-b726-7912-bbe3-63a7d75824c7",  // Goldau
+    "019df4c6-0051-7b23-92c1-c733a4b86a65",  // Vaugondry
+    "019de341-1c3d-76e2-95cc-e0e17ad879d8",  // Niederhelfenschwil
+    "019dde0a-c3c8-7102-88f6-5f0a216d5f41",  // Bydgoszcz
+];
+
+fn is_spam_quest(id: &str) -> bool {
+    SPAM_QUEST_IDS.contains(&id)
+}
+
+/// Resolves the submitter's IP. Trusts X-Forwarded-For from Caddy (set by reverse proxy),
+/// falls back to the direct peer address when no header is present.
+fn submitter_ip(headers: &axum::http::HeaderMap, peer: SocketAddr) -> IpAddr {
+    headers
+        .get("x-forwarded-for")
+        .and_then(|v| v.to_str().ok())
+        .and_then(|s| s.split(',').next())
+        .map(|s| s.trim())
+        .and_then(|s| s.parse::<IpAddr>().ok())
+        .unwrap_or_else(|| peer.ip())
+}
 
 /// Public-facing quest representation.
 /// Note: `contact` is intentionally absent — stored privately, never returned via API.
@@ -79,8 +105,13 @@ pub struct QuestForm {
     pub category_custom: Option<String>,
     pub description: String,
     pub contact: Option<String>,
+    pub parent_project: Option<String>,
     /// Honeypot field — if filled, it's a bot.
     pub website: Option<String>,
+    /// Proof-of-work challenge token issued by GET /api/captcha/challenge.
+    pub captcha_challenge: Option<String>,
+    /// Nonce computed by the client to satisfy the PoW.
+    pub captcha_nonce: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -91,15 +122,33 @@ pub struct QuestListQuery {
 /// POST /api/quests — create a new quest from form submission.
 pub async fn create_quest(
     headers: axum::http::HeaderMap,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
     State(state): State<QuestHubState>,
     Form(form): Form<QuestForm>,
 ) -> Response {
     // If the user is logged in, associate this quest with their account
     let session_email = get_session_cookie(&headers)
         .and_then(|tok| state.session_store.get_session_email(&tok));
-    // Honeypot check
+    // Layer 1: Honeypot — pretend to succeed so bots don't retry
     if form.website.as_ref().is_some_and(|w| !w.is_empty()) {
         return Redirect::to("/?submitted=true").into_response();
+    }
+    // Layer 2: Rate limit per IP
+    let ip = submitter_ip(&headers, peer);
+    if !state.spam_guard.check_rate_limit(ip) {
+        return (StatusCode::TOO_MANY_REQUESTS, "Rate limit exceeded; try again later").into_response();
+    }
+    // Layers 3 + 4: Time-trap + Proof-of-work captcha (combined in the token)
+    let challenge = form.captcha_challenge.as_deref().unwrap_or("");
+    let nonce = form.captcha_nonce.as_deref().unwrap_or("");
+    if let Err(e) = state.spam_guard.verify(challenge, nonce) {
+        let msg = match e {
+            CaptchaError::TooFast => "Submitted too fast; please take a moment to review",
+            CaptchaError::InvalidProof | CaptchaError::UnknownChallenge | CaptchaError::AlreadyUsed => {
+                "Captcha verification failed; please reload the page and try again"
+            }
+        };
+        return (StatusCode::BAD_REQUEST, msg).into_response();
     }
 
     let mut fields = BTreeMap::new();
@@ -132,6 +181,11 @@ pub async fn create_quest(
     }
     if let Some(ref email) = session_email {
         fields.insert("submitter_email".to_string(), FieldValue::Text(email.clone()));
+    }
+    if let Some(ref pp) = form.parent_project {
+        if !pp.is_empty() {
+            fields.insert("parent_project".to_string(), FieldValue::Text(pp.clone()));
+        }
     }
 
     let mut node = Node::new(&form.quest).with_supertag("quest");
@@ -164,12 +218,27 @@ pub async fn create_quest(
 /// POST /api/quests/json — create a new quest from JSON (for JS fetch).
 pub async fn create_quest_json(
     headers: axum::http::HeaderMap,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
     State(state): State<QuestHubState>,
     Json(form): Json<QuestForm>,
 ) -> Response {
-    // Honeypot check
     if form.website.as_ref().is_some_and(|w| !w.is_empty()) {
         return (StatusCode::CREATED, Json(serde_json::json!({"ok": true}))).into_response();
+    }
+    let ip = submitter_ip(&headers, peer);
+    if !state.spam_guard.check_rate_limit(ip) {
+        return (StatusCode::TOO_MANY_REQUESTS, Json(serde_json::json!({"error": "rate limit"}))).into_response();
+    }
+    let challenge = form.captcha_challenge.as_deref().unwrap_or("");
+    let nonce = form.captcha_nonce.as_deref().unwrap_or("");
+    if let Err(e) = state.spam_guard.verify(challenge, nonce) {
+        let msg = match e {
+            CaptchaError::TooFast => "too_fast",
+            CaptchaError::InvalidProof => "invalid_proof",
+            CaptchaError::UnknownChallenge => "unknown_challenge",
+            CaptchaError::AlreadyUsed => "already_used",
+        };
+        return (StatusCode::BAD_REQUEST, Json(serde_json::json!({"error": msg}))).into_response();
     }
     let session_email = get_session_cookie(&headers)
         .and_then(|tok| state.session_store.get_session_email(&tok));
@@ -204,6 +273,11 @@ pub async fn create_quest_json(
     }
     if let Some(ref email) = session_email {
         fields.insert("submitter_email".to_string(), FieldValue::Text(email.clone()));
+    }
+    if let Some(ref pp) = form.parent_project {
+        if !pp.is_empty() {
+            fields.insert("parent_project".to_string(), FieldValue::Text(pp.clone()));
+        }
     }
 
     let mut node = Node::new(&form.quest).with_supertag("quest");
@@ -242,6 +316,7 @@ pub async fn list_quests(
     let mut responses: Vec<QuestResponse> = quests
         .into_iter()
         .map(QuestResponse::from_node)
+        .filter(|q| !is_spam_quest(&q.id))
         .collect();
 
     if let Some(ref cat) = params.category {
@@ -266,7 +341,7 @@ pub async fn get_quest(
 
     let index = state.index.read().unwrap();
     match index.get_node(node_id) {
-        Some(node) if node.supertag.as_deref() == Some("quest") => {
+        Some(node) if node.supertag.as_deref() == Some("quest") && !is_spam_quest(&node.id.to_string()) => {
             Json(QuestResponse::from_node(node)).into_response()
         }
         _ => (StatusCode::NOT_FOUND, "Quest not found").into_response(),

@@ -84,7 +84,12 @@
         <label for="qf-contact">How to reach you <small>(optional)</small></label>
         <input type="text" id="qf-contact" name="contact" maxlength="300" placeholder="Email, website, or social handle">
 
-        <button type="submit" class="qh-btn">Plant this seed</button>
+        <!-- Captcha (proof-of-work, self-hosted, no third party) -->
+        <input type="hidden" name="captcha_challenge" id="qf-captcha-challenge">
+        <input type="hidden" name="captcha_nonce"     id="qf-captcha-nonce">
+        <div class="qh-captcha-status" id="qf-captcha-status" aria-live="polite">Preparing form&hellip;</div>
+
+        <button type="submit" class="qh-btn" id="qf-submit" disabled>Plant this seed</button>
       </form>
     </div>
   </section>
@@ -96,7 +101,7 @@
       <div class="qh-footer-links">
         <a href="/privacy/">Privacy</a>
         <a href="/legal/">Legal</a>
-        <a href="mailto:connect@questhub.eco">Contact</a>
+        <a href="#" class="email-reveal" data-u="connect" data-d="questhub.eco" rel="nofollow">Reveal email</a>
       </div>
       <p class="qh-footer-copy">Open source &middot; Swiss-hosted &middot; Federated by design &middot; Built with care in Vienna, AT &middot; Part of the EvoBioSys ecosystem</p>
     </div>
@@ -104,6 +109,17 @@
 </div>
 
 <script>
+// ── Email reveal (defeats scraper spam) ─────────────────────
+document.addEventListener('click', function(e){
+  var el = e.target.closest('.email-reveal');
+  if (!el) return;
+  e.preventDefault();
+  var addr = el.dataset.u + '@' + el.dataset.d;
+  el.textContent = addr;
+  el.href = 'mailto:' + addr;
+  el.classList.remove('email-reveal');
+});
+
 // ── Category custom field toggle ────────────────────────────
 document.getElementById('qf-category').addEventListener('change', function() {
   document.getElementById('custom-category-wrap').style.display =
@@ -151,16 +167,22 @@ function escapeHtml(s) {
 
 function createQuestCard(q) {
   var color = LIFECYCLE_COLORS[q.lifecycle_stage] || LIFECYCLE_COLORS.identified;
-  var parent = q.parent_project
-    ? '<span class="qh-card-parent">under ' + escapeHtml(q.parent_project) + '</span>'
-    : '';
+  var internalChip = '';
+  if (q.parent_project === 'EvoBioSys') {
+    internalChip = '<span class="qh-chip-internal" tabindex="0">'
+      + 'internal'
+      + '<span class="qh-chip-tooltip">Part of the <a href="https://evobiosys.org" target="_blank" rel="noopener">EvoBioSys</a> collective</span>'
+      + '</span>';
+  } else if (q.parent_project) {
+    internalChip = '<span class="qh-card-parent">under ' + escapeHtml(q.parent_project) + '</span>';
+  }
   return [
     '<a href="/quest/' + q.id + '" class="qh-card" data-cat="' + escapeHtml(q.category || 'other') + '">',
     '  <div class="qh-card-top">',
     '    <span class="qh-seed-dot" style="background:' + color + '" title="' + escapeHtml(q.lifecycle_stage) + '"></span>',
     '    <h3>' + escapeHtml(q.title) + '</h3>',
+    internalChip,
     '  </div>',
-    parent,
     '  <p>' + escapeHtml(q.description || '').substring(0, 180) + '</p>',
     '</a>'
   ].join('');
@@ -228,6 +250,65 @@ source.addEventListener('quest_update', function(e) {
   }
 });
 
+// ── Proof-of-work captcha (self-hosted, no third party) ─────
+// Fetches a challenge on form load, solves it in a Web Worker,
+// and writes the (challenge, nonce) pair into hidden inputs.
+(function() {
+  var statusEl = document.getElementById('qf-captcha-status');
+  var submitBtn = document.getElementById('qf-submit');
+  var challengeInput = document.getElementById('qf-captcha-challenge');
+  var nonceInput = document.getElementById('qf-captcha-nonce');
+  if (!statusEl || !submitBtn) return;
+
+  // Worker source (inlined as Blob — no separate file).
+  var workerSrc = [
+    "self.onmessage = async function(e) {",
+    "  var challenge = e.data.challenge;",
+    "  var bits = e.data.difficulty;",
+    "  var fullBytes = Math.floor(bits / 8);",
+    "  var extra = bits % 8;",
+    "  var mask = extra === 0 ? 0 : (0xFF << (8 - extra)) & 0xFF;",
+    "  var enc = new TextEncoder();",
+    "  var nonce = 0;",
+    "  while (true) {",
+    "    var input = enc.encode(challenge + ':' + nonce);",
+    "    var hash = new Uint8Array(await crypto.subtle.digest('SHA-256', input));",
+    "    var ok = true;",
+    "    for (var i = 0; i < fullBytes; i++) { if (hash[i] !== 0) { ok = false; break; } }",
+    "    if (ok && extra > 0 && (hash[fullBytes] & mask) !== 0) ok = false;",
+    "    if (ok) { self.postMessage({ nonce: String(nonce) }); return; }",
+    "    nonce++;",
+    "    if ((nonce & 0xFFF) === 0) { /* yield occasionally */ }",
+    "  }",
+    "};"
+  ].join('\n');
+
+  function solveChallenge() {
+    statusEl.textContent = 'Verifying you are human…';
+    fetch('/api/captcha/challenge')
+      .then(function(r) { return r.json(); })
+      .then(function(c) {
+        challengeInput.value = c.challenge;
+        var blob = new Blob([workerSrc], { type: 'application/javascript' });
+        var worker = new Worker(URL.createObjectURL(blob));
+        worker.onmessage = function(ev) {
+          nonceInput.value = ev.data.nonce;
+          statusEl.textContent = 'Verified.';
+          submitBtn.disabled = false;
+          worker.terminate();
+        };
+        worker.postMessage({ challenge: c.challenge, difficulty: c.difficulty });
+      })
+      .catch(function() {
+        statusEl.textContent = 'Could not load captcha; please reload the page.';
+      });
+  }
+
+  solveChallenge();
+  // Re-solve after a successful submission so a second submit works.
+  document.getElementById('quest-form').addEventListener('quest-resolved', solveChallenge);
+})();
+
 // ── Form submit via fetch (no page reload) ──────────────────
 document.getElementById('quest-form').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -246,7 +327,11 @@ document.getElementById('quest-form').addEventListener('submit', async function(
       btn.textContent = 'Seed planted!';
       form.reset();
       document.getElementById('custom-category-wrap').style.display = 'none';
-      setTimeout(function() { btn.disabled = false; btn.textContent = 'Plant this seed'; }, 2500);
+      setTimeout(function() {
+        btn.textContent = 'Plant this seed';
+        // Issue a fresh challenge for any subsequent submission.
+        form.dispatchEvent(new CustomEvent('quest-resolved'));
+      }, 2500);
     } else {
       var err = await resp.json();
       btn.textContent = err.error || 'Something went wrong';

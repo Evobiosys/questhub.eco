@@ -7,6 +7,7 @@ use crate::connect_store::ConnectionStore;
 use crate::email::EmailConfig;
 use crate::index::Index;
 use crate::session_store::SessionStore;
+use crate::spam::SpamGuard;
 use crate::user_store::UserStore;
 
 /// Event pushed to SSE subscribers when a quest changes.
@@ -28,4 +29,5 @@ pub struct QuestHubState {
     pub email_config:  Option<EmailConfig>,
     pub session_store: Arc<SessionStore>,
     pub user_store:    Arc<UserStore>,
+    pub spam_guard:    Arc<SpamGuard>,
 }

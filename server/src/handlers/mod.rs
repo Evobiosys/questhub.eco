@@ -1,4 +1,5 @@
 pub mod auth;
+pub mod captcha;
 pub mod comment;
 pub mod connect;
 pub mod pages;
