@@ -401,6 +401,52 @@ a:hover { color: var(--qh-acc-dim); }
 .qh-seed-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 0.35rem; }
 .qh-card-parent { font-size: 0.7rem; color: var(--qh-warm-dim); display: block; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
 
+/* ── Internal-to-EvoBioSys chip ─── */
+.qh-chip-internal {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--qh-acc);
+  border: 1px solid var(--qh-acc-dim);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  margin-top: 0.25rem;
+  position: relative;
+  cursor: default;
+  user-select: none;
+}
+.qh-chip-internal .qh-chip-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--qh-bg-card);
+  border: 1px solid var(--qh-border);
+  border-radius: 6px;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--qh-txt);
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  pointer-events: auto;
+  z-index: 10;
+}
+.qh-chip-internal .qh-chip-tooltip a {
+  color: var(--qh-acc);
+  text-decoration: underline;
+}
+.qh-chip-internal:hover .qh-chip-tooltip,
+.qh-chip-internal:focus .qh-chip-tooltip {
+  display: block;
+}
+
 /* Seed slot placeholder */
 .qh-card--seed-slot {
   background: transparent;
@@ -773,6 +819,12 @@ a:hover { color: var(--qh-acc-dim); }
   color: var(--qh-bg);
   margin-top: 1.5rem;
   letter-spacing: 0.04em;
+}
+.qh-captcha-status {
+  font-size: 0.78rem;
+  color: var(--qh-txt-dim);
+  margin-top: 1rem;
+  font-style: italic;
 }
 .qh-btn:hover {
   background: var(--qh-acc-dim);

@@ -4,7 +4,7 @@ use axum::{
 };
 use tower_http::services::ServeDir;
 
-use crate::handlers::{auth, comment, connect, pages, quest, room, sse};
+use crate::handlers::{auth, captcha, comment, connect, pages, quest, room, sse};
 use crate::state::QuestHubState;
 
 pub fn build_router(state: QuestHubState, static_dir: &str) -> Router {
@@ -47,6 +47,7 @@ pub fn build_router(state: QuestHubState, static_dir: &str) -> Router {
 
         // ── SSE + Health ──────────────────────────────────────────────────────
         .route("/api/quests/stream",  get(sse::quest_stream))
+        .route("/api/captcha/challenge", get(captcha::issue_challenge))
         .route("/health",             get(|| async { "ok" }))
 
         // ── Static files ──────────────────────────────────────────────────────

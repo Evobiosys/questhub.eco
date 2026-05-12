@@ -193,7 +193,7 @@
       <div class="qh-footer-links">
         <a href="/about">About</a>
         <a href="/privacy/">Privacy</a>
-        <a href="mailto:connect@questhub.eco">Contact</a>
+        <a href="#" class="email-reveal" data-u="connect" data-d="questhub.eco" rel="nofollow">Reveal email</a>
       </div>
       <p class="qh-footer-copy">Open source &middot; Swiss-hosted &middot; Built with care in Vienna, AT &middot; Part of the EvoBioSys ecosystem</p>
     </div>
@@ -201,6 +201,17 @@
 </div>
 
 <script>
+// ── Email reveal (defeats scraper spam) ─────────────────────
+document.addEventListener('click', function(e){
+  var el = e.target.closest('.email-reveal');
+  if (!el) return;
+  e.preventDefault();
+  var addr = el.dataset.u + '@' + el.dataset.d;
+  el.textContent = addr;
+  el.href = 'mailto:' + addr;
+  el.classList.remove('email-reveal');
+});
+
 // ── Fade-in on scroll ───────────────────────────────────────
 (function() {
   var obs = new IntersectionObserver(function(entries) {

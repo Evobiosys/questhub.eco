@@ -4,6 +4,7 @@ mod handlers;
 mod index;
 mod routes;
 mod session_store;
+mod spam;
 mod state;
 mod user_store;
 
@@ -19,6 +20,7 @@ use tracing_subscriber::EnvFilter;
 use crate::connect_store::ConnectionStore;
 use crate::index::Index;
 use crate::session_store::SessionStore;
+use crate::spam::SpamGuard;
 use crate::state::QuestHubState;
 use crate::user_store::UserStore;
 
@@ -95,7 +97,10 @@ async fn main() -> anyhow::Result<()> {
     ));
     tracing::info!("User store loaded");
 
-    // 10. Build state
+    // 10. Spam guard (in-memory: rate limit + PoW captcha + time-trap)
+    let spam_guard = Arc::new(SpamGuard::new());
+
+    // 11. Build state
     let state = QuestHubState {
         log: Arc::new(Mutex::new(log)),
         index: Arc::new(RwLock::new(idx)),
@@ -105,6 +110,7 @@ async fn main() -> anyhow::Result<()> {
         email_config,
         session_store,
         user_store,
+        spam_guard,
     };
 
     // 11. Build router and serve
@@ -112,7 +118,7 @@ async fn main() -> anyhow::Result<()> {
 
     tracing::info!("QuestHub listening on {listen_addr}");
     let listener = tokio::net::TcpListener::bind(listen_addr).await?;
-    axum::serve(listener, app).await?;
+    axum::serve(listener, app.into_make_service_with_connect_info::<SocketAddr>()).await?;
 
     Ok(())
 }
