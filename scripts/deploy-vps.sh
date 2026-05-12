@@ -8,8 +8,8 @@ set -e
 VPS_IP="83.228.242.162"
 VPS_USER="almalinux"
 SSH_KEY="/root/.ssh/id_questhub"
-BINARY_LOCAL="./target/release/questhub-server"
-CSS_LOCAL="./static/css/style.css"
+BINARY_LOCAL="./server/target/release/questhub-server"
+CSS_LOCAL="./server/static/css/style.css"
 VPS_DATA_DIR="/srv/questhub/data"
 TEMP_DIR="/tmp/questhub-deploy-$$"
 
