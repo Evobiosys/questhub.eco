@@ -14,6 +14,18 @@ use crate::session_store::get_session_cookie;
 use crate::spam::CaptchaError;
 use crate::state::{QuestEvent, QuestHubState};
 
+/// Known spam quest IDs to filter from public API
+const SPAM_QUEST_IDS: &[&str] = &[
+    "019e0973-b726-7912-bbe3-63a7d75824c7",  // Goldau
+    "019df4c6-0051-7b23-92c1-c733a4b86a65",  // Vaugondry
+    "019de341-1c3d-76e2-95cc-e0e17ad879d8",  // Niederhelfenschwil
+    "019dde0a-c3c8-7102-88f6-5f0a216d5f41",  // Bydgoszcz
+];
+
+fn is_spam_quest(id: &str) -> bool {
+    SPAM_QUEST_IDS.contains(&id)
+}
+
 /// Resolves the submitter's IP. Trusts X-Forwarded-For from Caddy (set by reverse proxy),
 /// falls back to the direct peer address when no header is present.
 fn submitter_ip(headers: &axum::http::HeaderMap, peer: SocketAddr) -> IpAddr {
@@ -304,6 +316,7 @@ pub async fn list_quests(
     let mut responses: Vec<QuestResponse> = quests
         .into_iter()
         .map(QuestResponse::from_node)
+        .filter(|q| !is_spam_quest(&q.id))
         .collect();
 
     if let Some(ref cat) = params.category {
@@ -328,7 +341,7 @@ pub async fn get_quest(
 
     let index = state.index.read().unwrap();
     match index.get_node(node_id) {
-        Some(node) if node.supertag.as_deref() == Some("quest") => {
+        Some(node) if node.supertag.as_deref() == Some("quest") && !is_spam_quest(&node.id.to_string()) => {
             Json(QuestResponse::from_node(node)).into_response()
         }
         _ => (StatusCode::NOT_FOUND, "Quest not found").into_response(),
