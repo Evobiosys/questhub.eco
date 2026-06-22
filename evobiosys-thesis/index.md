@@ -574,6 +574,8 @@ The capital screen is the thesis screen: back what increases sovereignty and reg
 
 *The underlying research and source notes are maintained privately; this page publishes the outer ring — public concepts, the master narrative, and tier-A/B external facts. No private Tana node IDs, inner-ring specifics, or personal financial figures appear here.*
 
+*This text is AI-formulated — synthesised by Claude from the author's private research notes and reformulated for public clarity. The ideas, frameworks, and positions are the author's own.*
+
 *This page is hosted on [QuestHub](https://questhub.eco) — the demand-sensing layer of the EvoBioSys network. The entry point at [evobiosys.org/thesis/](https://evobiosys.org/thesis/) redirects here.*
 
 *Corrections and responses welcome at [connect@evobiosys.org](mailto:connect@evobiosys.org).*
