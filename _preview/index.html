@@ -208,9 +208,19 @@
   }
 
   .qh-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    display: grid; grid-template-columns: repeat(3, 1fr);
     gap: 1rem; max-width: 960px; margin: 0 auto;
   }
+  .qh-grid.collapsed > .qh-card:nth-child(n+4) { display: none; }
+  .qh-more {
+    display: block; margin: 1.25rem auto 0; padding: 0.5rem 1.1rem;
+    background: transparent; border: 1px solid var(--qh-border); border-radius: 999px;
+    color: var(--qh-soil-muted); font-family: inherit; font-size: 0.85rem; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .qh-more:hover { border-color: var(--qh-gold-light); color: var(--qh-soil); background: var(--qh-cream); }
+  .qh-more-chev { display: inline-block; margin-left: 0.4rem; transition: transform 0.2s; }
+  @media (max-width: 860px) and (min-width: 561px) { .qh-grid { grid-template-columns: repeat(2, 1fr); } }
   .qh-card {
     padding: 1.35rem 1.5rem; border-radius: 10px;
     background: var(--color-white, #ffffff); border: 1px solid var(--qh-border);
@@ -361,27 +371,6 @@
     </div>
   </section>
 
-  <!-- Governance & Law -->
-  <section class="qh-category">
-    <div class="qh-cat-header">
-      <div class="qh-cat-icon society">&#x2696;</div>
-      <h2 class="qh-cat-title">Governance &amp; Law</h2>
-      <span class="qh-cat-count">1 seed</span>
-    </div>
-    <div class="qh-grid">
-      <a class="qh-card qh-card-link" href="/quests/ampl/">
-        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>AMPL 1.0 — Adapted Modular Public License</h3></div>
-        <span class="qh-card-parent">open governance</span>
-        <p>
-          MPL 2.0 with one parallel extension: the same network clause that AGPL added to GPL,
-          applied at the file level. Core work under AMPL 1.0; community extensions under Apache 2.0
-          &mdash; the Firefox/Elasticsearch model, but file-scoped.
-          Seeking input from ISC Foundation and EUPL drafters.
-        </p>
-      </a>
-    </div>
-  </section>
-
   <!-- Technology & Infrastructure -->
   <section class="qh-category">
     <div class="qh-cat-header">
@@ -434,6 +423,27 @@
       <a class="qh-card qh-card-link" href="/quests/sovereign-switch/">
         <div class="qh-card-top"><span class="qh-card-seed gold"></span><h3>Sovereign Switch</h3></div>
         <p>The full chain &mdash; export your data from every service you use and re-host it on infrastructure you own. SoTranscribe is the first concrete tool in the chain. Site coming soon.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- Governance & Law -->
+  <section class="qh-category">
+    <div class="qh-cat-header">
+      <div class="qh-cat-icon society">&#x2696;</div>
+      <h2 class="qh-cat-title">Governance &amp; Law</h2>
+      <span class="qh-cat-count">1 seed</span>
+    </div>
+    <div class="qh-grid">
+      <a class="qh-card qh-card-link" href="/quests/ampl/">
+        <div class="qh-card-top"><span class="qh-card-seed green"></span><h3>AMPL 1.0 — Adapted Modular Public License</h3></div>
+        <span class="qh-card-parent">open governance</span>
+        <p>
+          MPL 2.0 with one parallel extension: the same network clause that AGPL added to GPL,
+          applied at the file level. Core work under AMPL 1.0; community extensions under Apache 2.0
+          &mdash; the Firefox/Elasticsearch model, but file-scoped.
+          Seeking input from ISC Foundation and EUPL drafters.
+        </p>
       </a>
     </div>
   </section>
@@ -721,20 +731,25 @@
   </section>
 
   <script>
-    // Toggle category grids
-    document.querySelectorAll('.qh-cat-header').forEach(header => {
-      header.style.cursor = 'pointer';
-      const grid = header.nextElementSibling;
-      const icon = document.createElement('span');
-      icon.textContent = '▾';
-      icon.style.cssText = 'margin-left: auto; font-size: 1.2rem; color: var(--qh-soil-muted); transition: transform 0.2s;';
-      header.style.display = 'flex';
-      header.style.alignItems = 'center';
-      header.appendChild(icon);
-      header.addEventListener('click', () => {
-        const collapsed = grid.style.display === 'none';
-        grid.style.display = collapsed ? '' : 'none';
-        icon.textContent = collapsed ? '▾' : '▸';
+    // Reveal-more per category: show the first row (3 cards), chevron expands the rest.
+    document.querySelectorAll('.qh-grid').forEach(grid => {
+      const cards = grid.querySelectorAll('.qh-card');
+      if (cards.length <= 3) return;
+      grid.classList.add('collapsed');
+      const hidden = cards.length - 3;
+      const btn = document.createElement('button');
+      btn.className = 'qh-more';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.innerHTML = '<span class="qh-more-label"></span><span class="qh-more-chev">\u25BE</span>';
+      const label = btn.querySelector('.qh-more-label');
+      const chev = btn.querySelector('.qh-more-chev');
+      label.textContent = 'Show ' + hidden + ' more';
+      grid.after(btn);
+      btn.addEventListener('click', () => {
+        const collapsed = grid.classList.toggle('collapsed');
+        btn.setAttribute('aria-expanded', String(!collapsed));
+        label.textContent = collapsed ? ('Show ' + hidden + ' more') : 'Show less';
+        chev.style.transform = collapsed ? '' : 'rotate(180deg)';
       });
     });
 
