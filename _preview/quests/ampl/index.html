@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMPL 1.0 — Adapted Modular Public License | QuestHub</title>
+  <meta name="description" content="MPL 2.0 with one parallel extension — the network clause AGPL added to GPL, applied at the file level. A file-scoped copyleft license for sovereign open-source.">
+  
+  <link rel="canonical" href="">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bidirectional link to parent network -->
+  <link rel="me" href="https://evobiosys.org">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+
+  <!-- IndieWeb -->
+  <link rel="webmention" href="https://webmention.io/questhub.eco/webmention">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="qh-nav" id="nav">
+    <a href="/" class="qh-nav-logo">Quest<span>Hub</span></a>
+    <div class="qh-nav-right">
+      <a href="/evobiosys-thesis/" class="qh-nav-link">Thesis</a>
+      <a href="/funding-shopping-list/" class="qh-nav-link">Shopping List</a>
+      <a href="/#share" class="qh-nav-link">Share a Quest</a>
+      <a href="https://evobiosys.org" class="qh-nav-parent" target="_blank" rel="noopener">
+        Part of EvoBioSys ↗
+      </a>
+    </div>
+  </nav>
+
+  
+<div class="qh-quest" id="top">
+<style>
+  /* ── Quest detail page — reuses global --qh-* palette from style.css ── */
+  .qh-quest { background: var(--qh-parchment); color: var(--qh-soil); }
+  .qh-quest-hero {
+    max-width: 760px; margin: 0 auto; padding: 5.5rem 1.5rem 2.5rem;
+    text-align: center;
+  }
+  .qh-quest-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--qh-soil-muted); margin-bottom: 1.25rem;
+  }
+  .qh-quest-eyebrow .seed {
+    width: 9px; height: 9px; border-radius: 50%; background: var(--qh-green-light);
+  }
+  .qh-quest-hero h1 {
+    font-size: clamp(1.9rem, 5vw, 2.8rem); line-height: 1.15; margin: 0 0 1rem;
+    color: var(--qh-soil);
+  }
+  .qh-quest-hero .lede {
+    font-size: 1.15rem; line-height: 1.7; color: var(--qh-soil-muted); margin: 0 auto;
+    max-width: 620px;
+  }
+  .qh-quest-body {
+    max-width: 680px; margin: 0 auto; padding: 1rem 1.5rem 4rem;
+  }
+  .qh-quest-body section { margin-bottom: 2.75rem; }
+  .qh-quest-body h2 {
+    font-size: 1.4rem; color: var(--qh-green); margin: 0 0 0.9rem;
+    border-bottom: 1px solid var(--qh-border); padding-bottom: 0.4rem;
+  }
+  .qh-quest-body p { line-height: 1.8; margin: 0 0 1rem; }
+  .qh-quest-body ul { line-height: 1.8; padding-left: 1.2rem; }
+  .qh-quest-body li { margin-bottom: 0.4rem; }
+  .qh-meta {
+    display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center;
+    margin-top: 1.5rem;
+  }
+  .qh-meta span {
+    font-size: 0.8rem; padding: 0.3rem 0.75rem; border-radius: 999px;
+    background: var(--qh-cream); border: 1px solid var(--qh-border); color: var(--qh-soil-muted);
+  }
+  .qh-meta .stage-growing { background: var(--qh-green-pale); color: var(--qh-green); border-color: var(--qh-green-light); }
+  .qh-quest-back {
+    display: inline-block; margin: 0 auto; font-size: 0.9rem;
+  }
+  .qh-quest-cta {
+    text-align: center; margin-top: 3rem; padding-top: 2rem;
+    border-top: 1px solid var(--qh-border);
+  }
+</style>
+
+<div class="qh-quest-hero">
+  <div class="qh-quest-eyebrow"><span class="seed"></span> Governance &amp; Law · Quest</div>
+  <h1>AMPL 1.0 — Adapted Modular Public License</h1>
+  <p class="lede">
+    MPL 2.0 with one parallel extension: the same network clause that AGPL added to GPL,
+    applied at the file level — so sovereign open-source can stay open even when it ships as a service.
+  </p>
+  <div class="qh-meta">
+    <span class="stage-growing">Stage: Growing</span>
+    <span>Parent: open governance</span>
+    <span>EvoBioSys network</span>
+  </div>
+</div>
+
+<div class="qh-quest-body">
+  <section>
+    <h2>The seed</h2>
+    <p>
+      Most permissive licenses let anyone take open code, wrap it in a hosted service, and
+      give nothing back. The GNU project answered this for GPL with the AGPL network clause:
+      if you run modified code as a network service, you must release your modifications.
+      But AGPL is whole-program copyleft — too coarse for the modular, file-mixing reality of
+      modern software.
+    </p>
+    <p>
+      AMPL 1.0 takes the Mozilla Public License 2.0 — already file-scoped copyleft, already
+      battle-tested, already compatible with permissive ecosystems — and adds one parallel
+      extension: the network-use trigger, but applied <strong>per file</strong> rather than
+      per program. You keep MPL's clean boundary between covered and combined work, and you
+      close the SaaS loophole exactly where it matters.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why it matters</h2>
+    <p>
+      Sovereign European infrastructure needs a license that survives commercialization without
+      becoming captured. The Firefox and Elasticsearch stories show the model: a strong copyleft
+      core, a permissive (Apache 2.0) commons around it for community extensions. AMPL formalizes
+      that pattern as a reusable, drafted instrument — so each new EvoBioSys holon doesn't have to
+      reinvent its licensing posture from scratch.
+    </p>
+    <ul>
+      <li><strong>Core work</strong> ships under AMPL 1.0 — file-scoped copyleft with the network clause.</li>
+      <li><strong>Community extensions</strong> ship under Apache 2.0 — frictionless adoption.</li>
+      <li><strong>The boundary</strong> is the file, not the program — predictable for contributors and integrators alike.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What building it out looks like</h2>
+    <ul>
+      <li>Draft AMPL 1.0 as a clean diff against MPL 2.0 — the smallest possible delta, one clause.</li>
+      <li>Seek review from the ISC Foundation and EUPL drafters for legal soundness and EU-jurisdiction fit.</li>
+      <li>Publish license text, a plain-language FAQ, and a compatibility matrix (GPL/AGPL/Apache/MIT).</li>
+      <li>Apply it to a first EvoBioSys holon as the reference adopter.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Status</h2>
+    <p>
+      Growing. The conceptual delta is settled; the work now is careful legal drafting and
+      external review before any project adopts it in production. Seeking input from the ISC
+      Foundation and EUPL drafters.
+    </p>
+  </section>
+
+  <div class="qh-quest-cta">
+    <a href="/" class="btn btn-primary">&larr; Back to the garden</a>
+  </div>
+</div>
+</div>
+
+
+  <footer class="qh-footer">
+    <div class="qh-footer-inner">
+      <div class="qh-footer-brand">
+        <span class="qh-footer-logo">QuestHub</span>
+        <span class="qh-footer-tagline">The Garden of Quests</span>
+      </div>
+      <div class="qh-footer-links">
+        <a href="https://evobiosys.org" target="_blank" rel="noopener">EvoBioSys</a>
+        <a href="https://evobiosys.org/holons/" target="_blank" rel="noopener">Holons</a>
+        <a href="https://evobiosys.org/holons/soaro/" target="_blank" rel="noopener">Soaro</a>
+        <a href="https://kidur.org" target="_blank" rel="noopener">Kidur</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/legal/">Legal</a>
+        <a href="#" class="email-reveal" data-u="connect" data-d="evobiosys.org" rel="nofollow">Reveal email</a>
+      </div>
+      <p class="qh-footer-copy">
+        &copy; 2026 EvoBioSys &middot; Built on <a href="https://kidur.org" target="_blank" rel="noopener">Kidur</a>
+        &middot; <a href="https://evobiosys.org/holons/questhub/" target="_blank" rel="noopener">Also on EvoBioSys</a>
+      </p>
+      <p class="qh-footer-ecosystem" style="font-size:0.8rem; opacity:0.7; margin-top:0.5rem;">
+        Part of the <a href="https://evobiosys.org" target="_blank" rel="noopener">EvoBioSys</a> ecosystem
+      </p>
+      <p class="qh-footer-signoff" style="font-size:0.8rem; opacity:0.7; margin-top:0.5rem;">Made with love in Europe</p>
+      <a href="https://profiles.eco/questhub?ref=tm" rel="noopener">
+        <img class="eco-trustmark" alt=".eco profile for questhub.eco" src="https://trust.profiles.eco/questhub/eco-mark.svg?color=%239F1744" style="max-width:4rem">
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+
+  <script>
+  (function(){
+    document.addEventListener('click', function(e){
+      var el = e.target.closest('.email-reveal');
+      if (!el) return;
+      e.preventDefault();
+      var addr = el.dataset.u + '@' + el.dataset.d;
+      el.textContent = addr;
+      el.href = 'mailto:' + addr;
+      el.classList.remove('email-reveal');
+    });
+  })();
+  </script>
+</body>
+</html>

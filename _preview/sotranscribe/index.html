@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoTranscribe — Find anything you&#x27;ve ever said. We don&#x27;t listen.</title>
+  <meta name="description" content="Turn your voice memos, meetings, and recordings into searchable notes. Without sending a byte to Big Tech. Self-host free, or join the beta waitlist.">
+  
+  <link rel="canonical" href="">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bidirectional link to parent network -->
+  <link rel="me" href="https://evobiosys.org">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+
+  <!-- IndieWeb -->
+  <link rel="webmention" href="https://webmention.io/questhub.eco/webmention">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="qh-nav" id="nav">
+    <a href="/" class="qh-nav-logo">Quest<span>Hub</span></a>
+    <div class="qh-nav-right">
+      <a href="/evobiosys-thesis/" class="qh-nav-link">Thesis</a>
+      <a href="/funding-shopping-list/" class="qh-nav-link">Shopping List</a>
+      <a href="/#share" class="qh-nav-link">Share a Quest</a>
+      <a href="https://evobiosys.org" class="qh-nav-parent" target="_blank" rel="noopener">
+        Part of EvoBioSys ↗
+      </a>
+    </div>
+  </nav>
+
+  
+<style>
+:root {
+  /* === SoTranscribe brand tokens — SINGLE SOURCE OF TRUTH ============
+     Edit only in this block. All page CSS uses var(--st-*).
+     Switching palette = one block edit. Each idea2.life baby gets its
+     own self-contained brand block at the top of its page file. */
+  --st-primary:    #2E6F7E;   /* steely turquoise */
+  --st-primary-2:  #1F4E58;   /* deeper variant */
+  --st-accent:     #5C223D;   /* dark red-purple */
+  --st-accent-2:   #7B3A55;   /* lighter accent */
+  --st-bg:         #F5F4F1;
+  --st-bg-soft:    #ECEAE5;
+  --st-ink:        #131F23;
+  --st-ink-soft:   #4A5961;
+  --st-line:       #D4D2CD;
+  --st-success:    #3F7A5E;
+  --st-on-color:   #FFFFFF;   /* text on primary/accent backgrounds */
+  --st-radius:     14px;
+  --st-radius-sm:  8px;
+  --st-body-stack: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --st-mono-stack: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  /* ================================================================== */
+}
+</style>
+<link rel="stylesheet" href="/assets/css/sotranscribe.css">
+<link rel="icon" type="image/svg+xml" href="/assets/img/sotranscribe/favicon.svg">
+<link rel="alternate icon" href="/assets/img/sotranscribe/favicon.ico">
+<meta property="og:title" content="SoTranscribe — Find anything you've ever said. We don't listen.">
+<meta property="og:description" content="Turn your voice memos, meetings, and recordings into searchable notes. Without sending a byte to Big Tech.">
+<meta property="og:image" content="https://questhub.eco/assets/img/sotranscribe/og.png">
+<meta property="og:url" content="https://questhub.eco/sotranscribe/">
+<meta name="twitter:card" content="summary_large_image">
+
+<div class="st-page">
+
+  <!-- ============================ HERO ============================ -->
+  <section class="st-hero">
+    <div class="st-hero-inner">
+      <div class="st-logo-row">
+        <img src="/assets/img/sotranscribe/logo.svg" alt="SoTranscribe" class="st-logo">
+      </div>
+      <h1 class="st-hero-title">Find anything you&rsquo;ve ever said.<br><span class="st-hero-em">We don&rsquo;t listen.</span></h1>
+      <p class="st-hero-sub">SoTranscribe turns your voice memos, meetings, and recordings into searchable notes. The transcription happens on your computer or on our European servers &mdash; never on a Big Tech cloud.</p>
+      <div class="st-cta-row">
+        <a href="#" class="st-btn st-btn-primary email-reveal" data-u="connect" data-d="evobiosys.org" rel="nofollow">Reveal email to join beta &rarr;</a>
+        <a href="https://github.com/evobiosys/sotranscribe" class="st-btn st-btn-ghost">Or self-host (free)</a>
+      </div>
+      <p class="st-caveat">No credit card. No tracking. We&rsquo;ll mail you when there&rsquo;s a slot.</p>
+    </div>
+  </section>
+
+  <!-- ===================== THE PROBLEM ====================== -->
+  <section class="st-section st-section-soft">
+    <div class="st-section-inner st-prose">
+      <p class="st-eyebrow">The problem</p>
+      <h2 class="st-h2">Most transcription apps record more than your voice.</h2>
+      <p>When you upload audio to a cloud transcription service, you&rsquo;re trusting a long chain of companies with what was said in your meeting, your therapy session, your interview, or your private voice note. The audio gets copied, stored, processed, and sometimes used to train someone else&rsquo;s product.</p>
+      <p>Most of the popular tools are American companies, which means a US court can request your data even when it&rsquo;s &ldquo;stored in Europe&rdquo;. There is a friendlier way to do this.</p>
+    </div>
+  </section>
+
+  <!-- ===================== THREE PROMISES ====================== -->
+  <section class="st-section">
+    <div class="st-section-inner">
+      <p class="st-eyebrow">What we promise</p>
+      <h2 class="st-h2">Three things, in plain language.</h2>
+      <div class="st-grid-3">
+        <div class="st-promise">
+          <div class="st-promise-num">1</div>
+          <h3 class="st-promise-title">Your audio stays where you put it.</h3>
+          <p>Run it on your own computer (free) and nothing leaves the room. Use our hosted service and audio sits on European servers we own, never shared with anyone.</p>
+        </div>
+        <div class="st-promise">
+          <div class="st-promise-num">2</div>
+          <h3 class="st-promise-title">No US company touches your data.</h3>
+          <p>We don&rsquo;t use Stripe, Google Analytics, or American clouds. Our payment processor, our font provider, our email host &mdash; all European. So a US court can&rsquo;t reach in.</p>
+        </div>
+        <div class="st-promise">
+          <div class="st-promise-num">3</div>
+          <h3 class="st-promise-title">You can leave any time.</h3>
+          <p>Your transcripts are yours, in standard formats. Cancel and you take everything with you. The source code is open, so the door always opens outward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW IT WORKS ====================== -->
+  <section class="st-section st-section-soft">
+    <div class="st-section-inner">
+      <p class="st-eyebrow">How it works</p>
+      <h2 class="st-h2">Three steps. One result.</h2>
+      <ol class="st-steps">
+        <li>
+          <span class="st-steps-num">A</span>
+          <div>
+            <h3>Drop in your recordings.</h3>
+            <p>Voice memos, meetings, podcast episodes, wearable captures &mdash; whatever you have. Or set a folder to auto-import as new ones land.</p>
+          </div>
+        </li>
+        <li>
+          <span class="st-steps-num">B</span>
+          <div>
+            <h3>We transcribe and tell speakers apart.</h3>
+            <p>Each conversation becomes a clean text document with timestamps and who-said-what. No human listens. No third-party service involved.</p>
+          </div>
+        </li>
+        <li>
+          <span class="st-steps-num">C</span>
+          <div>
+            <h3>Search like you search email.</h3>
+            <p>Press <kbd id="kbd-find" class="st-kbd">⌘F</kbd> &mdash; or open the app &mdash; and find every moment where you said the word you&rsquo;re looking for. Across years of conversations.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== USE CASES ====================== -->
+  <section class="st-section">
+    <div class="st-section-inner">
+      <p class="st-eyebrow">What people use it for</p>
+      <h2 class="st-h2">Some of the things it&rsquo;s good at.</h2>
+      <div class="st-uses">
+        <div class="st-use">
+          <span class="st-use-icon">&#x1F4DD;</span>
+          <strong>Find that thing you said in last Tuesday&rsquo;s meeting</strong>
+          <span>without scrubbing through the recording.</span>
+        </div>
+        <div class="st-use">
+          <span class="st-use-icon">&#x1F3A4;</span>
+          <strong>Turn voice memos into journal entries</strong>
+          <span>that you can actually search and revisit.</span>
+        </div>
+        <div class="st-use">
+          <span class="st-use-icon">&#x1F4FB;</span>
+          <strong>Build a private archive of your conversations</strong>
+          <span>without putting any of them on Big Tech servers.</span>
+        </div>
+        <div class="st-use">
+          <span class="st-use-icon">&#x1F4DA;</span>
+          <strong>Hand transcripts to your AI assistant</strong>
+          <span>so it actually knows what you discussed.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRICING ====================== -->
+  <section class="st-section st-section-soft">
+    <div class="st-section-inner">
+      <p class="st-eyebrow">Pricing</p>
+      <h2 class="st-h2">Pick what feels right.</h2>
+      <p class="st-lede">We&rsquo;re still figuring out the right shape. Here&rsquo;s what works today, in the open.</p>
+      <div class="st-grid-3">
+        <div class="st-tier">
+          <h3 class="st-tier-name">Self-host</h3>
+          <p class="st-tier-price">Free</p>
+          <p class="st-tier-desc">Run it on your own computer. The source is open. Bring your own GPU. Community support by mail.</p>
+          <a href="https://github.com/evobiosys/sotranscribe" class="st-tier-cta">Get the code &rarr;</a>
+        </div>
+        <div class="st-tier st-tier-featured">
+          <p class="st-tier-flag">Most frictionless</p>
+          <h3 class="st-tier-name">Beta access</h3>
+          <p class="st-tier-price">Pricing TBD</p>
+          <p class="st-tier-desc">We host it for you on European servers. You upload, we transcribe, you download. You also help shape the product &mdash; beta users get early features and direct line to us.</p>
+          <a href="#" class="st-tier-cta email-reveal" data-u="connect" data-d="evobiosys.org" rel="nofollow">Reveal email to join &rarr;</a>
+        </div>
+        <div class="st-tier">
+          <h3 class="st-tier-name">For organisations</h3>
+          <p class="st-tier-price">Custom</p>
+          <p class="st-tier-desc">Larger volume, custom integration, customer support, signed agreement &mdash; we&rsquo;ll work it out together.</p>
+          <a href="#" class="st-tier-cta email-reveal" data-u="connect" data-d="evobiosys.org" rel="nofollow">Reveal email &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FAQ ====================== -->
+  <section class="st-section">
+    <div class="st-section-inner">
+      <p class="st-eyebrow">Common questions</p>
+      <h2 class="st-h2">Plain answers.</h2>
+      <dl class="st-faq">
+        <dt>Does anyone listen to my recordings?</dt>
+        <dd>No. The whole point is that nobody hears the audio except whoever you choose to share it with. The transcription is done by software, on hardware that&rsquo;s either yours or ours &mdash; never on a service that re-uses your data.</dd>
+
+        <dt>How accurate is it?</dt>
+        <dd>Very. It uses the same family of speech-recognition models that the major services use, just running it without sending the audio elsewhere. For most clean recordings, accuracy is comparable to what you&rsquo;d get from a paid cloud transcription service.</dd>
+
+        <dt>What about privacy laws?</dt>
+        <dd>We&rsquo;re built around GDPR. We don&rsquo;t use any US-based company in the data path &mdash; not for payments, not for analytics, not for fonts. That&rsquo;s a deliberate choice, not just a feature bullet.</dd>
+
+        <dt>What languages does it support?</dt>
+        <dd>About 100, with the strongest results in English, German, French, Spanish, Italian, Portuguese, Dutch, and the other major European languages. Detection is automatic.</dd>
+
+        <dt>Do I need to be technical to use it?</dt>
+        <dd>For the hosted version, no &mdash; upload an audio file, get text back. For self-host, yes &mdash; you&rsquo;ll need to be comfortable with running things on your own machine. The hosted version exists for everyone who&rsquo;d rather just have it work.</dd>
+
+        <dt>Can I export my transcripts?</dt>
+        <dd>Always. Standard formats (Markdown + JSON). No lock-in. If you ever leave, you take everything.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============== LINK TO DETAILS PAGE ============== -->
+  <section class="st-section st-section-soft">
+    <div class="st-section-inner">
+      <div class="st-detail-link">
+        <p>Want the technical write-up? CLOUD Act reasoning, named providers, the full pipeline diagram, lineage and ethos &mdash;</p>
+        <p><a href="/sotranscribe/details/" class="st-link-strong">this way if you want to read the jargon-y details &rarr;</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== COMMUNITY ============== -->
+  <section class="st-section">
+    <div class="st-section-inner">
+      <p class="st-eyebrow">Talk to us</p>
+      <h2 class="st-h2">Mail is the front door.</h2>
+      <ul class="st-channels">
+        <li><strong>Mail</strong> &mdash; <a href="#" class="email-reveal" data-u="connect" data-d="evobiosys.org" rel="nofollow">Reveal email</a> (we read everything)</li>
+        <li><strong>Matrix &amp; Discord</strong> &mdash; coming soon</li>
+        <li><strong>Bluesky &amp; Mastodon</strong> &mdash; coming soon</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============== FOOTER ============== -->
+  <footer class="st-footer">
+    <div class="st-footer-inner">
+      <p>SoTranscribe &middot; first <a href="https://idea2.life">idea2.life</a> baby &middot; within <a href="https://evobiosys.org">EvoBioSys</a></p>
+      <p class="st-footer-meta">
+        <a href="/sotranscribe/details/">Technical details</a> &middot;
+        <a href="/sotranscribe/imprint/">Imprint</a> &middot;
+        <a href="/sotranscribe/privacy/">Privacy</a> &middot;
+        <a href="https://github.com/evobiosys/license">License</a> &middot;
+        <a href="/">Back to QuestHub</a>
+      </p>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // OS-aware keyboard hint: Mac/iPhone → ⌘F ; Linux/Win/Android → Ctrl+F
+  (function () {
+    var el = document.getElementById('kbd-find');
+    if (!el) return;
+    var p = (navigator.userAgent || navigator.platform || '').toLowerCase();
+    var isApple = /mac|iphone|ipad|ipod/.test(p);
+    el.textContent = isApple ? '⌘F' : 'Ctrl+F';
+    el.setAttribute('data-os', isApple ? 'apple' : 'pc');
+  })();
+</script>
+
+
+  <footer class="qh-footer">
+    <div class="qh-footer-inner">
+      <div class="qh-footer-brand">
+        <span class="qh-footer-logo">QuestHub</span>
+        <span class="qh-footer-tagline">The Garden of Quests</span>
+      </div>
+      <div class="qh-footer-links">
+        <a href="https://evobiosys.org" target="_blank" rel="noopener">EvoBioSys</a>
+        <a href="https://evobiosys.org/holons/" target="_blank" rel="noopener">Holons</a>
+        <a href="https://evobiosys.org/holons/soaro/" target="_blank" rel="noopener">Soaro</a>
+        <a href="https://kidur.org" target="_blank" rel="noopener">Kidur</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/legal/">Legal</a>
+        <a href="#" class="email-reveal" data-u="connect" data-d="evobiosys.org" rel="nofollow">Reveal email</a>
+      </div>
+      <p class="qh-footer-copy">
+        &copy; 2026 EvoBioSys &middot; Built on <a href="https://kidur.org" target="_blank" rel="noopener">Kidur</a>
+        &middot; <a href="https://evobiosys.org/holons/questhub/" target="_blank" rel="noopener">Also on EvoBioSys</a>
+      </p>
+      <p class="qh-footer-ecosystem" style="font-size:0.8rem; opacity:0.7; margin-top:0.5rem;">
+        Part of the <a href="https://evobiosys.org" target="_blank" rel="noopener">EvoBioSys</a> ecosystem
+      </p>
+      <p class="qh-footer-signoff" style="font-size:0.8rem; opacity:0.7; margin-top:0.5rem;">Made with love in Europe</p>
+      <a href="https://profiles.eco/questhub?ref=tm" rel="noopener">
+        <img class="eco-trustmark" alt=".eco profile for questhub.eco" src="https://trust.profiles.eco/questhub/eco-mark.svg?color=%239F1744" style="max-width:4rem">
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+
+  <script>
+  (function(){
+    document.addEventListener('click', function(e){
+      var el = e.target.closest('.email-reveal');
+      if (!el) return;
+      e.preventDefault();
+      var addr = el.dataset.u + '@' + el.dataset.d;
+      el.textContent = addr;
+      el.href = 'mailto:' + addr;
+      el.classList.remove('email-reveal');
+    });
+  })();
+  </script>
+</body>
+</html>

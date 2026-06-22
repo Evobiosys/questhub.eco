@@ -1,11 +1,41 @@
----
-layout: default
-title: "QuestHub — The Garden of Quests"
-description: >-
-  Seeds planted across technology, society, finance, knowledge, tools, and culture.
-  Where quests are held with care until their season arrives. Part of the EvoBioSys network.
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuestHub — The Garden of Quests</title>
+  <meta name="description" content="&gt;-">
+  
+  <link rel="canonical" href="">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Bidirectional link to parent network -->
+  <link rel="me" href="https://evobiosys.org">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+
+  <!-- IndieWeb -->
+  <link rel="webmention" href="https://webmention.io/questhub.eco/webmention">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="qh-nav" id="nav">
+    <a href="/" class="qh-nav-logo">Quest<span>Hub</span></a>
+    <div class="qh-nav-right">
+      <a href="/evobiosys-thesis/" class="qh-nav-link">Thesis</a>
+      <a href="/funding-shopping-list/" class="qh-nav-link">Shopping List</a>
+      <a href="/#share" class="qh-nav-link">Share a Quest</a>
+      <a href="https://evobiosys.org" class="qh-nav-parent" target="_blank" rel="noopener">
+        Part of EvoBioSys ↗
+      </a>
+    </div>
+  </nav>
+
+  
 <style>
   /* === QuestHub — Quest Garden Palette === */
   .qh-page {
@@ -726,3 +756,56 @@ description: >-
   </script>
 
 </div>
+
+
+  <footer class="qh-footer">
+    <div class="qh-footer-inner">
+      <div class="qh-footer-brand">
+        <span class="qh-footer-logo">QuestHub</span>
+        <span class="qh-footer-tagline">The Garden of Quests</span>
+      </div>
+      <div class="qh-footer-links">
+        <a href="https://evobiosys.org" target="_blank" rel="noopener">EvoBioSys</a>
+        <a href="https://evobiosys.org/holons/" target="_blank" rel="noopener">Holons</a>
+        <a href="https://evobiosys.org/holons/soaro/" target="_blank" rel="noopener">Soaro</a>
+        <a href="https://kidur.org" target="_blank" rel="noopener">Kidur</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/legal/">Legal</a>
+        <a href="#" class="email-reveal" data-u="connect" data-d="evobiosys.org" rel="nofollow">Reveal email</a>
+      </div>
+      <p class="qh-footer-copy">
+        &copy; 2026 EvoBioSys &middot; Built on <a href="https://kidur.org" target="_blank" rel="noopener">Kidur</a>
+        &middot; <a href="https://evobiosys.org/holons/questhub/" target="_blank" rel="noopener">Also on EvoBioSys</a>
+      </p>
+      <p class="qh-footer-ecosystem" style="font-size:0.8rem; opacity:0.7; margin-top:0.5rem;">
+        Part of the <a href="https://evobiosys.org" target="_blank" rel="noopener">EvoBioSys</a> ecosystem
+      </p>
+      <p class="qh-footer-signoff" style="font-size:0.8rem; opacity:0.7; margin-top:0.5rem;">Made with love in Europe</p>
+      <a href="https://profiles.eco/questhub?ref=tm" rel="noopener">
+        <img class="eco-trustmark" alt=".eco profile for questhub.eco" src="https://trust.profiles.eco/questhub/eco-mark.svg?color=%239F1744" style="max-width:4rem">
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+
+  <script>
+  (function(){
+    document.addEventListener('click', function(e){
+      var el = e.target.closest('.email-reveal');
+      if (!el) return;
+      e.preventDefault();
+      var addr = el.dataset.u + '@' + el.dataset.d;
+      el.textContent = addr;
+      el.href = 'mailto:' + addr;
+      el.classList.remove('email-reveal');
+    });
+  })();
+  </script>
+</body>
+</html>

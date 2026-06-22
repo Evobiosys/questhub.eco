@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <circle cx="16" cy="16" r="15" fill="#4a7c59"/>
+  <circle cx="16" cy="16" r="13.5" fill="none" stroke="#6da67a" stroke-width="0.5" opacity="0.5"/>
+  <text x="16" y="22.5" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="20" fill="#daa520">Q</text>
+  <path d="M20 19 C22 21, 24 20, 25 18" stroke="#b8860b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <circle cx="25.5" cy="17" r="1.5" fill="#b8860b" opacity="0.6"/>
+</svg>

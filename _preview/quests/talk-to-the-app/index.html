@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Talk to the App to Change the App | QuestHub</title>
+  <meta name="description" content="Meta-programming through conversation — software that reshapes itself when you describe what you need, instead of forcing you to file a feature request and wait.">
+  
+  <link rel="canonical" href="">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bidirectional link to parent network -->
+  <link rel="me" href="https://evobiosys.org">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+
+  <!-- IndieWeb -->
+  <link rel="webmention" href="https://webmention.io/questhub.eco/webmention">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="qh-nav" id="nav">
+    <a href="/" class="qh-nav-logo">Quest<span>Hub</span></a>
+    <div class="qh-nav-right">
+      <a href="/evobiosys-thesis/" class="qh-nav-link">Thesis</a>
+      <a href="/funding-shopping-list/" class="qh-nav-link">Shopping List</a>
+      <a href="/#share" class="qh-nav-link">Share a Quest</a>
+      <a href="https://evobiosys.org" class="qh-nav-parent" target="_blank" rel="noopener">
+        Part of EvoBioSys ↗
+      </a>
+    </div>
+  </nav>
+
+  
+<div class="qh-quest" id="top">
+<style>
+  /* ── Quest detail page — reuses global --qh-* palette from style.css ── */
+  .qh-quest { background: var(--qh-parchment); color: var(--qh-soil); }
+  .qh-quest-hero {
+    max-width: 760px; margin: 0 auto; padding: 5.5rem 1.5rem 2.5rem;
+    text-align: center;
+  }
+  .qh-quest-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--qh-soil-muted); margin-bottom: 1.25rem;
+  }
+  .qh-quest-eyebrow .seed {
+    width: 9px; height: 9px; border-radius: 50%; background: var(--qh-sand); border: 1px solid var(--qh-border);
+  }
+  .qh-quest-hero h1 {
+    font-size: clamp(1.9rem, 5vw, 2.8rem); line-height: 1.15; margin: 0 0 1rem;
+    color: var(--qh-soil);
+  }
+  .qh-quest-hero .lede {
+    font-size: 1.15rem; line-height: 1.7; color: var(--qh-soil-muted); margin: 0 auto;
+    max-width: 620px;
+  }
+  .qh-quest-body {
+    max-width: 680px; margin: 0 auto; padding: 1rem 1.5rem 4rem;
+  }
+  .qh-quest-body section { margin-bottom: 2.75rem; }
+  .qh-quest-body h2 {
+    font-size: 1.4rem; color: var(--qh-green); margin: 0 0 0.9rem;
+    border-bottom: 1px solid var(--qh-border); padding-bottom: 0.4rem;
+  }
+  .qh-quest-body p { line-height: 1.8; margin: 0 0 1rem; }
+  .qh-quest-body ul { line-height: 1.8; padding-left: 1.2rem; }
+  .qh-quest-body li { margin-bottom: 0.4rem; }
+  .qh-meta {
+    display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center;
+    margin-top: 1.5rem;
+  }
+  .qh-meta span {
+    font-size: 0.8rem; padding: 0.3rem 0.75rem; border-radius: 999px;
+    background: var(--qh-cream); border: 1px solid var(--qh-border); color: var(--qh-soil-muted);
+  }
+  .qh-meta .stage-growing { background: var(--qh-green-pale); color: var(--qh-green); border-color: var(--qh-green-light); }
+  .qh-quest-back {
+    display: inline-block; margin: 0 auto; font-size: 0.9rem;
+  }
+  .qh-quest-cta {
+    text-align: center; margin-top: 3rem; padding-top: 2rem;
+    border-top: 1px solid var(--qh-border);
+  }
+</style>
+
+<div class="qh-quest-hero">
+  <div class="qh-quest-eyebrow"><span class="seed"></span> Technology &amp; Infrastructure · Quest</div>
+  <h1>Talk to the App to Change the App</h1>
+  <p class="lede">
+    Meta-programming through conversation: software that reshapes itself when you describe
+    what you need &mdash; instead of forcing you to file a feature request and wait for someone
+    else&rsquo;s roadmap.
+  </p>
+  <div class="qh-meta">
+    <span>Stage: Dormant</span>
+    <span>EvoBioSys network</span>
+  </div>
+</div>
+
+<div class="qh-quest-body">
+  <section>
+    <h2>The seed</h2>
+    <p>
+      Every application is a frozen set of decisions someone else made. When your need falls
+      outside those decisions, the path forward is slow and indirect: describe the gap, file a
+      request, wait for it to be prioritized, wait for it to ship. The person who knows exactly
+      what they want is the person least able to make the software do it.
+    </p>
+    <p>
+      This quest asks a different question. What if describing the change <strong>was</strong>
+      the change? An application that listens to plain language about how it should behave, then
+      rewrites its own structure to match &mdash; turning the user from a petitioner into an
+      author. Meta-programming, but with conversation as the editing surface instead of code.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why it matters</h2>
+    <p>
+      Sovereignty over your tools means more than self-hosting them. A tool you cannot reshape
+      still belongs to whoever shaped it. If software can be re-formed by the people who use it,
+      the gap between &ldquo;what the tool does&rdquo; and &ldquo;what I need it to do&rdquo;
+      stops being a backlog item and becomes a sentence you speak.
+    </p>
+    <ul>
+      <li><strong>Agency</strong> &mdash; the user, not a distant team, decides what the software becomes.</li>
+      <li><strong>Speed</strong> &mdash; the loop from need to working change collapses to a conversation.</li>
+      <li><strong>Local-first</strong> &mdash; the reshaping happens on infrastructure the user owns, with no roundtrip to a vendor.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What building it out looks like</h2>
+    <ul>
+      <li>Define a safe, inspectable representation of the app&rsquo;s behavior that conversation can target &mdash; so changes are legible and reversible, not opaque.</li>
+      <li>Build the conversational layer that translates a described need into a concrete, scoped modification of that representation.</li>
+      <li>Add a review-and-rollback gate so every self-applied change can be seen, confirmed, and undone before it sticks.</li>
+      <li>Prototype against a single small application to prove the loop end to end before generalizing it.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Status</h2>
+    <p>
+      Dormant. The idea is captured and the shape is clear, but no active build has started.
+      It waits for a concrete first host application to ground the experiment.
+    </p>
+  </section>
+
+  <div class="qh-quest-cta">
+    <a href="/" class="btn btn-primary">&larr; Back to the garden</a>
+  </div>
+</div>
+</div>
+
+
+  <footer class="qh-footer">
+    <div class="qh-footer-inner">
+      <div class="qh-footer-brand">
+        <span class="qh-footer-logo">QuestHub</span>
+        <span class="qh-footer-tagline">The Garden of Quests</span>
+      </div>
+      <div class="qh-footer-links">
+        <a href="https://evobiosys.org" target="_blank" rel="noopener">EvoBioSys</a>
+        <a href="https://evobiosys.org/holons/" target="_blank" rel="noopener">Holons</a>
+        <a href="https://evobiosys.org/holons/soaro/" target="_blank" rel="noopener">Soaro</a>
+        <a href="https://kidur.org" target="_blank" rel="noopener">Kidur</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/legal/">Legal</a>
+        <a href="#" class="email-reveal" data-u="connect" data-d="evobiosys.org" rel="nofollow">Reveal email</a>
+      </div>
+      <p class="qh-footer-copy">
+        &copy; 2026 EvoBioSys &middot; Built on <a href="https://kidur.org" target="_blank" rel="noopener">Kidur</a>
+        &middot; <a href="https://evobiosys.org/holons/questhub/" target="_blank" rel="noopener">Also on EvoBioSys</a>
+      </p>
+      <p class="qh-footer-ecosystem" style="font-size:0.8rem; opacity:0.7; margin-top:0.5rem;">
+        Part of the <a href="https://evobiosys.org" target="_blank" rel="noopener">EvoBioSys</a> ecosystem
+      </p>
+      <p class="qh-footer-signoff" style="font-size:0.8rem; opacity:0.7; margin-top:0.5rem;">Made with love in Europe</p>
+      <a href="https://profiles.eco/questhub?ref=tm" rel="noopener">
+        <img class="eco-trustmark" alt=".eco profile for questhub.eco" src="https://trust.profiles.eco/questhub/eco-mark.svg?color=%239F1744" style="max-width:4rem">
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+  </script>
+
+  <script>
+  (function(){
+    document.addEventListener('click', function(e){
+      var el = e.target.closest('.email-reveal');
+      if (!el) return;
+      e.preventDefault();
+      var addr = el.dataset.u + '@' + el.dataset.d;
+      el.textContent = addr;
+      el.href = 'mailto:' + addr;
+      el.classList.remove('email-reveal');
+    });
+  })();
+  </script>
+</body>
+</html>
