@@ -4,12 +4,12 @@ build-static-quests.py — render quests/*.html into self-contained static pages
 for serving via Caddy at questhub.eco/q/<slug>/ (no Jekyll/Ruby, no app rebuild).
 
 Each output is a complete HTML document that links the shared stylesheet at
-/q/assets/style.css (deployed alongside), keeps the page's own scoped <style>,
+/quest/assets/style.css (deployed alongside), keeps the page's own scoped <style>,
 and wraps a trimmed nav/footer. The "Back to the garden" link points at the live
 questhub.eco home (the Kidur app). Output tree mirrors the Caddy route:
 
     dist-quests/<slug>/index.html      ->  /q/<slug>/
-    dist-quests/assets/style.css       ->  /q/assets/style.css
+    dist-quests/assets/style.css       ->  /quest/assets/style.css
 
 Usage: python3 scripts/build-static-quests.py
 """
@@ -60,11 +60,11 @@ PAGE = """<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{title}</title>
   <meta name="description" content="{desc}">
-  <link rel="canonical" href="https://questhub.eco/q/{slug}/">
+  <link rel="canonical" href="https://questhub.eco/quest/{slug}/">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
   <meta property="og:type" content="article">
-  <link rel="stylesheet" href="/q/assets/style.css">
+  <link rel="stylesheet" href="/quest/assets/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
