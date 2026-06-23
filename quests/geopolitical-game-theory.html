@@ -158,14 +158,65 @@ description: "Strategy simulation for geopolitics — modeling interdependencies
   <section>
     <h2>Visualization (prototype)</h2>
     <p>
-      The intended artifact is an interactive nested-holon diagram &mdash; circle-packing /
-      weighted force-directed in the d3 idiom &mdash; where each level (parts → individual → org →
-      region → Land → country → bloc) is a containing circle, and edge thickness between poles
-      encodes how uniformly they act together. A first static prototype is being built and will be
-      embedded here; it is referenced from
-      <a href="https://questhub.eco/worldnews">developmental world news</a> as an analytical lens
-      on current events.
+      A first prototype of the nested-holon view &mdash; circle-packing in the d3 idiom. Each
+      circle <em>contains</em> the level below it (bloc → country → Land → region → organization →
+      individual → parts of one individual). Europe is drawn as a single large pole that
+      <em>contains</em> its member countries: they could stand alone, but have chosen to nest into
+      one coherent whole. Brazil and the USA sit alongside as peer poles. Tighter nesting =
+      higher uniformity. Hover a circle for its level.
     </p>
+    <div id="poles-viz" style="max-width:620px; margin:1.25rem auto 0; border:1px solid var(--qh-border); border-radius:12px; background:var(--qh-cream); overflow:hidden;"></div>
+    <p style="text-align:center; font-size:0.82rem; color:var(--qh-soil-muted); margin-top:0.6rem;">
+      Prototype &mdash; illustrative data. The full version weights inter-pole edges by how
+      uniformly poles act together. Referenced from
+      <a href="https://questhub.eco/worldnews">developmental world news</a> as an analytical lens.
+    </p>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+    (function(){
+      var data = {name:"Geopolitical poles", children:[
+        {name:"Europe — acting as one pole", level:"Bloc", children:[
+          {name:"Germany", level:"Country", children:[
+            {name:"Bavaria", level:"Land / state", children:[
+              {name:"Munich", level:"Region (city)", children:[
+                {name:"An organization", level:"Org", children:[
+                  {name:"An individual", level:"Individual + family", children:[
+                    {name:"Parts of one self", level:"Parts of an individual", value:6},
+                    {name:"", level:"Parts of an individual", value:4}
+                  ]}
+                ]}
+              ]}
+            ]}
+          ]},
+          {name:"France", level:"Country", value:24},
+          {name:"Italy", level:"Country", value:20},
+          {name:"Spain", level:"Country", value:16}
+        ]},
+        {name:"Brazil", level:"Country (peer pole)", value:46},
+        {name:"USA", level:"Country (peer pole)", value:60}
+      ]};
+      var W=600,H=600;
+      var root=d3.hierarchy(data).sum(function(d){return d.value||0;}).sort(function(a,b){return b.value-a.value;});
+      d3.pack().size([W-8,H-8]).padding(4)(root);
+      var color=d3.scaleOrdinal()
+        .domain(["Bloc","Country","Country (peer pole)","Land / state","Region (city)","Org","Individual + family","Parts of an individual"])
+        .range(["#4a7c59","#6da67a","#b8860b","#8aa98f","#a9c0ad","#c9b27a","#daa520","#efe6d5"]);
+      var svg=d3.select("#poles-viz").append("svg").attr("viewBox","0 0 "+W+" "+H).attr("width","100%").style("display","block").style("font-family","Inter,sans-serif");
+      var g=svg.append("g").attr("transform","translate(4,4)");
+      var node=g.selectAll("g").data(root.descendants()).join("g").attr("transform",function(d){return "translate("+d.x+","+d.y+")";});
+      node.append("circle")
+        .attr("r",function(d){return d.r;})
+        .attr("fill",function(d){return d.children?d3.color(color(d.data.level||"Bloc")).copy({opacity:0.18}):color(d.data.level||"Parts of an individual");})
+        .attr("stroke",function(d){return color(d.data.level||"Bloc");})
+        .attr("stroke-width",function(d){return d.children?1.2:0.6;})
+        .append("title").text(function(d){return (d.data.name||"·")+(d.data.level?" — "+d.data.level:"");});
+      node.filter(function(d){return d.data.name && (d.r>44 || d.depth===1);}).append("text")
+        .attr("text-anchor","middle").attr("dy",function(d){return d.children?-d.r+16:"0.32em";})
+        .style("font-size",function(d){return Math.max(9,Math.min(13,d.r/4))+"px";})
+        .style("fill","#3d2b1f").style("pointer-events","none")
+        .text(function(d){return d.data.name.length>22?d.data.name.slice(0,20)+"…":d.data.name;});
+    })();
+    </script>
   </section>
 
   <section>
