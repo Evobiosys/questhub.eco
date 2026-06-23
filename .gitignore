@@ -12,3 +12,7 @@ Gemfile.lock
 .env.*
 *.pem
 *.key
+
+# build/preview output
+dist-quests/
+_preview/
